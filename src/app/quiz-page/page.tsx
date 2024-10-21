@@ -1,4 +1,5 @@
 "use client";
+import { log } from "console";
 import { useEffect, useState } from "react";
 
 interface Question {
@@ -33,7 +34,8 @@ export default function Home() {
     }
   };
 
-  if (questions.length === 0 || questions[currentQuestion]) {
+  if (questions.length === 0) {
+    console.log(questions);
     return <div>Loading...</div>;
   }
 
