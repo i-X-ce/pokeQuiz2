@@ -1,34 +1,43 @@
 "use client";
+import HeadContainer from "@/app/components/headContainer/page";
 import { log } from "console";
 import { useEffect, useState } from "react";
 
 interface Question {
   question: string;
-  answers: string[];
-  correct: number;
+  choices: string[];
+  correctAnswer: number;
+  imageUrl?: String,
+  answerCnt: Number,
+  correctCnt: Number,
+  description: String,
+  userName?: String,
+  title: String,
 }
 
 export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [question, setQuestion] = useState<Question>();
+  const [currentQuestionIndex, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    fetch("/api/quizController")
+    fetch("/api/quiz-get-all")
       .then((res) => res.json())
       .then((data) => setQuestions(data))
       .catch((err) => console.error("Error fetching quiz data:", err));
   }, []);
 
   const handleAnswer = (answerIndex: number) => {
-    if ((questions[currentQuestion].correct as number) === answerIndex) {
+    if ((questions[currentQuestionIndex].correctAnswer as number) === answerIndex) {
       setScore(score + 1);
     }
 
-    const nextQuestion = currentQuestion + 1;
+    const nextQuestion = currentQuestionIndex + 1;
     if (nextQuestion < questions.length) {
       setCurrentQuestion(nextQuestion);
+      setQuestion(questions[currentQuestionIndex]);
     } else {
       setIsFinished(true);
     }
@@ -45,12 +54,15 @@ export default function Home() {
     </>
   ) : (
     <>
-      <h1>{questions[currentQuestion].question}</h1>
-      {questions[currentQuestion].answers.map((answer, index) => (
-        <button key={index} onClick={() => handleAnswer(index)}>
-          {answer}
-        </button>
-      ))}
+      <HeadContainer title={question?.title || "No title"} />
+      <h1>{questions[currentQuestionIndex].question}</h1>
+      {questions[currentQuestionIndex].choices.map(
+        (answer: string, index: number) => (
+          <button key={index} onClick={() => handleAnswer(index)}>
+            {answer}
+          </button>
+        )
+      )}
     </>
   );
 }

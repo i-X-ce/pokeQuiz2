@@ -4,7 +4,7 @@ export default function Home() {
   fetch
   return (
     <>
-      <Link href="/quiz-page">クイズを解く</Link>
+      <Link href="/pages/quiz-page">クイズを解く</Link>
     </>
   );
 }
