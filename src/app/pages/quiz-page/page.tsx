@@ -1,9 +1,9 @@
 "use client";
 import DescriptionContainer from "@/app/components/DescriptionContainer/page";
 import HeadContainer from "@/app/components/HeadContainer/page";
-import { log } from "console";
+import PastQuestionContainer from "@/app/components/PastQuestionContainer/page";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Question {
   _id: string;
@@ -17,6 +17,7 @@ interface Question {
   userName?: String;
   title: String;
   isCorrect: boolean;
+  choiceAnswer: Number;
 }
 
 export default function Home() {
@@ -37,12 +38,17 @@ export default function Home() {
       .catch((err) => console.error("Error fetching quiz data:", err));
   }, []);
 
+  // ボタン押したとき
   const handleAnswer = (answerIndex: number) => {
     if (isAnswer) return;
     setIsAnswer(true);
     const isCorrect = (question!.correctAnswer as number) === answerIndex;
     setQuestion(
-      (prevQuestion) => ({ ...prevQuestion, isCorrect: isCorrect } as Question)
+      ({
+          ...question,
+          isCorrect: isCorrect,
+          choiceAnswer: answerIndex,
+        } as Question)
     );
     question!.isCorrect = isCorrect;
     if (isCorrect) {
@@ -86,6 +92,7 @@ export default function Home() {
     <>
       <div>Score: {score}</div>
       <Link href="../">戻る</Link>
+      <PastQuestionContainer questions={questions} />;
     </>
   ) : (
     <>
@@ -103,7 +110,7 @@ export default function Home() {
         score={score}
       />
       <div>{question!.question}</div>
-      {isAnswer ? <DescriptionContainer {...question}/> : null}
+      {isAnswer ? <DescriptionContainer {...question} /> : null}
       {question!.choices.map((answer: string, index: number) => (
         <button key={index} onClick={() => handleAnswer(index)}>
           {answer}
