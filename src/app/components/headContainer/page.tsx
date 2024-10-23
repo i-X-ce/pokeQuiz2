@@ -1,3 +1,4 @@
+import HeadChip from "../HeadChip/page";
 import styles from "./style.module.css";
 
 export default function HeadContainer(props: any) {
@@ -5,9 +6,9 @@ export default function HeadContainer(props: any) {
   return (
     <div className={styles.headContainer}>
       <div>{props.title}</div>
-      <div>{props.user}</div>
-      <div>{props.percentage}</div>
-      <div>{props.score}</div>
+      <HeadChip state={props.user} />
+      <HeadChip state={props.percentage} />
+      <HeadChip state={props.score} />
     </div>
   );
 }
