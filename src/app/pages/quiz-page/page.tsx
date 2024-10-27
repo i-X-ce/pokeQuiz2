@@ -17,7 +17,7 @@ interface Question {
   userName?: String;
   title: String;
   isCorrect: boolean;
-  choiceAnswer: Number;
+  choiceAnswer: number;
 }
 
 export default function Home() {
@@ -43,14 +43,13 @@ export default function Home() {
     if (isAnswer) return;
     setIsAnswer(true);
     const isCorrect = (question!.correctAnswer as number) === answerIndex;
-    setQuestion(
-      ({
-          ...question,
-          isCorrect: isCorrect,
-          choiceAnswer: answerIndex,
-        } as Question)
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q, index) =>
+        index === currentQuestionIndex
+          ? { ...q, isCorrect: isCorrect, choiceAnswer: answerIndex }
+          : q
+      )
     );
-    question!.isCorrect = isCorrect;
     if (isCorrect) {
       setScore(score + 1);
     }
@@ -92,7 +91,7 @@ export default function Home() {
     <>
       <div>Score: {score}</div>
       <Link href="../">戻る</Link>
-      <PastQuestionContainer questions={questions} />;
+      <PastQuestionContainer questions={questions} />
     </>
   ) : (
     <>

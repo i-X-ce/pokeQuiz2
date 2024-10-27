@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export default function Home() {
-  fetch
+  fetch;
   return (
     <>
       <Link href="/pages/quiz-page">クイズを解く</Link>
