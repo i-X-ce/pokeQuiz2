@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import SessionWrapper from "./components/SessionWrapper/page";
 
@@ -14,7 +14,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
   return (
     <SessionWrapper session={session}>

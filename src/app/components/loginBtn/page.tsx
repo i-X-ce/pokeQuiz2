@@ -7,7 +7,6 @@ export default function LoginBtn() {
   const [fullSession, setFullSession] = useState(session); // セッションの状態を追跡
 
   useEffect(() => {
-    // console.log(status, "update session:", session);
     if (status === "authenticated" && !session?.user?.email) {
       getSession().then((newSession) => {
         setFullSession(newSession); // セッションの更新
