@@ -8,8 +8,9 @@ export const quizSchema = new Schema({
   answerCnt: Number,
   correctCnt: Number,
   description: String,
-  userName: String,
+  userId: String,
   title: String,
+  anonymity: Boolean,
 });
 
 const Question =
