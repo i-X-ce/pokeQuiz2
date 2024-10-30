@@ -10,5 +10,5 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
   console.log(email, nickname);
 
   await User.findOneAndUpdate({ email }, { nickname: nickname });
-  return NextResponse.json({ message: "ニックネームが更新されました" });
+  return NextResponse.json({ message: "ユーザーが更新されました" });
 }

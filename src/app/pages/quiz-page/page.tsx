@@ -29,7 +29,7 @@ export default function Home() {
   const [isAnswer, setIsAnswer] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("/api/quiz-get-all")
+    fetch("/api/quiz/get-all")
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data);
