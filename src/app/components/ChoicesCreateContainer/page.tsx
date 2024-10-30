@@ -7,6 +7,7 @@ export interface Choice {
 
 export function ChoicesCreateContainer({ choices, updateChoices }) {
   const addChoice = () => {
+    if (choices.length >= 8) return;
     updateChoices([...choices, { choiced: false, value: "" }]);
   };
 
@@ -25,12 +26,20 @@ export function ChoicesCreateContainer({ choices, updateChoices }) {
     updateChoices(newChoices);
   };
 
+  const selectAnswer = (key: number) => {
+    const newChoices = choices.map((c: Choice, i: number) => ({
+      ...c,
+      choiced: i === key,
+    }));
+    updateChoices(newChoices);
+  };
+
   fetch;
   return (
     <div>
       {choices.map((c: Choice, i: number) => (
         <div key={i}>
-          <input type="radio" name="choices" />
+          <input type="radio" name="choices" onChange={() => selectAnswer(i)} />
           <input
             type="text"
             placeholder="選択肢"
