@@ -7,6 +7,7 @@ export default function Home() {
   return (
     <>
       <Link href="/pages/quiz-page">クイズを解く</Link>
+      <Link href="/pages/quiz-create-page">クイズを作る</Link>
       <LoginBtn />
       <NickNameInput />
     </>
