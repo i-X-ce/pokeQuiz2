@@ -7,15 +7,14 @@ import { useState } from "react";
 export function NickNameInput() {
   const { data: session } = useSession();
   const [nickname, setNickname] = useState("");
-  const [showNicknameModal, setShowNicknameModal] = useState(false);
+  // const [showNicknameModal, setShowNicknameModal] = useState(false);
 
   const handleNicknameSubmit = async () => {
-    console.log(session);
     await axios.post("/api/nickname-set", {
       email: session?.user?.email,
       nickname: nickname,
     });
-    setShowNicknameModal(true);
+    // setShowNicknameModal(true);
   };
 
   //   if (showNicknameModal) {

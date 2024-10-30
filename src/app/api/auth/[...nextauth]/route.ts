@@ -18,7 +18,7 @@ export const authOptions = {
 
       if (!existingUser) {
         await User.create({
-          nickname: user.name,
+          nickname: user.name.slice(0, 5),
           email: user.email,
           image: user.image,
         });

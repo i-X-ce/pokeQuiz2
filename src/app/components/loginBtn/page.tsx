@@ -4,24 +4,24 @@ import { useEffect, useState } from "react";
 
 export default function LoginBtn() {
   const { data: session, status } = useSession();
-  const [fullSession, setFullSession] = useState(session); // セッションの状態を追跡
+  // const [fullSession, setFullSession] = useState(session); // セッションの状態を追跡
 
   useEffect(() => {
-    if (status === "authenticated" && !session?.user?.email) {
-      getSession().then((newSession) => {
-        setFullSession(newSession); // セッションの更新
-      });
-    } else {
-      setFullSession(session); // sessionが完全な場合はそのままセット
-    }
+    // if (status === "authenticated" && !session?.user?.email) {
+    //   getSession().then((newSession) => {
+    //     setFullSession(newSession); // セッションの更新
+    //   });
+    // } else {
+    //   setFullSession(session); // sessionが完全な場合はそのままセット
+    // }
   }, []);
 
   if (status === "loading") return <div>Loading...</div>;
 
-  if (fullSession) {
+  if (session) {
     return (
       <>
-        Signed in as {fullSession.user?.email || "Loading email..."}
+        Signed in as {session.user?.email || "Loading email..."}
         <br />
         <button onClick={() => signOut()}>Sign out</button>
       </>
@@ -31,7 +31,9 @@ export default function LoginBtn() {
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn("google")}>Sign in</button>
+      <button onClick={() => signIn("google", { prompt: "select_account" })}>
+        Sign in
+      </button>
     </>
   );
 }
