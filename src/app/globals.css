@@ -1,3 +1,51 @@
+* {
+  padding: 0;
+  margin: 0;
+  color: var(--bc-text);
+}
+
+:root {
+  --bc-white: #ffffff;
+  --bc-text: #000000;
+  --bc-shadow: #00000034;
+  --bc-red: #fa4949;
+  --bc-green: #51d675;
+  --bc-blue: #3e98ff;
+  --bc-yellow: #ffca38;
+}
+
 svg {
   width: 20px;
+}
+
+.background-red {
+  background-color: var(--bc-red);
+}
+
+.background-green {
+  background-color: var(--bc-green);
+}
+
+.background-blue {
+  background-color: var(--bc-blue);
+}
+
+.background-yellow {
+  background-color: var(--bc-yellow);
+}
+
+.font-red {
+  color: var(--bc-red);
+}
+
+.font-green {
+  color: var(--bc-green);
+}
+
+.font-blue {
+  color: var(--bc-blue);
+}
+
+.font-yellow {
+  color: var(--bc-yellow);
 }

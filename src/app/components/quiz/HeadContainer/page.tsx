@@ -1,3 +1,4 @@
+import { Title } from "../../common/Title/page";
 import HeadChip from "../HeadChip/page";
 import styles from "./style.module.css";
 
@@ -5,10 +6,10 @@ export default function HeadContainer(props: any) {
   fetch;
   return (
     <div className={styles.headContainer}>
-      <div>{props.title}</div>
-      <HeadChip state={props.user} />
-      <HeadChip state={props.percentage} />
-      <HeadChip state={props.score} />
+      <Title title={props.title} color="red" />
+      <HeadChip state={props.user} role="投稿者" color="green" />
+      <HeadChip state={props.percentage} role="正答率" color="blue" />
+      <HeadChip state={props.score} role="スコア" color="yellow" />
     </div>
   );
 }

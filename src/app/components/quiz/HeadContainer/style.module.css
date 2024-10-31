@@ -1,7 +1,8 @@
-.title{
-    background-color: red;
+.title {
+  /* background-color: red; */
 }
 
-.headContainer{
-    background-color: yellow;
+.headContainer {
+  /* background-color: yellow; */
+  display: flex;
 }
