@@ -2,12 +2,13 @@
 import {
   Choice,
   ChoicesCreateContainer,
-} from "@/app/components/ChoicesCreateContainer/page";
+} from "@/app/components/create/ChoicesCreateContainer/page";
+import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function Home() {
-  const { data: session } = useSession();
+export default async function Home() {
+  const { data: session } = await useSession();
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [description, setDescription] = useState("");
@@ -16,6 +17,21 @@ export default function Home() {
     { choiced: false, value: "" },
   ]);
   const [anonymity, setAnonymity] = useState(false);
+  const userName = useRef();
+  const getUserName = async () => {
+    try{
+      const res = await axios.get("/api/user/get", {
+        params: { email: session?.user?.email, otherParam: "value" },
+      });
+      return await res.data.nickName;
+    } catch(error){
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    userName = 
+  }, [])
 
   // submit時の処理
   const handleSubmit = (e: React.FormEvent) => {

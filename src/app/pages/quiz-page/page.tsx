@@ -1,7 +1,7 @@
 "use client";
-import DescriptionContainer from "@/app/components/DescriptionContainer/page";
-import HeadContainer from "@/app/components/HeadContainer/page";
-import PastQuestionContainer from "@/app/components/PastQuestionContainer/page";
+import DescriptionContainer from "@/app/components/quiz/DescriptionContainer/page";
+import HeadContainer from "@/app/components/quiz/HeadContainer/page";
+import PastQuestionContainer from "@/app/components/quiz/PastQuestionContainer/page";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 

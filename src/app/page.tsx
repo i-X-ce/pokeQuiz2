@@ -1,6 +1,6 @@
 import Link from "next/link";
-import LoginBtn from "./components/loginBtn/page";
-import { NickNameInput } from "./components/NickNameInput/page";
+import LoginBtn from "./components/common/loginBtn/page";
+import { NickNameInput } from "./components/common/NickNameInput/page";
 
 export default function Home() {
   fetch;

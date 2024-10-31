@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { getServerSession, Session } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import SessionWrapper from "./components/SessionWrapper/page";
+import SessionWrapper from "./components/common/SessionWrapper/page";
 
 export const metadata: Metadata = {
   title: "Create Next App",
