@@ -4,6 +4,7 @@ import { getServerSession, Session } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import SessionWrapper from "./components/common/SessionWrapper/page";
 import { Kiwi_Maru } from "next/font/google";
+import { ThemeProviderWrapper } from "./components/common/ThemeProviderWrapper/page";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,9 +25,11 @@ export default async function RootLayout({
 
   return (
     <SessionWrapper session={session as Session}>
-      <html lang="ja">
-        <body className={kiwiMaru.className}>{children}</body>
-      </html>
+      <ThemeProviderWrapper>
+        <html lang="ja">
+          <body className={kiwiMaru.className}>{children}</body>
+        </html>
+      </ThemeProviderWrapper>
     </SessionWrapper>
   );
 }

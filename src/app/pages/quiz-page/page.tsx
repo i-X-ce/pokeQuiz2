@@ -140,9 +140,7 @@ export default function Home() {
       >
         <ModalDialog>
           <ModalClose />
-          <Typography level="h1">
-            {question?.isCorrect ? "正解" : "不正解"}
-          </Typography>
+          <h1>{question?.isCorrect ? "正解" : "不正解"}</h1>
         </ModalDialog>
       </Modal>
       <div className={styles.choicesContainer}>
