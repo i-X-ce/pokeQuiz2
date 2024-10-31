@@ -2,6 +2,7 @@
 import DescriptionContainer from "@/app/components/quiz/DescriptionContainer/page";
 import HeadContainer from "@/app/components/quiz/HeadContainer/page";
 import PastQuestionContainer from "@/app/components/quiz/PastQuestionContainer/page";
+import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -18,6 +19,7 @@ interface Question {
   title: String;
   isCorrect: boolean;
   choiceAnswer: number;
+  userId: string;
 }
 
 export default function Home() {
@@ -69,16 +71,11 @@ export default function Home() {
       questions.forEach(async (temp, index) => {
         const updateData = {
           ...temp,
-          answerCnt: (temp.answerCnt as number) + 1,
-          correctCnt: (temp.correctCnt as number) + (temp.isCorrect ? 1 : 0),
+          answerCnt: ((temp.answerCnt as number) || 0) + 1,
+          correctCnt:
+            ((temp.correctCnt as number) || 0) + (temp.isCorrect ? 1 : 0),
         };
-        const response = await fetch("/api/quiz-update", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updateData),
-        });
+        axios.put("/api/quiz/update", updateData);
       });
     }
   };

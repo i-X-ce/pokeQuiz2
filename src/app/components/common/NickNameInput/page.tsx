@@ -7,17 +7,14 @@ import { useState } from "react";
 export function NickNameInput() {
   const { data: session } = useSession();
   const [nickname, setNickname] = useState("");
-  // const [showNicknameModal, setShowNicknameModal] = useState(false);
 
   const handleNicknameSubmit = async () => {
     await axios.post("/api/user/set", {
       email: session?.user?.email,
       nickname: nickname,
     });
-    // setShowNicknameModal(true);
   };
 
-  //   if (showNicknameModal) {
   return (
     <div>
       <h2>ニックネームを入力してください</h2>
@@ -29,7 +26,4 @@ export function NickNameInput() {
       <button onClick={handleNicknameSubmit}>保存</button>
     </div>
   );
-  //   } else {
-  // return <></>;
-  //   }
 }

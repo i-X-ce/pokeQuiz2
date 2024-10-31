@@ -13,8 +13,8 @@ export async function PUT(request: Request) {
     });
     if (!updatedQuestion) {
       return NextResponse.json(
-        { message: "Question not found!" },
-        { status: 404 }
+        { message: "New quiz posted!" },
+        { status: 200 }
       );
     }
     return NextResponse.json(updatedQuestion, { status: 200 });

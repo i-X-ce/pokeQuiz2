@@ -1,4 +1,5 @@
 "use client";
+import { Loading } from "@/app/components/common/Loading/page";
 import {
   Choice,
   ChoicesCreateContainer,
@@ -7,8 +8,24 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
-export default async function Home() {
-  const { data: session } = await useSession();
+interface Question {
+  question: string;
+  choices: string[];
+  correctAnswer: Number;
+  description: String;
+  title: String;
+  userId: string;
+  anonymity: boolean;
+}
+
+interface User {
+  _id: string;
+  email: string;
+  nickame: string;
+}
+
+export default function Home() {
+  const { data: session } = useSession();
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [description, setDescription] = useState("");
@@ -17,37 +34,42 @@ export default async function Home() {
     { choiced: false, value: "" },
   ]);
   const [anonymity, setAnonymity] = useState(false);
-  const userName = useRef();
-  const getUserName = async () => {
-    try{
-      const res = await axios.get("/api/user/get", {
-        params: { email: session?.user?.email, otherParam: "value" },
-      });
-      return await res.data.nickName;
-    } catch(error){
-      return null;
-    }
-  };
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
-    userName = 
-  }, [])
+    axios
+      .get("/api/user/get", {
+        params: { email: session?.user?.email, otherParam: "value" },
+      })
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((error) => {
+        console.error("ユーザーデータが取得できません", error);
+      });
+  }, []);
 
   // submit時の処理
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const correctAnswer = choices.findIndex((c) => c.choiced === true);
     if (correctAnswer === -1) return;
-    console.log("フォームのデータ", {
+    const choicesFormat: string[] = choices.map((c) => c.value);
+    const newquestion: Question = {
       title,
       question,
-      choices,
+      choices: choicesFormat,
       correctAnswer,
       description,
+      userId: user?._id || "",
       anonymity,
-    });
-    console.log(session);
+    };
+    axios.put("/api/quiz/update", newquestion);
   };
+
+  if (!user) {
+    return <Loading />;
+  }
 
   fetch;
   return (

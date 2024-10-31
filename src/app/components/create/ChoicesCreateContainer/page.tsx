@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export interface Choice {
   choiced: boolean;
   value: string;
@@ -39,7 +37,12 @@ export function ChoicesCreateContainer({ choices, updateChoices }) {
     <div>
       {choices.map((c: Choice, i: number) => (
         <div key={i}>
-          <input type="radio" name="choices" onChange={() => selectAnswer(i)} />
+          <input
+            type="radio"
+            name="choices"
+            checked={choices[i].choiced || false}
+            onChange={() => selectAnswer(i)}
+          />
           <input
             type="text"
             placeholder="選択肢"
