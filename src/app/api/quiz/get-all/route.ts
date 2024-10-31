@@ -1,9 +1,16 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
-import { NextResponse } from "next/server";
+import { NextResponse, userAgent } from "next/server";
 
 export async function GET() {
-    await connectToDatabase();
-    const questions = await Question.find({}).exec();
-    return NextResponse.json(questions);
+  await connectToDatabase();
+
+  const questions = await Question.find({ userId: { $ne: null } })
+    .populate("userId")
+    .lean();
+  const res = questions.map((q) => ({
+    ...q,
+    userName: q.anonymity ? "匿名" : q.userId.nickname,
+  }));
+  return NextResponse.json(res);
 }

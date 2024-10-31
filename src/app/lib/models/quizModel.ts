@@ -8,7 +8,7 @@ export const quizSchema = new Schema({
   answerCnt: Number,
   correctCnt: Number,
   description: String,
-  userId: String,
+  userId: { type: Schema.Types.ObjectId, ref: "User" },
   title: String,
   anonymity: Boolean,
 });

@@ -12,6 +12,7 @@ export async function PUT(request: Request) {
       new: true,
     });
     if (!updatedQuestion) {
+      Question.create(data);
       return NextResponse.json(
         { message: "New quiz posted!" },
         { status: 200 }
