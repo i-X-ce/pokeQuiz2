@@ -45,6 +45,7 @@ export default function Home() {
     if (isAnswer) return;
     setIsAnswer(true);
     const isCorrect = (question!.correctAnswer as number) === answerIndex;
+    setQuestion({ ...question, isCorrect } as Question);
     setQuestions((prevQuestions) =>
       prevQuestions.map((q, index) =>
         index === currentQuestionIndex
@@ -68,7 +69,7 @@ export default function Home() {
     } else {
       // 終わり
       setIsFinished(true);
-      questions.forEach(async (temp, index) => {
+      questions.forEach(async (temp) => {
         const updateData = {
           ...temp,
           answerCnt: ((temp.answerCnt as number) || 0) + 1,
