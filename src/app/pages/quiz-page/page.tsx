@@ -1,10 +1,20 @@
 "use client";
+import { Loading } from "@/app/components/common/Loading/page";
 import DescriptionContainer from "@/app/components/quiz/DescriptionContainer/page";
 import HeadContainer from "@/app/components/quiz/HeadContainer/page";
 import PastQuestionContainer from "@/app/components/quiz/PastQuestionContainer/page";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import styles from "./style.module.css";
+import {
+  Button,
+  Modal,
+  ModalClose,
+  ModalDialog,
+  Sheet,
+  Typography,
+} from "@mui/joy";
 
 interface Question {
   _id: string;
@@ -22,6 +32,13 @@ interface Question {
   userId: string;
 }
 
+const choiceColors = [
+  styles.choiceRed,
+  styles.choiceGreen,
+  styles.choiceBlue,
+  styles.choiceYellow,
+];
+
 export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [question, setQuestion] = useState<Question>();
@@ -29,6 +46,7 @@ export default function Home() {
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [isAnswer, setIsAnswer] = useState<boolean>(false);
+  const [openDescription, setOpenDescription] = useState(false);
 
   useEffect(() => {
     fetch("/api/quiz/get-all")
@@ -42,6 +60,7 @@ export default function Home() {
 
   // ボタン押したとき
   const handleAnswer = (answerIndex: number) => {
+    setOpenDescription(true);
     if (isAnswer) return;
     setIsAnswer(true);
     const isCorrect = (question!.correctAnswer as number) === answerIndex;
@@ -66,6 +85,7 @@ export default function Home() {
       setCurrentQuestionIndex(nextQuestion);
       setQuestion(questions[nextQuestion]);
       setIsAnswer(false);
+      setOpenDescription(false);
     } else {
       // 終わり
       setIsFinished(true);
@@ -82,7 +102,7 @@ export default function Home() {
   };
 
   if (questions.length === 0) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return isFinished ? (
@@ -106,13 +126,36 @@ export default function Home() {
         }
         score={score}
       />
-      <div>{question!.question}</div>
+      <div className={styles.questionContainer}>
+        <div className={styles.questionNumber}>{currentQuestionIndex + 1}</div>
+        <div className={styles.questionText}>{question!.question}</div>
+      </div>
       {isAnswer ? <DescriptionContainer {...question} /> : null}
-      {question!.choices.map((answer: string, index: number) => (
-        <button key={index} onClick={() => handleAnswer(index)}>
-          {answer}
-        </button>
-      ))}
+
+      <Modal
+        open={openDescription}
+        onClose={() => {
+          setOpenDescription(false);
+        }}
+      >
+        <ModalDialog>
+          <ModalClose />
+          <Typography level="h1">
+            {question?.isCorrect ? "正解" : "不正解"}
+          </Typography>
+        </ModalDialog>
+      </Modal>
+      <div className={styles.choicesContainer}>
+        {question!.choices.map((answer: string, index: number) => (
+          <div
+            className={`${styles.choice} ${choiceColors[index % 4]}`}
+            key={index}
+            onClick={() => handleAnswer(index)}
+          >
+            {answer}
+          </div>
+        ))}
+      </div>
       {isAnswer ? <button onClick={handleNext}>次へ</button> : null}
     </>
   );
