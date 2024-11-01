@@ -1,0 +1,19 @@
+.container {
+  margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatarInfo {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--bc-shadow);
+  border-radius: 100px;
+  padding: 5px 10px;
+}
+
+.userName {
+  white-space: nowrap;
+  margin-left: 5px;
+}

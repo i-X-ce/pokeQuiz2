@@ -1,12 +1,23 @@
 "use client";
 import { Loading } from "@/app/components/common/Loading/page";
+import { Title } from "@/app/components/common/Title/page";
 import {
   Choice,
   ChoicesCreateContainer,
 } from "@/app/components/create/ChoicesCreateContainer/page";
+import {
+  Button,
+  Divider,
+  FormControlLabel,
+  Paper,
+  Switch,
+  TextField,
+} from "@mui/material";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import styles from "./style.module.css";
+import { AvatarChip } from "@/app/components/create/AvatarChip/page";
 
 interface Question {
   question: string;
@@ -21,7 +32,7 @@ interface Question {
 interface User {
   _id: string;
   email: string;
-  nickame: string;
+  nickname: string;
 }
 
 export default function Home() {
@@ -29,12 +40,14 @@ export default function Home() {
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [description, setDescription] = useState("");
-  const [choices, setChoices] = useState<Choice[]>([
-    { choiced: false, value: "" },
-    { choiced: false, value: "" },
-  ]);
+  const [choices, setChoices] = useState<Choice[]>([]);
   const [anonymity, setAnonymity] = useState(false);
   const [user, setUser] = useState<User>();
+
+  const titleValidation = useValidation("タイトル", 5, 30);
+  const questionValidation = useValidation("問題文", 5, 300);
+  const descriptionValidation = useValidation("解説", 5, 300);
+  const choicesValidation = useValidation("選択肢", 1, 20);
 
   useEffect(() => {
     axios
@@ -53,7 +66,7 @@ export default function Home() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const correctAnswer = choices.findIndex((c) => c.choiced === true);
-    if (correctAnswer === -1) return;
+    if (correctAnswer === -1 || validationCheckAll()) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
     const newquestion: Question = {
       title,
@@ -67,6 +80,16 @@ export default function Home() {
     axios.put("/api/quiz/update", newquestion);
   };
 
+  // すべてのバリデーションをチェックする
+  const validationCheckAll = () => {
+    // const ok =
+    //   titleValidation.current.lastError(title) &&
+    //   questionValidation.current.lastError(question) &&
+    //   descriptionValidation.current.lastError(description);
+    // setTitle(title); // 強制的に再レンダリング
+    // return ok;
+  };
+
   if (!user) {
     return <Loading />;
   }
@@ -74,34 +97,139 @@ export default function Home() {
   fetch;
   return (
     <>
-      <h1>クイズを作る</h1>
-      <form action="" method="post" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="タイトル"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <input
-          type="checkbox"
-          name=""
-          id="anonymity"
-          onChange={(e) => setAnonymity(e.target.checked)}
-        />
-        <label htmlFor="anonymity">匿名で投稿する</label>
-        <textarea
-          placeholder="問題文"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-        />
-        <ChoicesCreateContainer choices={choices} updateChoices={setChoices} />
-        <textarea
-          placeholder="解説"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <input type="submit" value="投稿" />
-      </form>
+      <Title title="クイズを作る" color="green" />
+      <Paper className={styles.paper} elevation={5}>
+        <form action="" method="post" onSubmit={handleSubmit}>
+          <span className={styles.titleAndName}>
+            <TextField
+              required
+              fullWidth
+              error={titleValidation.error(title)}
+              label={titleValidation.label(title)}
+              helperText={titleValidation.helperText(title)}
+              onFocus={titleValidation.onFocus}
+              placeholder="こんにちは"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              color="green"
+            />
+            <span className={styles.nameContainer}>
+              <AvatarChip anonymity={anonymity} userName={user.nickname} />
+              <FormControlLabel
+                control={
+                  <Switch
+                    onChange={(e) => setAnonymity(e.target.checked)}
+                    color="green"
+                  />
+                }
+                label="匿名"
+                labelPlacement="top"
+              />
+            </span>
+          </span>
+          <TextField
+            fullWidth
+            required
+            error={questionValidation.error(question)}
+            label={questionValidation.label(question)}
+            helperText={questionValidation.helperText(question)}
+            onFocus={questionValidation.onFocus}
+            multiline
+            minRows={4}
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            color="green"
+          />
+          <ChoicesCreateContainer
+            choices={choices}
+            updateChoices={setChoices}
+            validation={choicesValidation}
+          />
+          <TextField
+            fullWidth
+            required
+            error={descriptionValidation.error(description)}
+            label={descriptionValidation.label(description)}
+            helperText={descriptionValidation.helperText(description)}
+            onFocus={descriptionValidation.onFocus}
+            multiline
+            minRows={4}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            color="green"
+            sx={{ marginBottom: "20px" }}
+          />
+          <span className={styles.submitButtons}>
+            <Button variant="outlined" color="green" size="large">
+              キャンセル
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="green"
+              size="large"
+              sx={{ color: "var(--bc-white)", marginLeft: "20px" }}
+            >
+              投稿
+            </Button>
+          </span>
+        </form>
+      </Paper>
     </>
   );
 }
+
+export const useValidation = (
+  title: string,
+  minLength: number,
+  maxLength: number
+) => {
+  const [first, setFirst] = useState(false);
+
+  //表示上エラーになっている
+  const isError = (value: string) => {
+    if (!first) return false;
+    return checkError(value);
+  };
+
+  // 実際にエラーになっている
+  const checkError = (value: string) => {
+    return minCheck(value) || maxCheck(value);
+  };
+
+  const getHelperText = (value: string) => {
+    if (!isError(value)) return null;
+    return minCheck(value)
+      ? `${title}は${minLength}字以上で入力してください。`
+      : maxCheck(value)
+      ? `${title}は${maxLength}字以内で入力してください。`
+      : null;
+  };
+
+  const getLabel = (value: string) => {
+    return `${title} (${value.length}/${maxLength})`;
+  };
+
+  const onFocus = () => {
+    if (!first) {
+      setFirst(true);
+    }
+  };
+
+  //長すぎないかチェック
+  const maxCheck = (value: string) => {
+    return value.length > maxLength;
+  };
+
+  //短すぎないかチェック
+  const minCheck = (value: string) => {
+    return value.length < minLength;
+  };
+
+  return {
+    error: isError,
+    helperText: getHelperText,
+    label: getLabel,
+    onFocus,
+  };
+};

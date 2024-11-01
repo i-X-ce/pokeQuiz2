@@ -1,0 +1,20 @@
+.paper {
+  margin: 30px;
+  padding: 40px;
+}
+
+.titleAndName {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.submitButtons {
+  display: flex;
+  justify-content: end;
+}
+
+.nameContainer {
+  display: flex;
+  
+}
