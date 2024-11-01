@@ -7,14 +7,9 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./style.module.css";
-import {
-  Button,
-  Modal,
-  ModalClose,
-  ModalDialog,
-  Sheet,
-  Typography,
-} from "@mui/joy";
+import { Button, Divider, Modal, ModalClose, ModalDialog } from "@mui/joy";
+import { Title } from "@/app/components/common/Title/page";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 
 interface Question {
   _id: string;
@@ -107,7 +102,50 @@ export default function Home() {
 
   return isFinished ? (
     <>
-      <div>Score: {score}</div>
+      <Title title="結果発表！！" color="red" />
+      <div className={styles.resultContainer}>
+        <div className={styles.score}>
+          {score}/{questions.length}
+        </div>
+        <span
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            margin: "20px",
+          }}
+        >
+          <Button
+            startDecorator={<KeyboardArrowLeft sx={{ fontSize: "3rem" }} />}
+            sx={{
+              fontSize: "2rem",
+              padding: "20px 150px 20px 50px",
+              borderRadius: "20px 0 0 20px",
+            }}
+            size="lg"
+            component="a"
+            href="/pages/quiz-page"
+          >
+            もう一度
+          </Button>
+          <Button
+            endDecorator={<KeyboardArrowRight sx={{ fontSize: "3rem" }} />}
+            sx={{
+              fontSize: "2rem",
+              padding: "20px 50px 20px 150px",
+              borderRadius: "0 20px 20px 0",
+              backgroundColor: "var(--bc-yellow)",
+              "&:hover": {
+                backgroundColor: "#FF00000",
+              },
+            }}
+            size="lg"
+            component="a"
+            href="/"
+          >
+            ホームへ
+          </Button>
+        </span>
+      </div>
       <Link href="../">戻る</Link>
       <PastQuestionContainer questions={questions} />
     </>
@@ -130,7 +168,7 @@ export default function Home() {
         <div className={styles.questionNumber}>{currentQuestionIndex + 1}</div>
         <div className={styles.questionText}>{question!.question}</div>
       </div>
-      {isAnswer ? <DescriptionContainer {...question} /> : null}
+      {/* {isAnswer ? <DescriptionContainer {...question} /> : null} */}
 
       <Modal
         open={openDescription}
@@ -140,7 +178,26 @@ export default function Home() {
       >
         <ModalDialog>
           <ModalClose />
-          <h1>{question?.isCorrect ? "正解" : "不正解"}</h1>
+          <h1 className={question?.isCorrect ? "font-red" : "font-blue"}>
+            {question?.isCorrect ? "正解" : "不正解"}
+          </h1>
+          <h3>
+            正解は「{question?.choices[question.correctAnswer as number]}」!
+          </h3>
+          <div>{question?.description}</div>
+          <Divider />
+          <Button
+            variant="plain"
+            color="primary"
+            size="lg"
+            sx={{ fontSize: "1.25rem" }}
+            onClick={handleNext}
+          >
+            {currentQuestionIndex < questions.length - 1
+              ? "次のクイズへ"
+              : "結果を見る"}
+            →
+          </Button>
         </ModalDialog>
       </Modal>
       <div className={styles.choicesContainer}>
@@ -154,7 +211,21 @@ export default function Home() {
           </div>
         ))}
       </div>
-      {isAnswer ? <button onClick={handleNext}>次へ</button> : null}
+      <div style={{ display: "flex", justifyContent: "end", margin: "20px" }}>
+        {isAnswer ? (
+          <Button
+            variant="outlined"
+            size="lg"
+            sx={{ fontSize: "1.25rem" }}
+            onClick={handleNext}
+          >
+            {currentQuestionIndex < questions.length - 1
+              ? "次のクイズへ"
+              : "結果を見る"}
+            →
+          </Button>
+        ) : null}
+      </div>
     </>
   );
 }
