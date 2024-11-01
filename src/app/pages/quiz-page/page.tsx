@@ -1,14 +1,13 @@
 "use client";
 import { Loading } from "@/app/components/common/Loading/page";
-import DescriptionContainer from "@/app/components/quiz/DescriptionContainer/page";
 import HeadContainer from "@/app/components/quiz/HeadContainer/page";
 import PastQuestionContainer from "@/app/components/quiz/PastQuestionContainer/page";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./style.module.css";
-import { Button, Divider, Modal, ModalClose, ModalDialog } from "@mui/joy";
 import { Title } from "@/app/components/common/Title/page";
+import { Button, Divider, Modal } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 
 interface Question {
@@ -115,30 +114,38 @@ export default function Home() {
           }}
         >
           <Button
-            startDecorator={<KeyboardArrowLeft sx={{ fontSize: "3rem" }} />}
+            startIcon={
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <KeyboardArrowLeft sx={{ fontSize: "3rem" }} />
+              </span>
+            }
+            variant="contained"
+            color="blue"
             sx={{
               fontSize: "2rem",
               padding: "20px 150px 20px 50px",
               borderRadius: "20px 0 0 20px",
+              color: "var(--bc-white)",
             }}
-            size="lg"
             component="a"
             href="/pages/quiz-page"
           >
             もう一度
           </Button>
           <Button
-            endDecorator={<KeyboardArrowRight sx={{ fontSize: "3rem" }} />}
+            endIcon={
+              <span style={{ display: "flex", alignItems: "center" }}>
+                <KeyboardArrowRight sx={{ fontSize: "3rem" }} />
+              </span>
+            }
+            variant="contained"
+            color="yellow"
             sx={{
               fontSize: "2rem",
               padding: "20px 50px 20px 150px",
               borderRadius: "0 20px 20px 0",
-              backgroundColor: "var(--bc-yellow)",
-              "&:hover": {
-                backgroundColor: "#FF00000",
-              },
+              color: "var(--bc-white)",
             }}
-            size="lg"
             component="a"
             href="/"
           >
@@ -176,8 +183,7 @@ export default function Home() {
           setOpenDescription(false);
         }}
       >
-        <ModalDialog>
-          <ModalClose />
+        <>
           <h1 className={question?.isCorrect ? "font-red" : "font-blue"}>
             {question?.isCorrect ? "正解" : "不正解"}
           </h1>
@@ -186,7 +192,7 @@ export default function Home() {
           </h3>
           <div>{question?.description}</div>
           <Divider />
-          <Button
+          {/* <Button
             variant="plain"
             color="primary"
             size="lg"
@@ -197,8 +203,8 @@ export default function Home() {
               ? "次のクイズへ"
               : "結果を見る"}
             →
-          </Button>
-        </ModalDialog>
+          </Button> */}
+        </>
       </Modal>
       <div className={styles.choicesContainer}>
         {question!.choices.map((answer: string, index: number) => (
@@ -215,9 +221,9 @@ export default function Home() {
         {isAnswer ? (
           <Button
             variant="outlined"
-            size="lg"
             sx={{ fontSize: "1.25rem" }}
             onClick={handleNext}
+            color="red"
           >
             {currentQuestionIndex < questions.length - 1
               ? "次のクイズへ"
