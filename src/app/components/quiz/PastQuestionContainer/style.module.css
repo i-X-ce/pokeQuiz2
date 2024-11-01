@@ -1,0 +1,47 @@
+.container {
+  padding: 50px;
+}
+
+.title {
+  font-size: 2.3rem;
+}
+
+.qNumber {
+  color: var(--bc-shadow);
+}
+
+.icons {
+  color: var(--bc-red);
+  font-size: 2rem;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.answerContainer {
+  display: flex;
+  font-size: 1.5rem;
+}
+
+.columnWrapper {
+  text-align: center;
+  margin-right: 40px;
+}
+
+.pastAnswer {
+  color: var(--bc-white);
+  padding: 5px 20px;
+  border-radius: 100px;
+  box-shadow: 3px 3px 10px var(--bc-shadow);
+}
+
+.yourAnswer {
+  background-color: var(--bc-red);
+}
+
+.correctAnswer {
+  background-color: var(--bc-green);
+}

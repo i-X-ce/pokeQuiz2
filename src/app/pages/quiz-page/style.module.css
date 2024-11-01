@@ -79,3 +79,11 @@
   color: var(--bc-red);
   text-align: center;
 }
+
+.correctAnswer {
+  font-weight: bold;
+}
+
+.isCorrect {
+  font-size: 2rem;
+}

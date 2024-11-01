@@ -3,11 +3,16 @@ import { Loading } from "@/app/components/common/Loading/page";
 import HeadContainer from "@/app/components/quiz/HeadContainer/page";
 import PastQuestionContainer from "@/app/components/quiz/PastQuestionContainer/page";
 import axios from "axios";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { Title } from "@/app/components/common/Title/page";
-import { Button, Divider, Modal } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Divider,
+} from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 
 interface Question {
@@ -35,7 +40,7 @@ const choiceColors = [
 
 export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [question, setQuestion] = useState<Question>();
+  const question = useRef<Question>();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
@@ -47,7 +52,7 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data);
-        setQuestion(data[0]);
+        question.current = data[0];
       })
       .catch((err) => console.error("Error fetching quiz data:", err));
   }, []);
@@ -57,8 +62,9 @@ export default function Home() {
     setOpenDescription(true);
     if (isAnswer) return;
     setIsAnswer(true);
-    const isCorrect = (question!.correctAnswer as number) === answerIndex;
-    setQuestion({ ...question, isCorrect } as Question);
+    const isCorrect =
+      (question.current!.correctAnswer as number) === answerIndex;
+    question.current = { ...question.current, isCorrect } as Question;
     setQuestions((prevQuestions) =>
       prevQuestions.map((q, index) =>
         index === currentQuestionIndex
@@ -77,7 +83,7 @@ export default function Home() {
     if (nextQuestion < questions.length) {
       // 次の問題へ進む
       setCurrentQuestionIndex(nextQuestion);
-      setQuestion(questions[nextQuestion]);
+      question.current = questions[nextQuestion];
       setIsAnswer(false);
       setOpenDescription(false);
     } else {
@@ -153,19 +159,18 @@ export default function Home() {
           </Button>
         </span>
       </div>
-      <Link href="../">戻る</Link>
       <PastQuestionContainer questions={questions} />
     </>
   ) : (
     <>
       <HeadContainer
-        title={question!.title}
-        user={question!.userName}
+        title={question.current!.title}
+        user={question.current!.userName}
         percentage={
-          (question?.answerCnt as number) > 0
+          (question.current?.answerCnt as number) > 0
             ? (
-                (100 * (question!.correctCnt as number)) /
-                (question!.answerCnt as number)
+                (100 * (question.current!.correctCnt as number)) /
+                (question.current!.answerCnt as number)
               ).toFixed(1)
             : "0.0"
         }
@@ -173,29 +178,42 @@ export default function Home() {
       />
       <div className={styles.questionContainer}>
         <div className={styles.questionNumber}>{currentQuestionIndex + 1}</div>
-        <div className={styles.questionText}>{question!.question}</div>
+        <div className={styles.questionText}>{question.current!.question}</div>
       </div>
       {/* {isAnswer ? <DescriptionContainer {...question} /> : null} */}
 
-      <Modal
-        open={openDescription}
-        onClose={() => {
-          setOpenDescription(false);
-        }}
-      >
-        <>
-          <h1 className={question?.isCorrect ? "font-red" : "font-blue"}>
-            {question?.isCorrect ? "正解" : "不正解"}
-          </h1>
-          <h3>
-            正解は「{question?.choices[question.correctAnswer as number]}」!
-          </h3>
-          <div>{question?.description}</div>
+      {isAnswer ? (
+        <Dialog
+          open={openDescription}
+          onClose={() => {
+            setOpenDescription(false);
+          }}
+          sx={{ padding: "50px" }}
+        >
+          <DialogTitle>
+            <div
+              className={`${styles.isCorrect} ${
+                question.current?.isCorrect ? "font-red" : "font-blue"
+              }`}
+            >
+              {question.current?.isCorrect ? "正解" : "不正解"}
+            </div>
+          </DialogTitle>
+          <DialogContent>
+            <div className={styles.correctAnswer}>
+              正解は「
+              {
+                question.current?.choices[
+                  question.current.correctAnswer as number
+                ]
+              }
+              」!
+            </div>
+            <div>{question.current?.description}</div>
+          </DialogContent>
           <Divider />
-          {/* <Button
-            variant="plain"
+          <Button
             color="primary"
-            size="lg"
             sx={{ fontSize: "1.25rem" }}
             onClick={handleNext}
           >
@@ -203,11 +221,11 @@ export default function Home() {
               ? "次のクイズへ"
               : "結果を見る"}
             →
-          </Button> */}
-        </>
-      </Modal>
+          </Button>
+        </Dialog>
+      ) : null}
       <div className={styles.choicesContainer}>
-        {question!.choices.map((answer: string, index: number) => (
+        {question.current!.choices.map((answer: string, index: number) => (
           <div
             className={`${styles.choice} ${choiceColors[index % 4]}`}
             key={index}
@@ -223,7 +241,7 @@ export default function Home() {
             variant="outlined"
             sx={{ fontSize: "1.25rem" }}
             onClick={handleNext}
-            color="red"
+            color="blue"
           >
             {currentQuestionIndex < questions.length - 1
               ? "次のクイズへ"
