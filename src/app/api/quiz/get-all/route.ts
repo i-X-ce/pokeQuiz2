@@ -10,7 +10,7 @@ export async function GET() {
     .lean();
   const res = questions.map((q) => ({
     ...q,
-    userName: q.anonymity ? "匿名" : q.userId.nickname,
+    userName: q.anonymity ? "けつばん" : q.userId.nickname,
   }));
   return NextResponse.json(res);
 }

@@ -13,4 +13,5 @@
   z-index: -1;
   border-end-end-radius: 500px;
   box-shadow: 3px 3px 3px var(--bc-shadow);
+  max-width: 60vw;
 }
