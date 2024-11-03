@@ -44,10 +44,10 @@ export default function Home() {
   const [anonymity, setAnonymity] = useState(false);
   const [user, setUser] = useState<User>();
 
-  const titleValidation = useValidation("タイトル", 5, 30);
-  const questionValidation = useValidation("問題文", 5, 300);
-  const descriptionValidation = useValidation("解説", 5, 300);
-  const choicesValidation = useValidation("選択肢", 1, 20);
+  const titleValidation = useValidation("タイトル", 30);
+  const questionValidation = useValidation("問題文", 300);
+  const descriptionValidation = useValidation("解説", 300);
+  const choicesValidation = useValidation("選択肢", 20);
 
   useEffect(() => {
     axios
@@ -107,7 +107,6 @@ export default function Home() {
               error={titleValidation.error(title)}
               label={titleValidation.label(title)}
               helperText={titleValidation.helperText(title)}
-              onFocus={titleValidation.onFocus}
               placeholder="こんにちは"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -133,7 +132,6 @@ export default function Home() {
             error={questionValidation.error(question)}
             label={questionValidation.label(question)}
             helperText={questionValidation.helperText(question)}
-            onFocus={questionValidation.onFocus}
             multiline
             minRows={4}
             value={question}
@@ -151,7 +149,6 @@ export default function Home() {
             error={descriptionValidation.error(description)}
             label={descriptionValidation.label(description)}
             helperText={descriptionValidation.helperText(description)}
-            onFocus={descriptionValidation.onFocus}
             multiline
             minRows={4}
             value={description}
@@ -179,29 +176,15 @@ export default function Home() {
   );
 }
 
-export const useValidation = (
-  title: string,
-  minLength: number,
-  maxLength: number
-) => {
-  const [first, setFirst] = useState(false);
-
+export const useValidation = (title: string, maxLength: number) => {
   //表示上エラーになっている
   const isError = (value: string) => {
-    if (!first) return false;
-    return checkError(value);
-  };
-
-  // 実際にエラーになっている
-  const checkError = (value: string) => {
-    return minCheck(value) || maxCheck(value);
+    return value.length > maxLength;
   };
 
   const getHelperText = (value: string) => {
     if (!isError(value)) return null;
-    return minCheck(value)
-      ? `${title}は${minLength}字以上で入力してください。`
-      : maxCheck(value)
+    return isError(value)
       ? `${title}は${maxLength}字以内で入力してください。`
       : null;
   };
@@ -210,26 +193,9 @@ export const useValidation = (
     return `${title} (${value.length}/${maxLength})`;
   };
 
-  const onFocus = () => {
-    if (!first) {
-      setFirst(true);
-    }
-  };
-
-  //長すぎないかチェック
-  const maxCheck = (value: string) => {
-    return value.length > maxLength;
-  };
-
-  //短すぎないかチェック
-  const minCheck = (value: string) => {
-    return value.length < minLength;
-  };
-
   return {
     error: isError,
     helperText: getHelperText,
     label: getLabel,
-    onFocus,
   };
 };

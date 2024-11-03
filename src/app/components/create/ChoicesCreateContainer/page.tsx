@@ -2,13 +2,13 @@ import { Add, Delete } from "@mui/icons-material";
 import { Button, IconButton, Radio, TextField } from "@mui/material";
 import styles from "./style.module.css";
 import { useEffect } from "react";
+import { useValidation } from "@/app/pages/quiz-create-page/page";
 
 const MAX_CHOICES_NUM = 8;
 
 export interface Choice {
   choiced: boolean;
   value: string;
-  validation: any;
 }
 
 export function ChoicesCreateContainer({
@@ -22,10 +22,10 @@ export function ChoicesCreateContainer({
 }) {
   const addChoice = () => {
     if (choices.length >= MAX_CHOICES_NUM) return;
-    updateChoices((prev: any) => [
-      ...prev,
-      { choiced: false, value: "", validation },
-    ]);
+    updateChoices((prev: Choice[]) => {
+      console.log(prev);
+      return [...prev, { choiced: false, value: "" }];
+    });
   };
 
   const deleteChoice = (key: number) => {
@@ -53,7 +53,7 @@ export function ChoicesCreateContainer({
 
   useEffect(() => {
     if (choices.length <= 0) {
-      for (var i = 0; i < 1; i++) {
+      for (var i = 0; i < 2; i++) {
         addChoice();
       }
     }
@@ -71,9 +71,9 @@ export function ChoicesCreateContainer({
           <TextField
             required
             fullWidth
-            error={c.validation.error(c.value)}
-            label={c.validation.label(c.value)}
-            helperText={c.validation.helperText(c.value)}
+            error={validation.error(c.value)}
+            label={validation.label(c.value)}
+            helperText={validation.helperText(c.value)}
             // label={"選択肢" + (i + 1)}
             placeholder="152"
             value={c.value}

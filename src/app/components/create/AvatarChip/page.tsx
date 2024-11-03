@@ -12,7 +12,6 @@ export function AvatarChip({
   const session = useSession();
 
   if (!session) return null;
-  console.log(userName);
   return (
     <div className={styles.container}>
       <div>投稿者</div>
