@@ -7,6 +7,11 @@ import {
 } from "@/app/components/create/ChoicesCreateContainer/page";
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   FormControlLabel,
   Paper,
@@ -40,9 +45,16 @@ export default function Home() {
   const [title, setTitle] = useState("");
   const [question, setQuestion] = useState("");
   const [description, setDescription] = useState("");
-  const [choices, setChoices] = useState<Choice[]>([]);
+  const [choices, setChoices] = useState<Choice[]>([
+    { choiced: false, value: "" },
+    { choiced: false, value: "" },
+  ]);
   const [anonymity, setAnonymity] = useState(false);
   const [user, setUser] = useState<User>();
+
+  const [openCheckLog, setOpenCheckLog] = useState(false);
+  const [openCnancelLog, setOpenCancelLog] = useState(false);
+  const [isAllowToanvigate, setIsAllowToNavigate] = useState(false);
 
   const titleValidation = useValidation("タイトル", 30);
   const questionValidation = useValidation("問題文", 300);
@@ -60,7 +72,18 @@ export default function Home() {
       .catch((error) => {
         console.error("ユーザーデータが取得できません", error);
       });
-  }, []);
+
+    // ページの移動があると警告を出す
+    const handleBeforeUnload = (event) => {
+      if (isAllowToanvigate) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isAllowToanvigate]);
 
   // submit時の処理
   const handleSubmit = (e: React.FormEvent) => {
@@ -157,21 +180,105 @@ export default function Home() {
             sx={{ marginBottom: "20px" }}
           />
           <span className={styles.submitButtons}>
-            <Button variant="outlined" color="green" size="large">
-              キャンセル
+            <Button
+              variant="outlined"
+              color="green"
+              size="large"
+              onClick={() => setOpenCancelLog(true)}
+            >
+              やめる
             </Button>
             <Button
-              type="submit"
+              onClick={() => setOpenCheckLog(true)}
               variant="contained"
               color="green"
               size="large"
               sx={{ color: "var(--bc-white)", marginLeft: "20px" }}
             >
-              投稿
+              次へ
             </Button>
           </span>
         </form>
       </Paper>
+
+      {/* 確認ダイアログ */}
+      <Dialog open={openCheckLog} onClose={() => setOpenCheckLog(false)}>
+        <DialogTitle>問題の確認</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            以下の内容で投稿します。よろしいですか？
+          </DialogContentText>
+        </DialogContent>
+        <Divider />
+        <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
+          <dl className={styles.chkDl}>
+            <dt className={styles.chkDt}>タイトル:</dt>
+            <dd className={styles.chkDd}>{title}</dd>
+            <dt className={styles.chkDt}>問題:</dt>
+            <dd className={styles.chkDd}>{question}</dd>
+            <dt className={styles.chkDt}>選択肢:</dt>
+            <dd className={styles.chkDd}>
+              {choices.map((c: Choice, i: number) => (
+                <div key={i}>{c.value}</div>
+              ))}
+            </dd>
+            <dt className={styles.chkDt}>答え:</dt>
+            <dd className={styles.chkDd}>
+              {
+                choices[
+                  Math.max(
+                    0,
+                    choices.findIndex((c) => c.choiced === true)
+                  )
+                ].value
+              }
+            </dd>
+            <dt className={styles.chkDt}>説明:</dt>
+            <dd className={styles.chkDd}>{description}</dd>
+          </dl>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="outlined"
+            color="green"
+            onClick={() => setOpenCheckLog(false)}
+          >
+            キャンセル
+          </Button>
+          <Button
+            variant="contained"
+            color="green"
+            sx={{ color: "var(--bc-white)" }}
+          >
+            投稿
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* やめるダイアログ */}
+      <Dialog open={openCnancelLog} onClose={() => setOpenCancelLog(false)}>
+        <DialogTitle>ちょっと待って！</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            フアイルのデータ(入力したデータ)をクリアしてホームへ戻ります。よろしいですか？
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button color="green" onClick={() => setOpenCancelLog(false)}>
+            いいえ
+          </Button>
+          <Button
+            color="green"
+            component="a"
+            href="/"
+            onClick={() => {
+              setIsAllowToNavigate(true);
+            }}
+          >
+            はい
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

@@ -51,13 +51,13 @@ export function ChoicesCreateContainer({
     updateChoices(newChoices);
   };
 
-  useEffect(() => {
-    if (choices.length <= 0) {
-      for (var i = 0; i < 2; i++) {
-        addChoice();
-      }
-    }
-  }, []);
+  // useEffect(() => {}, []);
+
+  // if (choices.length <= 0) {
+  //   for (var i = 0; i < 2; i++) {
+  //     addChoice();
+  //   }
+  // }
 
   return (
     <span className={styles.container}>

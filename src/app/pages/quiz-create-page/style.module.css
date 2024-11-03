@@ -16,5 +16,21 @@
 
 .nameContainer {
   display: flex;
-  
+}
+
+.chkDl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  row-gap: 5px;
+  justify-content: center;
+}
+
+.chkDt {
+  font-weight: bold;
+  text-align: end;
+}
+
+.chkDd {
+  text-align: start;
 }
