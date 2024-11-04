@@ -23,6 +23,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
+import Link from "next/link";
 
 interface Question {
   question: string;
@@ -87,7 +88,6 @@ export default function Home() {
 
   // submit時の処理
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
     const correctAnswer = choices.findIndex((c) => c.choiced === true);
     if (correctAnswer === -1 || validationCheckAll()) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
@@ -212,6 +212,10 @@ export default function Home() {
         <Divider />
         <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
           <dl className={styles.chkDl}>
+            <dt className={styles.chkDt}>投稿者:</dt>
+            <dd className={styles.chkDd}>
+              {anonymity ? "けつばん" : user.nickname}
+            </dd>
             <dt className={styles.chkDt}>タイトル:</dt>
             <dd className={styles.chkDd}>{title}</dd>
             <dt className={styles.chkDt}>問題:</dt>
@@ -245,13 +249,18 @@ export default function Home() {
           >
             キャンセル
           </Button>
-          <Button
-            variant="contained"
-            color="green"
-            sx={{ color: "var(--bc-white)" }}
-          >
-            投稿
-          </Button>
+          <Link href="/">
+            <Button
+              variant="contained"
+              color="green"
+              sx={{ color: "var(--bc-white)" }}
+              onClick={(e) => {
+                handleSubmit(e);
+              }}
+            >
+              投稿
+            </Button>
+          </Link>
         </DialogActions>
       </Dialog>
 
