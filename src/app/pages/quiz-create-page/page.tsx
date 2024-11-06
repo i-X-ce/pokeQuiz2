@@ -6,6 +6,7 @@ import {
   ChoicesCreateContainer,
 } from "@/app/components/create/ChoicesCreateContainer/page";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -15,6 +16,8 @@ import {
   Divider,
   FormControlLabel,
   Paper,
+  Snackbar,
+  SnackbarContent,
   Switch,
   TextField,
 } from "@mui/material";
@@ -57,6 +60,9 @@ export default function Home() {
   const [openCnancelLog, setOpenCancelLog] = useState(false);
   const [isAllowToanvigate, setIsAllowToNavigate] = useState(false);
 
+  const [openValidationAlert, setOpenValidationAlert] = useState(false);
+  const [alertList, setAlertList] = useState<String[]>([]);
+
   const titleValidation = useValidation("タイトル", 30);
   const questionValidation = useValidation("問題文", 300);
   const descriptionValidation = useValidation("解説", 300);
@@ -89,7 +95,9 @@ export default function Home() {
   // submit時の処理
   const handleSubmit = (e: React.FormEvent) => {
     const correctAnswer = choices.findIndex((c) => c.choiced === true);
-    if (correctAnswer === -1 || validationCheckAll()) return;
+    const ok = validationCheckAll();
+    setOpenValidationAlert(ok);
+    if (ok) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
     const newquestion: Question = {
       title,
@@ -111,6 +119,50 @@ export default function Home() {
     //   descriptionValidation.current.lastError(description);
     // setTitle(title); // 強制的に再レンダリング
     // return ok;
+    interface ValidationGroup {
+      validation: any;
+      value: String;
+    }
+    const validations: ValidationGroup[] = [
+      { validation: titleValidation, value: title },
+      { validation: questionValidation, value: question },
+      { validation: descriptionValidation, value: description },
+    ];
+    let newAlertlist: string[] = [];
+    validations.forEach((v, i) => {
+      if (v.validation.error(v.value))
+        newAlertlist = [...newAlertlist, v.validation.helperText(v.value)];
+      else if (v.value.length <= 0)
+        newAlertlist = [
+          ...newAlertlist,
+          `${v.validation.title()}を入力してください`,
+        ];
+    });
+    let choiceValidationErrorF = false,
+      choiceNullErrorF = false; // バリデーションFと入力してくださいF
+    choices.forEach((c: Choice, i: number) => {
+      if (choicesValidation.error(c.value) && !choiceValidationErrorF) {
+        newAlertlist = [
+          ...newAlertlist,
+          choicesValidation.helperText(c.value) as string,
+        ];
+        choiceValidationErrorF = true;
+      }
+      if (c.value.length <= 0 && !choiceNullErrorF) {
+        newAlertlist = [
+          ...newAlertlist,
+          `入力していない${choicesValidation.title()}があります`,
+        ];
+        choiceNullErrorF = true;
+      }
+    });
+    if (choices.findIndex((c) => c.choiced) === -1)
+      newAlertlist = [...newAlertlist, "正解となる選択肢を一つ選んでください"];
+    setAlertList(newAlertlist);
+    console.log(newAlertlist);
+    const isError = newAlertlist.length >= 1;
+    setOpenValidationAlert(isError);
+    return isError;
   };
 
   if (!user) {
@@ -189,7 +241,10 @@ export default function Home() {
               やめる
             </Button>
             <Button
-              onClick={() => setOpenCheckLog(true)}
+              onClick={() => {
+                const ok = validationCheckAll();
+                setOpenCheckLog(!ok);
+              }}
               variant="contained"
               color="green"
               size="large"
@@ -288,6 +343,20 @@ export default function Home() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* バリデーションに引っかかった時のアラート */}
+
+      <Snackbar
+        open={openValidationAlert}
+        autoHideDuration={6000}
+        onClose={() => setOpenValidationAlert(false)}
+      >
+        <Alert severity="error">
+          {alertList.map((a: String, i: number) => (
+            <p key={i}>{a}</p>
+          ))}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
@@ -309,9 +378,14 @@ export const useValidation = (title: string, maxLength: number) => {
     return `${title} (${value.length}/${maxLength})`;
   };
 
+  const getTitle = () => {
+    return title;
+  };
+
   return {
     error: isError,
     helperText: getHelperText,
     label: getLabel,
+    title: getTitle,
   };
 };
