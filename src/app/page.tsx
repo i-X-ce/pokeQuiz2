@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import LoginBtn from "./components/common/loginBtn/page";
 import { NickNameInput } from "./components/common/NickNameInput/page";
+import { Button } from "@mui/material";
+import axios from "axios";
 
 export default function Home() {
   fetch;
@@ -8,6 +12,13 @@ export default function Home() {
     <>
       <Link href="/pages/quiz-page">クイズを解く</Link>
       <Link href="/pages/quiz-create-page">クイズを作る</Link>
+      <Button
+        onClick={() => {
+          axios.delete("/api/quiz/delete-all");
+        }}
+      >
+        クイズを全て消す
+      </Button>
       <LoginBtn />
       <NickNameInput />
     </>
