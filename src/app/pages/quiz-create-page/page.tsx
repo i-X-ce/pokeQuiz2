@@ -17,7 +17,6 @@ import {
   FormControlLabel,
   Paper,
   Snackbar,
-  SnackbarContent,
   Switch,
   TextField,
 } from "@mui/material";
