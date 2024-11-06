@@ -14,6 +14,7 @@ import {
   Divider,
 } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
 
 interface Question {
   _id: string;
@@ -46,6 +47,7 @@ export default function Home() {
   const [isFinished, setIsFinished] = useState(false);
   const [isAnswer, setIsAnswer] = useState<boolean>(false);
   const [openDescription, setOpenDescription] = useState(false);
+  const session = useSession();
 
   useEffect(() => {
     fetch("/api/quiz/get-all")
@@ -53,11 +55,12 @@ export default function Home() {
       .then((data) => {
         setQuestions(data);
         question.current = data[0];
+        console.log(data);
       })
       .catch((err) => console.error("Error fetching quiz data:", err));
   }, []);
 
-  // ボタン押したとき
+  // 選択肢を押したとき
   const handleAnswer = (answerIndex: number) => {
     setOpenDescription(true);
     if (isAnswer) return;
@@ -89,6 +92,7 @@ export default function Home() {
     } else {
       // 終わり
       setIsFinished(true);
+      let correctCnt = 0;
       questions.forEach(async (temp) => {
         const updateData = {
           ...temp,
@@ -97,7 +101,13 @@ export default function Home() {
             ((temp.correctCnt as number) || 0) + (temp.isCorrect ? 1 : 0),
         };
         axios.put("/api/quiz/update", updateData);
+        correctCnt += temp.isCorrect ? 1 : 0;
       });
+      if (!session) return;
+      axios.get("/api/user/get", {params: {emali: session.data?.user?.email}})
+      .then(res => {
+        // axios.post("/qpi/user/set", {email})
+      })
     }
   };
 
