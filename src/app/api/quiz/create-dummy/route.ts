@@ -16,7 +16,8 @@ export async function POST(req: NextRequest) {
     question: "こんにちは。これはダミー問題です。適当に作られています。",
     choices: ["1", "2", "3", "4", "5", "6", "7", "8"],
     correctAnswer: 0,
-    description: String,
+    description:
+      "これはダミー問題なので、解説なんてありませんよwww。なに期待しているんですかwww。",
     userId: me._id,
   };
 
