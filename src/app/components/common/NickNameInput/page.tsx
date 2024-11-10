@@ -10,7 +10,6 @@ export function NickNameInput() {
 
   const handleNicknameSubmit = async () => {
     await axios.post("/api/user/set", {
-      email: session?.user?.email,
       nickname: nickname,
     });
   };
