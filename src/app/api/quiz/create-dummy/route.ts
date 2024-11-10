@@ -21,11 +21,14 @@ export async function POST(req: NextRequest) {
     userId: me._id,
   };
 
-  for (let i = 0; i < 100; i++) {
+  const L = 100;
+  for (let i = 0; i < L; i++) {
     Question.create({
       ...newQuestion,
       title: `${i}番目のダミー問題`,
       anonymity: i % 2 == 1,
+      answerCnt: L,
+      correctCnt: i,
     });
   }
   return NextResponse.json({ messagge: "ダミー問題を作成しました" });

@@ -50,12 +50,29 @@ export default function Home() {
   const session = useSession();
 
   useEffect(() => {
-    fetch("/api/quiz/get-all")
-      .then((res) => res.json())
+    // fetch("/api/quiz/get-all")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setQuestions(data);
+    //     question.current = data[0];
+    //     console.log(data);
+    //   })
+    //   .catch((err) => console.error("Error fetching quiz data:", err));
+
+    axios
+      .get("/api/quiz/get-difficulty", {
+        params: {
+          questionCount: 5,
+          difficulty: localStorage.getItem("difficulty") || "easy",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
       .then((data) => {
         setQuestions(data);
         question.current = data[0];
-        console.log(data);
       })
       .catch((err) => console.error("Error fetching quiz data:", err));
   }, []);

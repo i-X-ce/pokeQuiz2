@@ -5,12 +5,32 @@ import LoginBtn from "./components/common/loginBtn/page";
 import { NickNameInput } from "./components/common/NickNameInput/page";
 import { Button } from "@mui/material";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function Home() {
-  fetch;
+  const setDifficulty = (difficulty: string) => {
+    localStorage.setItem("difficulty", difficulty);
+  };
+
   return (
     <>
       <Link href="/pages/quiz-page">クイズを解く</Link>
+      <Button
+        component="a"
+        href="/pages/quiz-page"
+        onClick={() => setDifficulty("hard")}
+        variant="contained"
+      >
+        難しい
+      </Button>
+      <Button
+        component="a"
+        href="/pages/quiz-page"
+        onClick={() => setDifficulty("easy")}
+        variant="contained"
+      >
+        簡単
+      </Button>{" "}
       <Link href="/pages/quiz-create-page">クイズを作る</Link>
       <Button
         onClick={() => {
