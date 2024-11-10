@@ -103,11 +103,12 @@ export default function Home() {
         axios.put("/api/quiz/update", updateData);
         correctCnt += temp.isCorrect ? 1 : 0;
       });
-      if (!session) return;
-      axios.get("/api/user/get", {params: {emali: session.data?.user?.email}})
-      .then(res => {
-        // axios.post("/qpi/user/set", {email})
-      })
+      // ユーザーの正答率等を更新
+      if (session.status != "authenticated") return;
+      axios.put("/api/user/update-score", {
+        addAnswerCnt: questions.length,
+        addCorrectCnt: questions.filter((q) => q.isCorrect).length,
+      });
     }
   };
 
