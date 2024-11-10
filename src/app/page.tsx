@@ -19,6 +19,13 @@ export default function Home() {
       >
         クイズを全て消す
       </Button>
+      <Button
+        onClick={() => {
+          axios.post("/api/quiz/create-dummy");
+        }}
+      >
+        ダミー問題を作成する
+      </Button>
       <LoginBtn />
       <NickNameInput />
     </>
