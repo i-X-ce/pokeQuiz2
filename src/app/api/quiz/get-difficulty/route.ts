@@ -1,7 +1,6 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
 import { NextRequest, NextResponse } from "next/server";
-import { userInfo } from "os";
 
 export async function GET(req: NextRequest) {
   await connectToDatabase();
@@ -50,7 +49,7 @@ export async function GET(req: NextRequest) {
       break;
     } while (true);
     let q = sortQuestions[index];
-    q.userName = q.anonymity ? q.userInfo.nickname : "けつばん";
+    q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
     delete q.userInfo;
     delete q.userId;
     resQuestions.push(q);

@@ -67,7 +67,6 @@ export default function Home() {
         },
       })
       .then((res) => {
-        console.log(res);
         return res.data;
       })
       .then((data) => {
