@@ -30,7 +30,10 @@ export default function Home() {
         variant="contained"
       >
         簡単
-      </Button>{" "}
+      </Button>
+      <Button component="a" href="/pages/quiz-view" variant="contained">
+        クイズを見る
+      </Button>
       <Link href="/pages/quiz-create-page">クイズを作る</Link>
       <Button
         onClick={() => {
