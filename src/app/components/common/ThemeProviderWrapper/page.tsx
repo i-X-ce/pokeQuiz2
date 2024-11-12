@@ -54,22 +54,22 @@ export function ThemeProviderWrapper({
           },
           palette: {
             white: theme.palette.augmentColor({
-              color: { main: whiteMain },
+              color: { main: whiteMain, contrastText: blackMain },
             }),
             black: theme.palette.augmentColor({
-              color: { main: blackMain },
+              color: { main: blackMain, contrastText: whiteMain },
             }),
             red: theme.palette.augmentColor({
-              color: { main: redMain },
+              color: { main: redMain, contrastText: whiteMain },
             }),
             green: theme.palette.augmentColor({
-              color: { main: greenMain },
+              color: { main: greenMain, contrastText: whiteMain },
             }),
             blue: theme.palette.augmentColor({
-              color: { main: blueMain },
+              color: { main: blueMain, contrastText: whiteMain },
             }),
             yellow: theme.palette.augmentColor({
-              color: { main: yellowMain },
+              color: { main: yellowMain, contrastText: whiteMain },
             }),
           },
         })
