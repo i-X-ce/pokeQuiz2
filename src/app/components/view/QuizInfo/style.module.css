@@ -1,0 +1,54 @@
+.card {
+  margin: 10px;
+}
+
+.cardTitle {
+  /* font-size: 1.2rem; */
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.cardHeader {
+  display: flex;
+  gap: 10px;
+  margin: 8px 0px;
+}
+
+.primaryText {
+  color: var(--bc-blue);
+}
+
+.choicesContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.question {
+  margin: 10px;
+}
+
+.choice {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin: 3px;
+  padding: 5px;
+  border-radius: 100px;
+  border: solid 2px var(--bc-blue);
+  transition: 0.3s;
+  color: var(--bc-blue);
+}
+
+.correctChoice {
+  background-color: var(--bc-blue);
+  color: var(--bc-white);
+}
+
+.description {
+  margin: 5px 0;
+}
