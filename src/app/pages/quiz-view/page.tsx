@@ -1,9 +1,11 @@
 "use client";
 import { Title } from "@/app/components/common/Title/page";
 import QuizInfo from "@/app/components/view/QuizInfo/page";
-import { Pagination } from "@mui/material";
+import { MenuItem, Pagination, Select } from "@mui/material";
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
+import styles from "./style.module.css";
+import { Loading } from "@/app/components/common/Loading/page";
 
 interface Question {
   _id: string;
@@ -27,6 +29,7 @@ export default function Home() {
   const [questions, setQuestions] = useState<Question[]>();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10); // ページ数
+  const [sortType, setSortType] = useState("newest");
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
     axios
@@ -39,16 +42,17 @@ export default function Home() {
       })
       .then((res) => res.data)
       .then((data) => {
-        setQuestions(data);
+        setQuestions([...data]);
       });
   };
 
-  const handlePageChange = (event: ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (value: number, sortType: string) => {
     setPage(value);
+    setSortType(sortType);
     loadingQuestions(
       (value - 1) * quizLimitPerPage,
       quizLimitPerPage,
-      "newest"
+      sortType
     );
   };
 
@@ -65,13 +69,47 @@ export default function Home() {
       });
   }, []);
 
+  if (!questions) return <Loading />;
+
   return (
     <>
       <Title color="blue" title="クイズを見る" />
-      <Pagination count={totalPages} page={page} onChange={handlePageChange} />
-      {questions?.map((q: Question, i: number) => (
-        <QuizInfo key={i} question={q} />
-      ))}
+      <Select
+        defaultValue="newest"
+        title="並び替え"
+        label="並び替え"
+        onChange={(e) => {
+          handlePageChange(1, e.target.value);
+        }}
+      >
+        <MenuItem value="newest">新しい順</MenuItem>
+        <MenuItem value="oldest">古い順</MenuItem>
+        <MenuItem value="rateHighest">正答率が高い順</MenuItem>
+        <MenuItem value="rateLowest">正答率が低い順</MenuItem>
+        <MenuItem value="answerHighest">出題数が多い順</MenuItem>
+        <MenuItem value="answerLowest">出題数が少ない順</MenuItem>
+      </Select>
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={(e, n: number) => {
+          handlePageChange(n, sortType);
+        }}
+        color="blue"
+      />
+      <div className={styles.cardContainer}>
+        {questions?.map((q: Question, i: number) => (
+          <QuizInfo key={i + page * quizLimitPerPage} question={q} />
+        ))}
+      </div>
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={(e, n: number) => {
+          handlePageChange(n, sortType);
+        }}
+        color="blue"
+      />
     </>
   );
 }

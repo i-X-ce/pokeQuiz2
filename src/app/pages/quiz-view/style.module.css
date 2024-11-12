@@ -1,0 +1,5 @@
+.cardContainer {
+  margin: 50px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
