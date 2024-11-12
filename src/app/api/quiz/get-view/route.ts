@@ -15,6 +15,35 @@ export async function GET(req: NextRequest) {
     );
   }
 
+  let sortField: string = "createdAt",
+    sortOrder: number = 1;
+  switch (sortType) {
+    case "newest":
+      sortField = "createdAt";
+      sortOrder = -1;
+      break;
+    case "oldest":
+      sortField = "createdAt";
+      sortOrder = 1;
+      break;
+    case "rateHighest":
+      sortField = "correctRate";
+      sortOrder = -1;
+      break;
+    case "rateLowest":
+      sortField = "correctRate";
+      sortOrder = 1;
+      break;
+    case "answerHighest":
+      sortField = "answerCnt";
+      sortOrder = -1;
+      break;
+    case "answerLowest":
+      sortField = "answerCnt";
+      sortOrder = 1;
+      break;
+  }
+
   let questions = await Question.aggregate([
     { $match: { userId: { $ne: null } } },
     {
@@ -31,7 +60,7 @@ export async function GET(req: NextRequest) {
         correctRate: { $divide: ["$correctCnt", "$answerCnt"] },
       },
     },
-    { $sort: { createdAt: -1 } },
+    { $sort: { [sortField]: sortOrder } },
     { $skip: index },
     { $limit: size },
   ]);
