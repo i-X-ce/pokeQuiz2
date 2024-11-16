@@ -1,15 +1,19 @@
+import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
 import User from "@/app/lib/models/userModel";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+const L = 100; // 作成するダミーデータの数
+
 // ダミーのクイズデータを作る
 export async function POST(req: NextRequest) {
   const session = await getServerSession();
   if (session?.user?.email != process.env.MY_EMAIL) {
-    return NextResponse.json({ message: "権限がありません" }, { status: 500 });
+    return NextResponse.json({ message: "権限がありません" }, { status: 401 });
   }
 
+  await connectToDatabase();
   const me = await User.findOne({ email: session?.user?.email });
 
   const newQuestion = {
@@ -21,7 +25,6 @@ export async function POST(req: NextRequest) {
     userId: me._id,
   };
 
-  const L = 100;
   for (let i = 0; i < L; i++) {
     Question.create({
       ...newQuestion,
