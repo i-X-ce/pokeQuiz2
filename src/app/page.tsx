@@ -43,6 +43,13 @@ export default function Home() {
         クイズを全て消す
       </Button>
       <Button
+        onClick={() => {
+          axios.delete("/api/user/delete-all");
+        }}
+      >
+        ユーザーを全て消す
+      </Button>
+      <Button
         variant="contained"
         onClick={() => {
           axios.post("/api/quiz/create-dummy");
