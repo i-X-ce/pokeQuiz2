@@ -1,7 +1,13 @@
 "use client";
 import { Title } from "@/app/components/common/Title/page";
 import QuizInfo from "@/app/components/view/QuizInfo/page";
-import { MenuItem, Pagination, Select } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Pagination,
+  Select,
+} from "@mui/material";
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./style.module.css";
@@ -74,42 +80,52 @@ export default function Home() {
   return (
     <>
       <Title color="blue" title="クイズを見る" />
-      <Select
-        defaultValue="newest"
-        title="並び替え"
-        label="並び替え"
-        onChange={(e) => {
-          handlePageChange(1, e.target.value);
-        }}
-      >
-        <MenuItem value="newest">新しい順</MenuItem>
-        <MenuItem value="oldest">古い順</MenuItem>
-        <MenuItem value="rateHighest">正答率が高い順</MenuItem>
-        <MenuItem value="rateLowest">正答率が低い順</MenuItem>
-        <MenuItem value="answerHighest">出題数が多い順</MenuItem>
-        <MenuItem value="answerLowest">出題数が少ない順</MenuItem>
-      </Select>
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={(e, n: number) => {
-          handlePageChange(n, sortType);
-        }}
-        color="blue"
-      />
-      <div className={styles.cardContainer}>
-        {questions?.map((q: Question, i: number) => (
-          <QuizInfo key={i + page * quizLimitPerPage} question={q} />
-        ))}
+      <div className={styles.mainContent}>
+        <span className={styles.center}>
+          <FormControl>
+            <InputLabel>並び替え</InputLabel>
+            <Select
+              defaultValue="newest"
+              label="並び替え"
+              onChange={(e) => {
+                handlePageChange(page, e.target.value);
+              }}
+            >
+              <MenuItem value="newest">新しい順</MenuItem>
+              <MenuItem value="oldest">古い順</MenuItem>
+              <MenuItem value="rateHighest">正答率が高い順</MenuItem>
+              <MenuItem value="rateLowest">正答率が低い順</MenuItem>
+              <MenuItem value="answerHighest">出題数が多い順</MenuItem>
+              <MenuItem value="answerLowest">出題数が少ない順</MenuItem>
+            </Select>
+          </FormControl>
+        </span>
+        <span className={styles.center}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(e, n: number) => {
+              handlePageChange(n, sortType);
+            }}
+            color="blue"
+          />
+        </span>
+        <div className={styles.cardContainer}>
+          {questions?.map((q: Question, i: number) => (
+            <QuizInfo key={i + page * quizLimitPerPage} question={q} />
+          ))}
+        </div>
+        <span className={styles.center}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(e, n: number) => {
+              handlePageChange(n, sortType);
+            }}
+            color="blue"
+          />
+        </span>
       </div>
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={(e, n: number) => {
-          handlePageChange(n, sortType);
-        }}
-        color="blue"
-      />
     </>
   );
 }

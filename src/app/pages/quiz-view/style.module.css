@@ -1,5 +1,16 @@
 .cardContainer {
-  margin: 50px;
+  margin: 30px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0px;
+}
+
+.mainContent {
+  margin: 30px 0;
 }
