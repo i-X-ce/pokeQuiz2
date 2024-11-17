@@ -35,6 +35,9 @@ export default function Home() {
         クイズを見る
       </Button>
       <Link href="/pages/quiz-create-page">クイズを作る</Link>
+      <Button component="a" href="/pages/ranking" variant="contained">
+        ランキング
+      </Button>
       <Button
         onClick={() => {
           axios.delete("/api/quiz/delete-all");
