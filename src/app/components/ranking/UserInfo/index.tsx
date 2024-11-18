@@ -1,18 +1,31 @@
 import { Avatar } from "@mui/material";
 import styles from "./style.module.css";
+import { WorkspacePremium } from "@mui/icons-material";
 
 export function UserInfo(props: any) {
   const user = props.user;
   const dummy = props.dummy;
+  const rank = props.rank;
 
   return (
     <div className={`${styles.user} ${dummy ? styles.dummy : ""}`}>
       <div className={styles.avatarChip}>
-        <Avatar
-          src={dummy ? "" : user.image}
-          className={styles.avatar}
-          sx={{ margin: "0 10px", backgroundColor: "var(--bc-yellow)" }}
-        />
+        <div className={styles.rank}>
+          {rank <= 3 ? (
+            <WorkspacePremium
+              className={
+                rank == 1
+                  ? styles.first
+                  : rank == 2
+                  ? styles.second
+                  : styles.third
+              }
+            />
+          ) : (
+            rank
+          )}
+        </div>
+        <Avatar src={dummy ? "" : user.image} className={styles.avatar} />
         <div className={styles.nickname}>
           {dummy ? "ニックネーム" : user.nickname}
         </div>
