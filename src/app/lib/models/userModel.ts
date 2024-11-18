@@ -7,6 +7,7 @@ export const userSchema = new Schema(
     nickname: String,
     answerCnt: Number,
     correctCnt: Number,
+    createCnt: Number,
   },
   { timestamps: true }
 );
