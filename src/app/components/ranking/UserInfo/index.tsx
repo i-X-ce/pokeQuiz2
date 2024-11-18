@@ -18,6 +18,9 @@ export function UserInfo(props: any) {
         </div>
       </div>
       <div className={styles.cell}>
+        <p>{dummy ? "問題作成数" : user.createCnt || 0}</p>
+      </div>
+      <div className={styles.cell}>
         <p>{dummy ? "正答数" : user.correctCnt}</p>
       </div>
       <div className={styles.cell}>
