@@ -1,0 +1,21 @@
+.user {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--bc-shadow);
+  padding: 10px 0;
+}
+
+.avatarChip {
+  display: flex;
+  align-items: center;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+}
+
+.dummy {
+  background-color: var(--bc-shadow);
+  color: var(--bc-white);
+}

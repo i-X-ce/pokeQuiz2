@@ -1,13 +1,17 @@
 "use client";
 import { Title } from "@/app/components/common/Title/page";
+import { Avatar } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import styles from "./style.module.css";
+import { UserInfo } from "@/app/components/ranking/UserCell";
 
 interface User {
   nickname: string;
   correctCnt: number;
-  ansewerCnt: number;
+  answerCnt: number;
   correctRate: number;
+  image: string;
 }
 
 export default function Home() {
@@ -27,14 +31,12 @@ export default function Home() {
   return (
     <>
       <Title color="yellow" title="ランキング" />
-      {users.map((u, i) => (
-        <div key={i}>
-          <div>{u.nickname}</div>
-          <div>{u.correctCnt}</div>
-          <div>{u.ansewerCnt}</div>
-          <div>{(u.correctRate * 100).toFixed(1)}</div>
-        </div>
-      ))}
+      <div className={styles.users}>
+        <UserInfo dummy />
+        {users.map((u, i) => (
+          <UserInfo key={i} user={u} />
+        ))}
+      </div>
     </>
   );
 }
