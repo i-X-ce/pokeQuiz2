@@ -16,8 +16,18 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  let sortField: string = "createdAt",
-    sortOrder: number = 1;
+  let sortField: string = "correctCnt";
+  switch (sortType) {
+    case "correct":
+      sortField = "correctCnt";
+      break;
+    case "answer":
+      sortField = "answerCnt";
+      break;
+    case "create":
+      sortField = "createCnt";
+      break;
+  }
 
   let users = await User.aggregate([
     {
@@ -25,7 +35,7 @@ export async function GET(req: NextRequest) {
         correctRate: { $divide: ["$correctCnt", "$answerCnt"] },
       },
     },
-    { $sort: { [sortField]: sortOrder } },
+    { $sort: { [sortField]: -1 } },
     { $skip: index },
     { $limit: size },
   ]);
