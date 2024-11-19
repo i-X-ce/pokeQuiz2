@@ -2,7 +2,7 @@
 import styles from "./style.module.css";
 import Link from "next/link";
 import LoginBtn from "./components/common/loginChip";
-import { NickNameInput } from "./components/common/NickNameInput/page";
+import { NickNameInput } from "./components/common/NickNameInput";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { HomeTitle } from "./components/common/HomeTitle";
@@ -69,7 +69,6 @@ export default function Home() {
       >
         ダミーユーザー作成
       </Button>
-      <NickNameInput />
     </>
   );
 }
