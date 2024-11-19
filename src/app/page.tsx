@@ -1,11 +1,11 @@
 "use client";
-
+import styles from "./style.module.css";
 import Link from "next/link";
-import LoginBtn from "./components/common/loginBtn/page";
+import LoginBtn from "./components/common/loginChip";
 import { NickNameInput } from "./components/common/NickNameInput/page";
 import { Button } from "@mui/material";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { HomeTitle } from "./components/common/HomeTitle";
 
 export default function Home() {
   const setDifficulty = (difficulty: string) => {
@@ -14,6 +14,7 @@ export default function Home() {
 
   return (
     <>
+      <HomeTitle />
       <Link href="/pages/quiz-page">クイズを解く</Link>
       <Button
         component="a"
@@ -68,7 +69,6 @@ export default function Home() {
       >
         ダミーユーザー作成
       </Button>
-      <LoginBtn />
       <NickNameInput />
     </>
   );
