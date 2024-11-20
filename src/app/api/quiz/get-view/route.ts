@@ -1,5 +1,7 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
+import User from "@/app/lib/models/userModel";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -7,6 +9,7 @@ export async function GET(req: NextRequest) {
   const index: number = Number(req.nextUrl.searchParams.get("index")); // 始まりのindex
   const size: number = Number(req.nextUrl.searchParams.get("size")); // 取得するクイズの数
   const sortType = req.nextUrl.searchParams.get("sortType");
+  const range = req.nextUrl.searchParams.get("range");
 
   if (index === undefined || size === undefined || sortType === undefined) {
     return NextResponse.json(
@@ -44,8 +47,23 @@ export async function GET(req: NextRequest) {
       break;
   }
 
+  let match = { $match: { userId: { $ne: null } } };
+  const email = (await getServerSession())?.user?.email;
+  const userId = (await User.findOne({ email }))?._id;
+
+  // 自分のだったとき
+  if (range === "mine") {
+    if (!email) {
+      return NextResponse.json(
+        { error: "No query parameters provided" },
+        { status: 400 }
+      );
+    }
+    match = { $match: { userId: userId } };
+  }
+
   let questions = await Question.aggregate([
-    { $match: { userId: { $ne: null } } },
+    match,
     {
       $lookup: {
         from: "users",
@@ -58,6 +76,7 @@ export async function GET(req: NextRequest) {
     {
       $addFields: {
         correctRate: { $divide: ["$correctCnt", "$answerCnt"] },
+        isMe: { $eq: ["$userInfo._id", userId] },
       },
     },
     { $sort: { [sortField]: sortOrder } },

@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
 
   await connectToDatabase();
   const me = await User.findOne({ email: session?.user?.email });
+  const dummy = await User.findOne({ email: "thisisdummyemail0@gmail.com" });
 
   const newQuestion = {
     question: "こんにちは。これはダミー問題です。適当に作られています。",
@@ -22,16 +23,16 @@ export async function POST(req: NextRequest) {
     correctAnswer: 0,
     description:
       "これはダミー問題なので、解説なんてありませんよwww。なに期待しているんですかwww。",
-    userId: me._id,
   };
 
   for (let i = 0; i < L; i++) {
     Question.create({
       ...newQuestion,
       title: `${i}番目のダミー問題`,
-      anonymity: i % 2 == 1,
+      anonymity: i % 10 === 0,
       answerCnt: L,
       correctCnt: i,
+      userId: i % 7 === 0 ? dummy._id : me._id,
     });
   }
   return NextResponse.json({ messagge: "ダミー問題を作成しました" });

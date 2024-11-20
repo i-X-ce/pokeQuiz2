@@ -64,13 +64,13 @@ export default function Home() {
             <ChildButton
               title={"みんなのクイズ"}
               startIcon={<SupervisorAccount />}
-              link={"/pages/quiz-view?type=all"}
+              link={"/pages/quiz-view?range=all"}
               color={"blue"}
             />
             <ChildButton
               title={"じぶんのクイズ"}
               startIcon={<Face />}
-              link={"/pages/quiz-view?type=mine"}
+              link={"/pages/quiz-view?range=mine"}
               color={"blue"}
             />
           </span>

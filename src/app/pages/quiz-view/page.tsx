@@ -12,6 +12,7 @@ import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./style.module.css";
 import { Loading } from "@/app/components/common/Loading/page";
+import { useSearchParams } from "next/navigation";
 
 interface Question {
   _id: string;
@@ -36,6 +37,7 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10); // ページ数
   const [sortType, setSortType] = useState("newest");
+  const searchParams = useSearchParams();
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
     axios
@@ -44,6 +46,7 @@ export default function Home() {
           index,
           size,
           sortType,
+          range: searchParams.get("range"),
         },
       })
       .then((res) => res.data)
@@ -65,7 +68,9 @@ export default function Home() {
   useEffect(() => {
     loadingQuestions(0, quizLimitPerPage, "newest");
     axios
-      .get("/api/quiz/get-count")
+      .get("/api/quiz/get-count", {
+        params: { range: searchParams.get("range") },
+      })
       .then((res) => res.data)
       .then((data) => {
         setTotalPages(
@@ -79,7 +84,13 @@ export default function Home() {
 
   return (
     <>
-      <Title color="blue" title="クイズをみる" />
+      <Title
+        color="blue"
+        title={
+          (searchParams.get("range") === "mine" ? "じぶんの" : "みんなの") +
+          "クイズをみる"
+        }
+      />
       <div className={styles.mainContent}>
         <span className={styles.center}>
           <FormControl>
