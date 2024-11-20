@@ -52,3 +52,13 @@
 .description {
   margin: 10px;
 }
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteTitle {
+  color: var(--bc-red);
+  font-weight: bold;
+}

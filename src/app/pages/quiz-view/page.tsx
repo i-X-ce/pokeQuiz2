@@ -2,11 +2,13 @@
 import { Title } from "@/app/components/common/Title/page";
 import QuizInfo from "@/app/components/view/QuizInfo/page";
 import {
+  Alert,
   FormControl,
   InputLabel,
   MenuItem,
   Pagination,
   Select,
+  Snackbar,
 } from "@mui/material";
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -38,8 +40,21 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(10); // ページ数
   const [sortType, setSortType] = useState("newest");
   const searchParams = useSearchParams();
+  const [order, setOrder] = useState("newest");
+  const [openAlert, setOpneAlert] = useState(false);
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
+    axios
+      .get("/api/quiz/get-count", {
+        params: { range: searchParams.get("range") },
+      })
+      .then((res) => res.data)
+      .then((data) => {
+        setTotalPages(
+          Math.floor(data / quizLimitPerPage) +
+            (data % quizLimitPerPage > 0 ? 1 : 0)
+        );
+      });
     axios
       .get("/api/quiz/get-view", {
         params: {
@@ -67,17 +82,6 @@ export default function Home() {
 
   useEffect(() => {
     loadingQuestions(0, quizLimitPerPage, "newest");
-    axios
-      .get("/api/quiz/get-count", {
-        params: { range: searchParams.get("range") },
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        setTotalPages(
-          Math.floor(data / quizLimitPerPage) +
-            (data % quizLimitPerPage > 0 ? 1 : 0)
-        );
-      });
   }, []);
 
   if (!questions) return <Loading />;
@@ -99,6 +103,7 @@ export default function Home() {
               defaultValue="newest"
               label="並び替え"
               onChange={(e) => {
+                setOrder(e.target.value);
                 handlePageChange(page, e.target.value);
               }}
             >
@@ -123,7 +128,16 @@ export default function Home() {
         </span>
         <div className={styles.cardContainer}>
           {questions?.map((q: Question, i: number) => (
-            <QuizInfo key={i + page * quizLimitPerPage} question={q} />
+            <QuizInfo
+              key={i + page * quizLimitPerPage}
+              question={q}
+              handleLoading={() => {
+                handlePageChange(page, order);
+              }}
+              handleAlert={() => {
+                setOpneAlert(true);
+              }}
+            />
           ))}
         </div>
         <span className={styles.center}>
@@ -137,6 +151,18 @@ export default function Home() {
           />
         </span>
       </div>
+
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={5000}
+        onClose={() => {
+          setOpneAlert(false);
+        }}
+      >
+        <Alert variant="standard" severity="success">
+          クイズを削除しました。
+        </Alert>
+      </Snackbar>
     </>
   );
 }
