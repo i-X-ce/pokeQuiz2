@@ -1,10 +1,8 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Card,
   CardActionArea,
   CardContent,
+  Collapse,
   Divider,
 } from "@mui/material";
 import styles from "./style.module.css";
@@ -63,10 +61,9 @@ export default function QuizInfo(props: any) {
               </div>
             ))}
           </div>
-          <Accordion expanded={openAnswer} className={styles.description}>
-            <AccordionSummary>解説</AccordionSummary>
-            <AccordionDetails>{question.description}</AccordionDetails>
-          </Accordion>
+          <Collapse in={openAnswer}>
+            <p className={styles.description}>{question.description}</p>
+          </Collapse>
         </CardContent>
       </CardActionArea>
     </Card>
