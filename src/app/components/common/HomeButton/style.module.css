@@ -1,0 +1,47 @@
+.titleButton {
+  color: var(--bc-white);
+  font-size: 2rem;
+  padding: 20px 30px;
+  border-radius: 500px;
+  box-shadow: 3px 3px 3px var(--bc-shadow);
+  margin: 10px 0;
+  transition: 0.3s;
+  user-select: none;
+  cursor: default;
+}
+
+.titleButton:hover {
+  opacity: 0.5;
+}
+
+.red {
+  background-color: var(--bc-red);
+}
+
+.green {
+  background-color: var(--bc-green);
+}
+
+.blue {
+  background-color: var(--bc-blue);
+}
+
+.yellow {
+  background-color: var(--bc-yellow);
+}
+
+.buttonContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.onIcon {
+  rotate: 180deg;
+  transition: 0.3s;
+}
+
+.offIcon {
+  rotate: 0deg;
+  transition: 0.3s;
+}

@@ -6,6 +6,13 @@ import { NickNameInput } from "./components/common/NickNameInput";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { HomeTitle } from "./components/common/HomeTitle";
+import { HomeButton } from "./components/common/HomeButton";
+import {
+  AddBox,
+  HelpCenter,
+  ViewModule,
+  WorkspacePremium,
+} from "@mui/icons-material";
 
 export default function Home() {
   const setDifficulty = (difficulty: string) => {
@@ -15,6 +22,36 @@ export default function Home() {
   return (
     <>
       <HomeTitle />
+      <div className={styles.buttonContainer}>
+        <HomeButton
+          color={"red"}
+          title={"クイズを解く"}
+          startIcon={<HelpCenter />}
+        >
+          こんにちは
+        </HomeButton>
+        <HomeButton
+          color={"green"}
+          title={"クイズを作る"}
+          startIcon={<AddBox />}
+          link="/pages/quiz-create-page"
+        />
+
+        <HomeButton
+          color={"blue"}
+          title={"クイズを見る"}
+          startIcon={<ViewModule />}
+        >
+          こんにちは
+        </HomeButton>
+        <HomeButton
+          color={"yellow"}
+          title={"ランキング"}
+          startIcon={<WorkspacePremium />}
+          link="/pages/ranking"
+        />
+      </div>
+
       <Link href="/pages/quiz-page">クイズを解く</Link>
       <Button
         component="a"
