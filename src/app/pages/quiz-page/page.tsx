@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 interface Question {
   _id: string;
@@ -48,6 +49,7 @@ export default function Home() {
   const [isAnswer, setIsAnswer] = useState<boolean>(false);
   const [openDescription, setOpenDescription] = useState(false);
   const session = useSession();
+  const searchparams = useSearchParams();
 
   useEffect(() => {
     // fetch("/api/quiz/get-all")
@@ -63,7 +65,7 @@ export default function Home() {
       .get("/api/quiz/get-difficulty", {
         params: {
           questionCount: 5,
-          difficulty: localStorage.getItem("difficulty") || "easy",
+          difficulty: searchparams.get("difficulty"),
         },
       })
       .then((res) => {
