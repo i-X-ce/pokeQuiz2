@@ -171,7 +171,7 @@ export default function Home() {
   fetch;
   return (
     <>
-      <Title title="クイズを作る" color="green" />
+      <Title title="クイズをつくる" color="green" />
       <Paper className={styles.paper} elevation={5}>
         <form action="" method="post" onSubmit={handleSubmit}>
           <span className={styles.titleAndName}>

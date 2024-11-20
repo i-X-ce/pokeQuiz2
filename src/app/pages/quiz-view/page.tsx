@@ -79,7 +79,7 @@ export default function Home() {
 
   return (
     <>
-      <Title color="blue" title="クイズを見る" />
+      <Title color="blue" title="クイズをみる" />
       <div className={styles.mainContent}>
         <span className={styles.center}>
           <FormControl>

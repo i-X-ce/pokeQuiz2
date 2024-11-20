@@ -30,12 +30,12 @@ export default function Home() {
       <div className={styles.buttonContainer}>
         <HomeButton
           color={"red"}
-          title={"クイズを解く"}
+          title={"クイズをとく"}
           startIcon={<HelpCenter />}
         >
           <span className={styles.childButtonContainer}>
             <ChildButton
-              title={"難しい"}
+              title={"むずかしい"}
               startIcon={<SentimentDissatisfied />}
               link={"/pages/quiz-page"}
               color={"red"}
@@ -50,14 +50,14 @@ export default function Home() {
         </HomeButton>
         <HomeButton
           color={"green"}
-          title={"クイズを作る"}
+          title={"クイズをつくる"}
           startIcon={<AddBox />}
           link="/pages/quiz-create-page"
         />
 
         <HomeButton
           color={"blue"}
-          title={"クイズを見る"}
+          title={"クイズをみる"}
           startIcon={<ViewModule />}
         >
           <span className={styles.childButtonContainer}>
@@ -68,7 +68,7 @@ export default function Home() {
               color={"blue"}
             />
             <ChildButton
-              title={"自分の作ったクイズ"}
+              title={"じぶんのクイズ"}
               startIcon={<Face />}
               link={"/pages/quiz-view"}
               color={"blue"}
