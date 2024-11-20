@@ -52,7 +52,7 @@ export default function Home() {
           color={"green"}
           title={"クイズをつくる"}
           startIcon={<AddBox />}
-          link="/pages/quiz-create-page"
+          link="/pages/quiz-create-page?id=new"
         />
 
         <HomeButton

@@ -26,6 +26,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface Question {
   question: string;
@@ -35,6 +36,7 @@ interface Question {
   title: String;
   userId: string;
   anonymity: boolean;
+  _id: string | null;
 }
 
 interface User {
@@ -67,6 +69,8 @@ export default function Home() {
   const descriptionValidation = useValidation("解説", 300);
   const choicesValidation = useValidation("選択肢", 20);
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     axios
       .get("/api/user/get", {
@@ -78,6 +82,7 @@ export default function Home() {
       .catch((error) => {
         console.error("ユーザーデータが取得できません", error);
       });
+    loadingQuestion();
 
     // ページの移動があると警告を出す
     const handleBeforeUnload = (event) => {
@@ -106,18 +111,13 @@ export default function Home() {
       description,
       userId: user?._id || "",
       anonymity,
+      _id: searchParams.get("id"),
     };
     axios.put("/api/quiz/update", newquestion);
   };
 
   // すべてのバリデーションをチェックする
   const validationCheckAll = () => {
-    // const ok =
-    //   titleValidation.current.lastError(title) &&
-    //   questionValidation.current.lastError(question) &&
-    //   descriptionValidation.current.lastError(description);
-    // setTitle(title); // 強制的に再レンダリング
-    // return ok;
     interface ValidationGroup {
       validation: any;
       value: String;
@@ -164,11 +164,35 @@ export default function Home() {
     return isError;
   };
 
+  // idに値を入れた場合はクイズをダウンロードする
+  const loadingQuestion = () => {
+    const quizId = searchParams.get("id");
+    if (quizId === "new") return;
+    axios
+      .get("/api/quiz/get", { params: { id: quizId } })
+      .then((res) => res.data)
+      .then((data) => {
+        const quiz = data.quiz;
+        console.log(data);
+        setTitle(quiz.title);
+        setQuestion(quiz.question);
+        setDescription(quiz.description);
+        setAnonymity(quiz.anonymity);
+        const newChoices = quiz.choices.map((c: any, i: number) => ({
+          choiced: i === quiz.correctAnswer,
+          value: c,
+        }));
+        setChoices(newChoices);
+      })
+      .catch((error) => {
+        console.error("クイズデータが取得できません", error);
+      });
+  };
+
   if (!user) {
     return <Loading />;
   }
 
-  fetch;
   return (
     <>
       <Title title="クイズをつくる" color="green" />
