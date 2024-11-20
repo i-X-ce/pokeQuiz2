@@ -9,10 +9,15 @@ import { HomeTitle } from "./components/common/HomeTitle";
 import { HomeButton } from "./components/common/HomeButton";
 import {
   AddBox,
+  Face,
   HelpCenter,
+  SentimentDissatisfied,
+  SentimentSatisfiedAlt,
+  SupervisorAccount,
   ViewModule,
   WorkspacePremium,
 } from "@mui/icons-material";
+import { ChildButton } from "./components/common/ChildButton";
 
 export default function Home() {
   const setDifficulty = (difficulty: string) => {
@@ -28,7 +33,20 @@ export default function Home() {
           title={"クイズを解く"}
           startIcon={<HelpCenter />}
         >
-          こんにちは
+          <span className={styles.childButtonContainer}>
+            <ChildButton
+              title={"難しい"}
+              startIcon={<SentimentDissatisfied />}
+              link={"/pages/quiz-page"}
+              color={"red"}
+            />
+            <ChildButton
+              title={"かんたん"}
+              startIcon={<SentimentSatisfiedAlt />}
+              link={"/pages/quiz-page"}
+              color={"red"}
+            />
+          </span>
         </HomeButton>
         <HomeButton
           color={"green"}
@@ -42,7 +60,20 @@ export default function Home() {
           title={"クイズを見る"}
           startIcon={<ViewModule />}
         >
-          こんにちは
+          <span className={styles.childButtonContainer}>
+            <ChildButton
+              title={"みんなのクイズ"}
+              startIcon={<SupervisorAccount />}
+              link={"/pages/quiz-view"}
+              color={"blue"}
+            />
+            <ChildButton
+              title={"自分の作ったクイズ"}
+              startIcon={<Face />}
+              link={"/pages/quiz-view"}
+              color={"blue"}
+            />
+          </span>
         </HomeButton>
         <HomeButton
           color={"yellow"}

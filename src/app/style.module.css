@@ -1,3 +1,7 @@
 .buttonContainer {
   margin: 50px 100px;
 }
+
+.childButtonContainer {
+  display: flex;
+}
