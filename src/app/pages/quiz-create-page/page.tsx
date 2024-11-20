@@ -215,6 +215,7 @@ export default function Home() {
               <FormControlLabel
                 control={
                   <Switch
+                    checked={anonymity}
                     onChange={(e) => setAnonymity(e.target.checked)}
                     color="green"
                   />
