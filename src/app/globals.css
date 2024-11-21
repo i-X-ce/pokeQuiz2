@@ -15,10 +15,6 @@
   --bc-yellow: #ffca38;
 }
 
-svg {
-  width: 20px;
-}
-
 .background-red {
   background-color: var(--bc-red);
 }
