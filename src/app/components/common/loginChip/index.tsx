@@ -64,7 +64,12 @@ export default function LoginBtn() {
                 >
                   ニックネーム
                 </Button>
-                <Button startIcon={<Quiz />} color="blue">
+                <Button
+                  startIcon={<Quiz />}
+                  color="blue"
+                  component="a"
+                  href="/pages/quiz-view?range=mine"
+                >
                   作ったクイズ
                 </Button>
                 <div className={styles.grid4}>
