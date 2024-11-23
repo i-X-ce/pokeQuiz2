@@ -111,16 +111,17 @@ export default function Home() {
       // 終わり
       setIsFinished(true);
       let correctCnt = 0;
-      questions.forEach(async (temp) => {
-        const updateData = {
-          ...temp,
-          answerCnt: ((temp.answerCnt as number) || 0) + 1,
-          correctCnt:
-            ((temp.correctCnt as number) || 0) + (temp.isCorrect ? 1 : 0),
-        };
-        axios.put("/api/quiz/update", updateData);
-        correctCnt += temp.isCorrect ? 1 : 0;
-      });
+      // questions.forEach(async (q) => {
+      //   const updateData = {
+      //     ...q,
+      //     answerCnt: ((q.answerCnt as number) || 0) + 1,
+      //     correctCnt:
+      //       ((q.correctCnt as number) || 0) + (q.isCorrect ? 1 : 0),
+      //   };
+      //   axios.put("/api/quiz/update", updateData);
+      //   correctCnt += q.isCorrect ? 1 : 0;
+      // });
+      axios.put("/api/quiz/update-cnt", questions);
       // ユーザーの正答率等を更新
       if (session.status != "authenticated") return;
       axios.put("/api/user/update-score", {

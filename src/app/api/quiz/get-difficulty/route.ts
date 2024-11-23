@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
       let q = sortQuestions[index];
       q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
       delete q.userInfo;
-      delete q.userId;
+      // delete q.userId;
       resQuestions.push(q);
     }
 

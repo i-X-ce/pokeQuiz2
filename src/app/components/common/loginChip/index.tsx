@@ -13,6 +13,7 @@ interface User {
   correctCnt: number;
   answerCnt: number;
   createCnt: number;
+  solvedCnt: number;
 }
 
 export default function LoginBtn() {
@@ -71,8 +72,8 @@ export default function LoginBtn() {
                   <div className={styles.columName}>回答数</div>
                   <div className={styles.columValue + " " + styles.blueValue}>
                     {(
-                      (100 * userData?.correctCnt) /
-                      userData?.answerCnt
+                      (100 * (userData?.correctCnt || 0)) /
+                      (userData?.answerCnt || 1)
                     ).toFixed(1)}
                     %
                   </div>
@@ -87,7 +88,7 @@ export default function LoginBtn() {
                     {userData?.createCnt}
                   </div>
                   <div className={styles.columValue + " " + styles.blueValue}>
-                    100
+                    {userData?.solvedCnt}
                   </div>
                 </div>
 

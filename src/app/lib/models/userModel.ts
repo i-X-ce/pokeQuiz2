@@ -8,6 +8,7 @@ export const userSchema = new Schema(
     answerCnt: Number,
     correctCnt: Number,
     createCnt: Number,
+    solvedCnt: Number,
   },
   { timestamps: true }
 );
