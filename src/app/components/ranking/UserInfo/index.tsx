@@ -42,6 +42,9 @@ export function UserInfo(props: any) {
       <div className={styles.cell}>
         <p>{dummy ? "正答率" : (user.correctRate * 100).toFixed(1) + "%"}</p>
       </div>
+      <div className={styles.cell}>
+        <p>{dummy ? "解かれた数" : user.solvedCnt || 0}</p>
+      </div>
     </div>
   );
 }

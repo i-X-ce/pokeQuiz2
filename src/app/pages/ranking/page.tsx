@@ -59,6 +59,7 @@ export default function Home() {
             <MenuItem value="correct">正答数ランキング</MenuItem>
             <MenuItem value="answer">回答数ランキング</MenuItem>
             <MenuItem value="create">作成数ランキング</MenuItem>
+            <MenuItem value="solved">解かれた数ランキング</MenuItem>
           </Select>
         </FormControl>
       </span>

@@ -27,6 +27,8 @@ export async function GET(req: NextRequest) {
     case "create":
       sortField = "createCnt";
       break;
+    case "solved":
+      sortField = "solvedCnt";
   }
 
   let users = await User.aggregate([
@@ -41,6 +43,7 @@ export async function GET(req: NextRequest) {
   ]);
 
   users.forEach((u) => {
+    delete u._id;
     delete u.email;
   });
   return NextResponse.json(users, { status: 200 });
