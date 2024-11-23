@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
         },
       },
       {
-        $sort: { divisionResult: difficulty === "hard" ? 1 : -1 },
+        $sort: { divisionResult: 1 },
       },
     ]);
     const collectionSize = sortQuestions.length;
@@ -43,8 +43,13 @@ export async function GET(req: NextRequest) {
     let mp = new Set<number>();
     for (let i = 0; i < Math.min(questionCount, collectionSize); i++) {
       let index = 0;
+      const difNum =
+        difficulty === "hard" ? 0 : difficulty === "normal" ? 1 : 2;
+
       do {
-        index = Math.floor((Math.random() * collectionSize) / 2);
+        index = Math.floor(
+          (Math.random() * collectionSize) / 3 + (difNum * collectionSize) / 3
+        );
         if (mp.has(index)) continue;
         mp.add(index);
         break;

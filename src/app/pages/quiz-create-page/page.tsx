@@ -85,7 +85,7 @@ export default function Home() {
     loadingQuestion();
 
     // ページの移動があると警告を出す
-    const handleBeforeUnload = (event) => {
+    const handleBeforeUnload = (event: any) => {
       if (isAllowToanvigate) return;
       event.preventDefault();
       event.returnValue = "";

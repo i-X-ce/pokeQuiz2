@@ -1,8 +1,5 @@
 "use client";
 import styles from "./style.module.css";
-import Link from "next/link";
-import LoginBtn from "./components/common/loginChip";
-import { NickNameInput } from "./components/common/NickNameInput";
 import { Button } from "@mui/material";
 import axios from "axios";
 import { HomeTitle } from "./components/common/HomeTitle";
@@ -12,17 +9,17 @@ import {
   Face,
   HelpCenter,
   SentimentDissatisfied,
+  SentimentNeutral,
   SentimentSatisfiedAlt,
   SupervisorAccount,
   ViewModule,
   WorkspacePremium,
 } from "@mui/icons-material";
 import { ChildButton } from "./components/common/ChildButton";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
-  const setDifficulty = (difficulty: string) => {
-    localStorage.setItem("difficulty", difficulty);
-  };
+  const session = useSession();
 
   return (
     <>
@@ -41,6 +38,12 @@ export default function Home() {
               color={"red"}
             />
             <ChildButton
+              title={"ふつう"}
+              startIcon={<SentimentNeutral />}
+              link={"/pages/quiz-page?difficulty=normal"}
+              color={"red"}
+            />
+            <ChildButton
               title={"かんたん"}
               startIcon={<SentimentSatisfiedAlt />}
               link={"/pages/quiz-page?difficulty=easy"}
@@ -53,7 +56,7 @@ export default function Home() {
           title={"クイズをつくる"}
           startIcon={<AddBox />}
           link="/pages/quiz-create-page?id=new"
-          disabled
+          disabled={session.status !== "authenticated"}
         />
 
         <HomeButton
@@ -73,7 +76,7 @@ export default function Home() {
               startIcon={<Face />}
               link={"/pages/quiz-view?range=mine"}
               color={"blue"}
-              disabled
+              disabled={session.status !== "authenticated"}
             />
           </span>
         </HomeButton>
