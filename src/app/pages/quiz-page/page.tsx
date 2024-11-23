@@ -79,17 +79,33 @@ export default function Home() {
   }, []);
 
   // 選択肢を押したとき
-  const handleAnswer = (answerIndex: number) => {
+  const handleAnswer = async (answerIndex: number) => {
     setOpenDescription(true);
     if (isAnswer) return;
+    const correctData = await axios.get("/api/quiz/get-correctAnswer", {
+      params: { id: question.current?._id, answerIndex },
+    });
+    const { isCorrect, description, correctAnswer } = correctData.data;
+    // const isCorrect =
+    //   (question.current!.correctAnswer as number) === answerIndex;
+    question.current = {
+      ...question.current,
+      isCorrect,
+      description,
+      correctAnswer,
+    } as Question;
+    console.log(isCorrect, description);
+
     setIsAnswer(true);
-    const isCorrect =
-      (question.current!.correctAnswer as number) === answerIndex;
-    question.current = { ...question.current, isCorrect } as Question;
     setQuestions((prevQuestions) =>
       prevQuestions.map((q, index) =>
         index === currentQuestionIndex
-          ? { ...q, isCorrect: isCorrect, choiceAnswer: answerIndex }
+          ? {
+              ...q,
+              isCorrect: isCorrect,
+              choiceAnswer: answerIndex,
+              correctAnswer,
+            }
           : q
       )
     );
@@ -164,7 +180,7 @@ export default function Home() {
               color: "var(--bc-white)",
             }}
             component="a"
-            href="/pages/quiz-page"
+            href={"/pages/quiz-page?" + searchparams.toString()}
           >
             もう一度
           </Button>

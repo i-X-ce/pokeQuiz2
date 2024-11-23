@@ -52,6 +52,8 @@ export async function GET(req: NextRequest) {
       let q = sortQuestions[index];
       q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
       delete q.userInfo;
+      delete q.correctAnswer;
+      delete q.description;
       // delete q.userId;
       resQuestions.push(q);
     }
