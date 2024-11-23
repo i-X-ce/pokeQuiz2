@@ -41,6 +41,7 @@ export function ThemeProviderWrapper({
     const applyTheme = () => {
       const rootStyle = getComputedStyle(document.documentElement);
       const whiteMain = rootStyle.getPropertyValue("--bc-white").trim();
+      const grayMain = rootStyle.getPropertyValue("--bc-gray").trim();
       const blackMain = rootStyle.getPropertyValue("--bc-black").trim();
       const redMain = rootStyle.getPropertyValue("--bc-red").trim();
       const greenMain = rootStyle.getPropertyValue("--bc-green").trim();
@@ -55,6 +56,9 @@ export function ThemeProviderWrapper({
           palette: {
             white: theme.palette.augmentColor({
               color: { main: whiteMain, contrastText: blackMain },
+            }),
+            gray: theme.palette.augmentColor({
+              color: { main: grayMain, contrastText: whiteMain },
             }),
             black: theme.palette.augmentColor({
               color: { main: blackMain, contrastText: whiteMain },

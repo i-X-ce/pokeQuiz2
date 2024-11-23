@@ -10,29 +10,44 @@ type Props = {
   children?: ReactNode;
   startIcon?: ReactNode;
   link?: string;
+  disabled?: boolean;
 };
 
-export function HomeButton({ color, title, children, startIcon, link }: Props) {
+export function HomeButton({
+  color,
+  title,
+  children,
+  startIcon,
+  link,
+  disabled,
+}: Props) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const titleColor =
-    color === "red"
-      ? styles.red
-      : color === "green"
-      ? styles.green
-      : color === "blue"
-      ? styles.blue
-      : styles.yellow;
+  const titleColor = disabled
+    ? styles.disabled
+    : color === "red"
+    ? styles.red
+    : color === "green"
+    ? styles.green
+    : color === "blue"
+    ? styles.blue
+    : styles.yellow;
+
+  const handleClick = () => {
+    if (disabled) return;
+    if (link !== undefined) {
+      router.push(link);
+      return;
+    }
+    setOpen((prev) => !prev);
+  };
 
   return (
     <>
       <div
         className={styles.titleButton + " " + titleColor}
-        onClick={() => {
-          if (link) router.push(link);
-          setOpen(!open);
-        }}
+        onClick={handleClick}
       >
         <span className={styles.buttonContent}>
           <span>

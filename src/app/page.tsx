@@ -53,6 +53,7 @@ export default function Home() {
           title={"クイズをつくる"}
           startIcon={<AddBox />}
           link="/pages/quiz-create-page?id=new"
+          disabled
         />
 
         <HomeButton
@@ -72,6 +73,7 @@ export default function Home() {
               startIcon={<Face />}
               link={"/pages/quiz-view?range=mine"}
               color={"blue"}
+              disabled
             />
           </span>
         </HomeButton>

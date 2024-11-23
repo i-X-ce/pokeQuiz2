@@ -10,10 +10,17 @@
   padding: 5px 20px;
   margin: 10px;
   transition: 0.3s;
+  cursor: default;
+  user-select: none;
 }
 
 .button:hover {
   color: var(--bc-white);
+}
+
+.disabled {
+  border-color: var(--bc-gray);
+  color: var(--bc-gray);
 }
 
 .red {
@@ -36,6 +43,10 @@
   color: var(--bc-yellow);
 }
 
+.disabled:hover {
+  color: var(--bc-gray);
+}
+
 .red:hover {
   background-color: var(--bc-red);
 }
@@ -47,6 +58,7 @@
 .blue:hover {
   background-color: var(--bc-blue);
 }
+
 .yellow:hover {
   background-color: var(--bc-yellow);
 }
