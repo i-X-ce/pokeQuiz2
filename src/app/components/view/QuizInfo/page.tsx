@@ -98,26 +98,24 @@ export default function QuizInfo(props: any) {
         <Divider />
 
         <p className={styles.question}>{question.question}</p>
-        <CardActionArea
-          onClick={() => {
-            setOpenAnswer(!openAnswer);
-          }}
-        >
-          <div className={styles.choicesContainer}>
-            {question.choices.map((c: any, i: number) => (
-              <div
-                className={`${styles.choice} ${
-                  i === question.correctAnswer && openAnswer
-                    ? styles.correctChoice
-                    : ""
-                }`}
-                key={i}
-              >
-                <p>{c}</p>
-              </div>
-            ))}
-          </div>
-        </CardActionArea>
+
+        <div className={styles.choicesContainer}>
+          {question.choices.map((c: any, i: number) => (
+            <div
+              className={`${styles.choice} ${
+                i === question.correctAnswer && openAnswer
+                  ? styles.correctChoice
+                  : ""
+              }`}
+              key={i}
+              onClick={() => {
+                setOpenAnswer(!openAnswer);
+              }}
+            >
+              <p>{c}</p>
+            </div>
+          ))}
+        </div>
 
         <Collapse in={openAnswer}>
           <p className={styles.description}>{question.description}</p>

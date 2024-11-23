@@ -42,6 +42,13 @@
   border: solid 2px var(--bc-blue);
   transition: 0.3s;
   color: var(--bc-blue);
+  user-select: none;
+  cursor: default;
+}
+
+.choice:hover {
+  background-color: var(--bc-shadow);
+  color: var(--bc-white);
 }
 
 .correctChoice {
