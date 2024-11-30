@@ -37,6 +37,7 @@ interface Question {
   userId: string;
   anonymity: boolean;
   _id: string | null;
+  image: FormData;
 }
 
 interface User {
@@ -56,6 +57,8 @@ export default function Home() {
   ]);
   const [anonymity, setAnonymity] = useState(false);
   const [user, setUser] = useState<User>();
+  const [imgFile, setImgFile] = useState<File | null>(null);
+  const [imgSrc, setImgSrc] = useState("");
 
   const [openCheckLog, setOpenCheckLog] = useState(false);
   const [openCnancelLog, setOpenCancelLog] = useState(false);
@@ -103,6 +106,9 @@ export default function Home() {
     setOpenValidationAlert(ok);
     if (ok) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
+    const image = new FormData();
+    image.append("image", imgFile as File);
+    console.log(image.get("image"));
     const newquestion: Question = {
       title,
       question,
@@ -112,7 +118,9 @@ export default function Home() {
       userId: user?._id || "",
       anonymity,
       _id: searchParams.get("id"),
+      image,
     };
+    console.log(imgFile);
     axios.put("/api/quiz/update", newquestion);
   };
 
@@ -225,6 +233,28 @@ export default function Home() {
               />
             </span>
           </span>
+          {/* <Image src={img} alt={"クイズ画像"} /> */}
+          <img src={imgSrc}></img>
+          <Button component="label">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file: File | null = (e.target.files as FileList)[0];
+                if (!file) return;
+                if (!file.type.startsWith("image/")) {
+                  alert("画像ファイルのみアップロードできます。");
+                  return;
+                }
+                setImgFile(file);
+                const reader = new FileReader();
+                reader.onload = () => {
+                  setImgSrc(reader.result as string);
+                };
+                reader.readAsDataURL(file);
+              }}
+            />
+          </Button>
           <TextField
             fullWidth
             required
