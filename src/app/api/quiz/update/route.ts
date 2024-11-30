@@ -3,9 +3,13 @@ import Question from "@/app/lib/models/quizModel";
 import User from "@/app/lib/models/userModel";
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import multer from "multer";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"; // v3用のインポート
+import {
+  PutObjectAclCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3"; // v3用のインポート
 import { NextResponse } from "next/server";
+import path from "path";
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -15,98 +19,53 @@ const s3 = new S3Client({
   },
 });
 
-// multerのメモリストレージ設定
-const upload = multer({
-  storage: multer.memoryStorage(),
-});
-
-// ファイルアップロード用の関数を作成
-const uploadMiddleware = upload.single("image");
-
-// API Handlerのラッパー
-async function runMiddleware(req: any, res: any, fn: Function) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result: any) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-}
-
-export async function PUT(req: any, res: any) {
+export async function PUT(req: Request, res: any) {
   try {
-    // multerミドルウェアを実行
-    await runMiddleware(req, res, uploadMiddleware);
-
-    // multerで処理されたファイルはreq.fileに格納される
-    const file = req.file;
-
-    if (!file) {
-      return NextResponse.json(
-        { message: "No file uploaded" },
-        { status: 400 }
-      );
-    }
-
-    // S3にアップロード
-    const bucketName = process.env.AWS_BUCKET_NAME!;
-    const key = `uploads/${Date.now()}_${file.originalname}`;
-
-    const uploadParams = {
-      Bucket: bucketName,
-      Key: key,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-      ACL: "public-read", // 公開アクセス（必要に応じて変更）
-    };
-
-    const command = new PutObjectCommand(uploadParams);
-    const s3UploadResult = await s3.send(command);
-
-    // アップロード結果のURLを作成（S3の構成に応じて変更）
-    const imageUrl = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
-    console.log("Uploaded file URL:", imageUrl);
-
-    // リクエストからその他のデータを取得
-    const data = JSON.parse(req.body.data); // 必要ならデータ形式を調整
-    const id = data._id;
-
     const session = await getServerSession();
     await connectToDatabase();
 
+    const formData = await req.formData();
+    const image = formData.get("image");
+    const data = JSON.parse(formData.get("json") as string); // JSONを解析
+    const id = data._id;
     delete data._id;
-
     const user = await User.findOne({ email: session?.user?.email });
     const createCnt = await Question.countDocuments({ userId: user._id });
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      // 新しいデータに画像URLを追加
-      data.image = imageUrl;
-
-      Question.create(data);
+      const newQuestion = await Question.create(data);
       await User.updateOne(
         { _id: user.id },
         { $set: { createCnt: createCnt + 1 } }
       );
+      if (image && image instanceof File) {
+        const buffer = Buffer.from(await image.arrayBuffer()); // バッファを取得
+        const extension = path.extname(image.name);
+        const uploadParams = new PutObjectCommand({
+          Bucket: process.env.AWS_S3_BUCKET_NAME, // S3のバケット名
+          Key: `uploads/${newQuestion._id + extension}`, // 保存するファイル名（例: uploads/filename.jpg）
+          Body: buffer, // ファイルのバイナリデータ
+          ContentType: image.type, // ファイルのMIMEタイプ
+          ACL: "private", // 読み取りアクセス設定（公開する場合）
+        });
+        // const command = new PutObjectAclCommand(uploadParams);
+        const uploadData = await s3.send(uploadParams);
+        await Question.findByIdAndUpdate(newQuestion._id, { img: extension });
+        console.log(uploadData);
+      }
+
       return NextResponse.json(
-        { message: "New quiz posted!", imageUrl },
+        { message: "New quiz posted!" },
         { status: 200 }
       );
     } else {
-      if (await Question.exists({ _id: id })) {
-        data.image = imageUrl;
-        await Question.findByIdAndUpdate(id, data, {
-          new: true,
-        });
-      }
-      return NextResponse.json(
-        { message: "Updated quiz!", imageUrl },
-        { status: 200 }
-      );
+      await Question.findByIdAndUpdate(id, data, {
+        new: true,
+      });
+      return NextResponse.json({ message: "Updated quiz!" }, { status: 200 });
     }
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json(
       {
         message: "Internal server error",

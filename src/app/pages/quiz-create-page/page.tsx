@@ -37,7 +37,6 @@ interface Question {
   userId: string;
   anonymity: boolean;
   _id: string | null;
-  image: FormData;
 }
 
 interface User {
@@ -106,9 +105,10 @@ export default function Home() {
     setOpenValidationAlert(ok);
     if (ok) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
-    const image = new FormData();
-    image.append("image", imgFile as File);
-    console.log(image.get("image"));
+    const formData = new FormData();
+    // const image = new FormData();
+    // image.append("image", imgFile as File);
+    // console.log(image.get("image"));
     const newquestion: Question = {
       title,
       question,
@@ -118,10 +118,18 @@ export default function Home() {
       userId: user?._id || "",
       anonymity,
       _id: searchParams.get("id"),
-      image,
     };
-    console.log(imgFile);
-    axios.put("/api/quiz/update", newquestion);
+    // formData.append("title", title);
+    // formData.append("question", question);
+    // formData.append("choices", JSON.stringify(choicesFormat)); // 配列はJSONとして送信
+    // formData.append("correctAnswer", String(correctAnswer));
+    // formData.append("description", description);
+    // formData.append("userId", user?._id || "");
+    // formData.append("anonymity", String(anonymity)); // booleanを文字列として送信
+    formData.append("image", imgFile as File);
+    formData.append("json", JSON.stringify(newquestion));
+    axios.put("/api/quiz/update", formData);
+    // axios.put("/api/quiz/update", newquestion);
   };
 
   // すべてのバリデーションをチェックする
