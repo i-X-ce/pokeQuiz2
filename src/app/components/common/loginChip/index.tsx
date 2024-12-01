@@ -1,7 +1,7 @@
 "use client";
 import { Edit, Logout, Quiz } from "@mui/icons-material";
 import styles from "./style.module.css";
-import { Avatar, Button, Fade, Popper } from "@mui/material";
+import { Avatar, Button, Fade, Popover, Popper } from "@mui/material";
 import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
@@ -52,63 +52,66 @@ export default function LoginBtn() {
               ? userData?.nickname
               : "ログイン"}
           </div>
-          <Popper open={open} placement="bottom" anchorEl={anchorEl}>
-            <Fade in={open}>
-              <div className={styles.popperContent}>
-                <Button
-                  startIcon={<Edit />}
-                  color="blue"
-                  onClick={() => {
-                    setOpenNickname(!openNickname);
-                  }}
-                >
-                  ニックネーム
-                </Button>
-                <Button
-                  startIcon={<Quiz />}
-                  color="blue"
-                  component="a"
-                  href="/pages/quiz-view?range=mine"
-                >
-                  作ったクイズ
-                </Button>
-                <div className={styles.grid4}>
-                  <div className={styles.columName}>正答率</div>
-                  <div className={styles.columName}>回答数</div>
-                  <div className={styles.columValue + " " + styles.blueValue}>
-                    {(
-                      (100 * (userData?.correctCnt || 0)) /
-                      (userData?.answerCnt || 1)
-                    ).toFixed(1)}
-                    %
-                  </div>
-                  <div className={styles.columValue + " " + styles.blueValue}>
-                    {userData?.answerCnt}
-                  </div>
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            transformOrigin={{vertical: "top", horizontal: "center"}}
+          >
+            <div className={styles.popperContent}>
+              <Button
+                startIcon={<Edit />}
+                color="blue"
+                onClick={() => {
+                  setOpenNickname(!openNickname);
+                }}
+              >
+                ニックネーム
+              </Button>
+              <Button
+                startIcon={<Quiz />}
+                color="blue"
+                component="a"
+                href="/pages/quiz-view?range=mine"
+              >
+                作ったクイズ
+              </Button>
+              <div className={styles.grid4}>
+                <div className={styles.columName}>正答率</div>
+                <div className={styles.columName}>回答数</div>
+                <div className={styles.columValue + " " + styles.blueValue}>
+                  {(
+                    (100 * (userData?.correctCnt || 0)) /
+                    (userData?.answerCnt || 1)
+                  ).toFixed(1)}
+                  %
                 </div>
-                <div className={styles.grid4}>
-                  <div className={styles.columName}>作成数</div>
-                  <div className={styles.columName}>解かれた数</div>
-                  <div className={styles.columValue + " " + styles.blueValue}>
-                    {userData?.createCnt}
-                  </div>
-                  <div className={styles.columValue + " " + styles.blueValue}>
-                    {userData?.solvedCnt}
-                  </div>
+                <div className={styles.columValue + " " + styles.blueValue}>
+                  {userData?.answerCnt}
                 </div>
-
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={() => signOut()}
-                  color="red"
-                  startIcon={<Logout />}
-                >
-                  ログアウト
-                </Button>
               </div>
-            </Fade>
-          </Popper>
+              <div className={styles.grid4}>
+                <div className={styles.columName}>作成数</div>
+                <div className={styles.columName}>解かれた数</div>
+                <div className={styles.columValue + " " + styles.blueValue}>
+                  {userData?.createCnt}
+                </div>
+                <div className={styles.columValue + " " + styles.blueValue}>
+                  {userData?.solvedCnt}
+                </div>
+              </div>
+
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={() => signOut()}
+                color="red"
+                startIcon={<Logout />}
+              >
+                ログアウト
+              </Button>
+            </div>
+          </Popover>
         </div>
 
         <NickNameInput

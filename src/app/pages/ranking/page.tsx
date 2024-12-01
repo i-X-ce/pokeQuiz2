@@ -11,6 +11,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styles from "./style.module.css";
 import { UserInfo } from "@/app/components/ranking/UserInfo";
+import { Loading } from "@/app/components/common/Loading/page";
 
 interface User {
   nickname: string;
@@ -43,6 +44,8 @@ export default function Home() {
   useEffect(() => {
     loadingUser("correct");
   }, []);
+
+  if (users.length <= 0) return <Loading />;
 
   return (
     <>
