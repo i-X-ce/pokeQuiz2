@@ -15,6 +15,7 @@ import {
   DialogTitle,
   Divider,
   FormControlLabel,
+  IconButton,
   Paper,
   Snackbar,
   Switch,
@@ -27,6 +28,7 @@ import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Delete } from "@mui/icons-material";
 
 interface Question {
   question: string;
@@ -37,6 +39,7 @@ interface Question {
   userId: string;
   anonymity: boolean;
   _id: string | null;
+  imgDelete: boolean;
 }
 
 interface User {
@@ -44,6 +47,8 @@ interface User {
   email: string;
   nickname: string;
 }
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export default function Home() {
   const { data: session } = useSession();
@@ -58,6 +63,7 @@ export default function Home() {
   const [user, setUser] = useState<User>();
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [imgSrc, setImgSrc] = useState("");
+  const [imgDelete, setImgDelete] = useState(false);
 
   const [openCheckLog, setOpenCheckLog] = useState(false);
   const [openCnancelLog, setOpenCancelLog] = useState(false);
@@ -106,9 +112,6 @@ export default function Home() {
     if (ok) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
     const formData = new FormData();
-    // const image = new FormData();
-    // image.append("image", imgFile as File);
-    // console.log(image.get("image"));
     const newquestion: Question = {
       title,
       question,
@@ -118,18 +121,16 @@ export default function Home() {
       userId: user?._id || "",
       anonymity,
       _id: searchParams.get("id"),
+      imgDelete,
     };
-    // formData.append("title", title);
-    // formData.append("question", question);
-    // formData.append("choices", JSON.stringify(choicesFormat)); // 配列はJSONとして送信
-    // formData.append("correctAnswer", String(correctAnswer));
-    // formData.append("description", description);
-    // formData.append("userId", user?._id || "");
-    // formData.append("anonymity", String(anonymity)); // booleanを文字列として送信
     formData.append("image", imgFile as File);
     formData.append("json", JSON.stringify(newquestion));
     axios.put("/api/quiz/update", formData);
-    // axios.put("/api/quiz/update", newquestion);
+  };
+
+  const openAlert = (text: string[]) => {
+    setAlertList(text);
+    setOpenValidationAlert(text.length >= 1);
   };
 
   // すべてのバリデーションをチェックする
@@ -173,10 +174,9 @@ export default function Home() {
     });
     if (choices.findIndex((c) => c.choiced) === -1)
       newAlertlist = [...newAlertlist, "正解となる選択肢を一つ選んでください"];
-    setAlertList(newAlertlist);
     console.log(newAlertlist);
     const isError = newAlertlist.length >= 1;
-    setOpenValidationAlert(isError);
+    openAlert(newAlertlist);
     return isError;
   };
 
@@ -187,9 +187,8 @@ export default function Home() {
     axios
       .get("/api/quiz/get", { params: { id: quizId } })
       .then((res) => res.data)
-      .then((data) => {
+      .then(async (data) => {
         const quiz = data.quiz;
-        console.log(data);
         setTitle(quiz.title);
         setQuestion(quiz.question);
         setDescription(quiz.description);
@@ -199,6 +198,7 @@ export default function Home() {
           value: c,
         }));
         setChoices(newChoices);
+        setImgSrc(quiz.img);
       })
       .catch((error) => {
         console.error("クイズデータが取得できません", error);
@@ -242,7 +242,7 @@ export default function Home() {
             </span>
           </span>
           {/* <Image src={img} alt={"クイズ画像"} /> */}
-          <img src={imgSrc}></img>
+          {imgSrc ? <img src={imgSrc} /> : null}
           <Button component="label">
             <input
               type="file"
@@ -251,9 +251,18 @@ export default function Home() {
                 const file: File | null = (e.target.files as FileList)[0];
                 if (!file) return;
                 if (!file.type.startsWith("image/")) {
-                  alert("画像ファイルのみアップロードできます。");
+                  openAlert(["画像ファイルのみアップロードできます。"]);
                   return;
                 }
+                if (file.size > MAX_FILE_SIZE) {
+                  openAlert([
+                    `ファイルサイズが大きすぎます！最大${
+                      MAX_FILE_SIZE / (1024 * 1024)
+                    }MBまでアップロードできます。`,
+                  ]);
+                  return;
+                }
+                setImgDelete(true);
                 setImgFile(file);
                 const reader = new FileReader();
                 reader.onload = () => {
@@ -263,6 +272,15 @@ export default function Home() {
               }}
             />
           </Button>
+          <IconButton
+            onClick={() => {
+              setImgDelete(true);
+              setImgFile(null);
+              setImgSrc("");
+            }}
+          >
+            <Delete />
+          </IconButton>
           <TextField
             fullWidth
             required

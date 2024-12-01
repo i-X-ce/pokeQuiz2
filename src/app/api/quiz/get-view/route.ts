@@ -118,7 +118,6 @@ export async function GET(req: NextRequest) {
       });
     }
   }
-  console.log(questions);
 
   return NextResponse.json(questions, { status: 200 });
 }
