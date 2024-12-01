@@ -16,18 +16,19 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 interface Question {
   _id: string;
   question: string;
   choices: string[];
   correctAnswer: Number;
-  imageUrl?: String;
+  img?: string;
   answerCnt: Number;
   correctCnt: Number;
-  description: String;
-  userName?: String;
-  title: String;
+  description: string;
+  userName?: string;
+  title: string;
   isCorrect: boolean;
   choiceAnswer: number;
   userId: string;
@@ -223,7 +224,16 @@ export default function Home() {
         score={score}
       />
       <div className={styles.questionContainer}>
-        <div className={styles.questionNumber}>{currentQuestionIndex + 1}</div>
+        <div className={styles.questionNumber}>
+          Q.{currentQuestionIndex + 1}
+        </div>
+        {question.current?.img ? (
+          <img
+            className={styles.quesitonImg}
+            src={question.current.img}
+            title={question.current.title}
+          />
+        ) : null}
         <div className={styles.questionText}>{question.current!.question}</div>
       </div>
       {/* {isAnswer ? <DescriptionContainer {...question} /> : null} */}

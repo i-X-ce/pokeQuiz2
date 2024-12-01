@@ -3,21 +3,10 @@ import Question from "@/app/lib/models/quizModel";
 import User from "@/app/lib/models/userModel";
 import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
-import {
-  PutObjectAclCommand,
-  PutObjectCommand,
-  S3Client,
-} from "@aws-sdk/client-s3"; // v3用のインポート
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import path from "path";
-
-const s3 = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
+import { s3Client } from "@/app/lib/s3";
 
 export async function PUT(req: Request, res: any) {
   try {
@@ -26,7 +15,7 @@ export async function PUT(req: Request, res: any) {
 
     const formData = await req.formData();
     const image = formData.get("image");
-    const data = JSON.parse(formData.get("json") as string); // JSONを解析
+    const data = JSON.parse(formData.get("json") as string);
     const id = data._id;
     delete data._id;
     const user = await User.findOne({ email: session?.user?.email });
@@ -48,8 +37,7 @@ export async function PUT(req: Request, res: any) {
           ContentType: image.type, // ファイルのMIMEタイプ
           ACL: "private", // 読み取りアクセス設定（公開する場合）
         });
-        // const command = new PutObjectAclCommand(uploadParams);
-        const uploadData = await s3.send(uploadParams);
+        const uploadData = await s3Client.send(uploadParams);
         await Question.findByIdAndUpdate(newQuestion._id, { img: extension });
         console.log(uploadData);
       }
