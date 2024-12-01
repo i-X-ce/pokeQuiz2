@@ -64,6 +64,7 @@ export function ChoicesCreateContainer({
       {choices.map((c: Choice, i: number) => (
         <div key={i} className={styles.choice}>
           <Radio
+            className={styles.ratio}
             checked={choices[i].choiced || false}
             onChange={() => selectAnswer(i)}
             color="green"
@@ -80,7 +81,7 @@ export function ChoicesCreateContainer({
             onChange={(e) => updateChoice(i, e.target.value)}
             color="green"
           />
-          <IconButton onClick={() => deleteChoice(i)}>
+          <IconButton className={styles.ratio} onClick={() => deleteChoice(i)}>
             <Delete />
           </IconButton>
         </div>
@@ -91,7 +92,7 @@ export function ChoicesCreateContainer({
           color="green"
           startIcon={<Add className={styles.add} />}
           onClick={addChoice}
-          sx={{ margin: "10px 50px" }}
+          sx={{ margin: "10px 65px" }}
         />
       ) : null}
     </span>

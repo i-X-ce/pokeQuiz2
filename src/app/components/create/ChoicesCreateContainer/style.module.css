@@ -13,3 +13,8 @@
 .add {
   color: var(--bc-white);
 }
+
+.ratio {
+  aspect-ratio: 1/1;
+  height: 100%;
+}
