@@ -21,7 +21,7 @@ interface Question {
   question: string;
   choices: string[];
   correctAnswer: Number;
-  imageUrl?: String;
+  img?: String;
   answerCnt: Number;
   correctCnt: Number;
   description: String;

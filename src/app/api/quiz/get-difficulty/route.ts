@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
           Key: "uploads/" + q._id + q.img,
         });
         q.img = await getSignedUrl(s3Client, command, {
-          expiresIn: 3600,
+          expiresIn: 1800,
         });
       }
       resQuestions.push(q);

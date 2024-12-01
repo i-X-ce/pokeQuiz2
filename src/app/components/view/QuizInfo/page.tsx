@@ -97,6 +97,16 @@ export default function QuizInfo(props: any) {
         </span>
         <Divider />
 
+        {question.img ? (
+          <div className={styles.imgWrapper}>
+            <img
+              className={styles.questionImg}
+              src={question.img}
+              title={question.title}
+            />
+          </div>
+        ) : null}
+
         <p className={styles.question}>{question.question}</p>
 
         <div className={styles.choicesContainer}>
