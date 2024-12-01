@@ -17,18 +17,20 @@ import {
   FormControlLabel,
   IconButton,
   Paper,
+  Popover,
   Snackbar,
+  styled,
   Switch,
   TextField,
 } from "@mui/material";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Delete } from "@mui/icons-material";
+import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
 
 interface Question {
   question: string;
@@ -64,6 +66,7 @@ export default function Home() {
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [imgSrc, setImgSrc] = useState("");
   const [imgDelete, setImgDelete] = useState(false);
+  const [imgHover, setImgHover] = useState(false);
 
   const [openCheckLog, setOpenCheckLog] = useState(false);
   const [openCnancelLog, setOpenCancelLog] = useState(false);
@@ -214,6 +217,10 @@ export default function Home() {
       <Title title="クイズをつくる" color="green" />
       <Paper className={styles.paper} elevation={5}>
         <form action="" method="post" onSubmit={handleSubmit}>
+          <TitleTag title="タイトル">
+            <p>投稿するクイズのタイトルを記入してください！</p>
+            <p>最も大きく映るのでかっこいいやつをお願いします。</p>
+          </TitleTag>
           <span className={styles.titleAndName}>
             <TextField
               required
@@ -241,63 +248,105 @@ export default function Home() {
               />
             </span>
           </span>
-          {/* <Image src={img} alt={"クイズ画像"} /> */}
-          {imgSrc ? <img src={imgSrc} /> : null}
-          <Button component="label">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file: File | null = (e.target.files as FileList)[0];
-                if (!file) return;
-                if (!file.type.startsWith("image/")) {
-                  openAlert(["画像ファイルのみアップロードできます。"]);
-                  return;
-                }
-                if (file.size > MAX_FILE_SIZE) {
-                  openAlert([
-                    `ファイルサイズが大きすぎます！最大${
-                      MAX_FILE_SIZE / (1024 * 1024)
-                    }MBまでアップロードできます。`,
-                  ]);
-                  return;
-                }
-                setImgDelete(true);
-                setImgFile(file);
-                const reader = new FileReader();
-                reader.onload = () => {
-                  setImgSrc(reader.result as string);
-                };
-                reader.readAsDataURL(file);
+          <TitleTag title="問題文">
+            <p>
+              クイズの問題文をここに書いてください！初代ポケモンのバグや任意コード実行に関することならなんでも大歓迎です！
+            </p>
+            <p>
+              ファイルサイズが{MAX_FILE_SIZE / (1024 * 1024)}
+              MBまでの画像もアップロード可能です。
+            </p>
+          </TitleTag>
+          <span className={styles.questionBox}>
+            <div
+              className={styles.imgBox}
+              onMouseEnter={() => {
+                setImgHover(true);
               }}
+              onMouseLeave={() => {
+                setImgHover(false);
+              }}
+            >
+              {imgSrc ? <img className={styles.img} src={imgSrc}></img> : null}
+              {imgSrc ? null : (
+                <IconButton component="label" size="large">
+                  <AddPhotoAlternate
+                    className={styles.imgUploadBtn}
+                    color="green"
+                    fontSize="large"
+                  />
+                  <VisuallyHiddenInput
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file: File | null = (e.target.files as FileList)[0];
+                      if (!file) return;
+                      if (!file.type.startsWith("image/")) {
+                        openAlert(["画像ファイルのみアップロードできます。"]);
+                        return;
+                      }
+                      if (file.size > MAX_FILE_SIZE) {
+                        openAlert([
+                          `ファイルサイズが大きすぎます！最大${
+                            MAX_FILE_SIZE / (1024 * 1024)
+                          }MBまでアップロードできます。`,
+                        ]);
+                        return;
+                      }
+                      setImgDelete(true);
+                      setImgFile(file);
+                      const reader = new FileReader();
+                      reader.onload = () => {
+                        setImgSrc(reader.result as string);
+                      };
+                      reader.readAsDataURL(file);
+                    }}
+                  />
+                </IconButton>
+              )}
+              {imgHover && imgSrc && (
+                <IconButton
+                  className={styles.imgDelBtn}
+                  onClick={() => {
+                    setImgDelete(true);
+                    setImgFile(null);
+                    setImgSrc("");
+                  }}
+                  color="red"
+                >
+                  <Delete fontSize="large" />
+                </IconButton>
+              )}
+            </div>
+            <TextField
+              fullWidth
+              required
+              error={questionValidation.error(question)}
+              label={questionValidation.label(question)}
+              helperText={questionValidation.helperText(question)}
+              multiline
+              minRows={4}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              color="green"
             />
-          </Button>
-          <IconButton
-            onClick={() => {
-              setImgDelete(true);
-              setImgFile(null);
-              setImgSrc("");
-            }}
-          >
-            <Delete />
-          </IconButton>
-          <TextField
-            fullWidth
-            required
-            error={questionValidation.error(question)}
-            label={questionValidation.label(question)}
-            helperText={questionValidation.helperText(question)}
-            multiline
-            minRows={4}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            color="green"
-          />
+          </span>
+
+          <TitleTag title="選択肢">
+            <p>
+              ユーザーが選択する文章をここに書いてください！ボタンにチェックするとその選択肢が正解になります。
+            </p>
+            <p>最大で8つまで選択肢を増やすことができます。</p>
+          </TitleTag>
           <ChoicesCreateContainer
             choices={choices}
             updateChoices={setChoices}
             validation={choicesValidation}
           />
+          <TitleTag title="解説">
+            <p>答え合わせした後に表示される解説を書いてください！</p>
+            <p>楽しい解説お待ちしております。</p>
+          </TitleTag>
           <TextField
             fullWidth
             required
@@ -469,3 +518,51 @@ export const useValidation = (title: string, maxLength: number) => {
     title: getTitle,
   };
 };
+
+function TitleTag({ title, children }: { title: string; children: ReactNode }) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  return (
+    <span className={styles.titleTag}>
+      <div className={styles.titleTagWrapper}>
+        <h2 className={styles.titleTagH2}>{title}</h2>
+        <div
+          className={styles.titleTagHelp}
+          onMouseEnter={(e) => {
+            setAnchorEl(e.currentTarget);
+          }}
+          onMouseLeave={() => {
+            setAnchorEl(null);
+          }}
+        >
+          <QuestionMark fontSize="inherit" color={open ? "white" : "green"} />
+        </div>
+      </div>
+
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => {
+          setAnchorEl(null);
+        }}
+        anchorOrigin={{ vertical: "center", horizontal: "right" }}
+        sx={{ pointerEvents: "none" }}
+      >
+        <div className={styles.titleTagChildren}>{children}</div>
+      </Popover>
+    </span>
+  );
+}
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
