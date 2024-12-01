@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import styles from "./style.module.css";
-import LoginBtn from "../loginChip";
+import LoginBtn from "../LoginChip";
 import { Paper, Popper } from "@mui/material";
 
 export function HomeTitle() {

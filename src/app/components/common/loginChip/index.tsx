@@ -32,95 +32,93 @@ export default function LoginBtn() {
       });
   }, [session, openNickname]);
 
-  if (session) {
-    return (
-      <>
-        <div
-          className={styles.chip}
-          onClick={(e: React.MouseEvent<HTMLElement>) => {
-            if (session.status != "authenticated") {
-              signIn("google", { prompt: "select_account" });
-              return;
-            }
-            setAnchorEl(e.currentTarget);
-            setOpen(!open);
-          }}
-        >
-          <Avatar src={session.data?.user?.image as string} />
-          <div className={styles.nickname}>
-            {session.status == "authenticated"
-              ? userData?.nickname
-              : "ログイン"}
-          </div>
-          <Popover
-            open={open}
-            anchorEl={anchorEl}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            transformOrigin={{vertical: "top", horizontal: "center"}}
-          >
-            <div className={styles.popperContent}>
-              <Button
-                startIcon={<Edit />}
-                color="blue"
-                onClick={() => {
-                  setOpenNickname(!openNickname);
-                }}
-              >
-                ニックネーム
-              </Button>
-              <Button
-                startIcon={<Quiz />}
-                color="blue"
-                component="a"
-                href="/pages/quiz-view?range=mine"
-              >
-                作ったクイズ
-              </Button>
-              <div className={styles.grid4}>
-                <div className={styles.columName}>正答率</div>
-                <div className={styles.columName}>回答数</div>
-                <div className={styles.columValue + " " + styles.blueValue}>
-                  {(
-                    (100 * (userData?.correctCnt || 0)) /
-                    (userData?.answerCnt || 1)
-                  ).toFixed(1)}
-                  %
-                </div>
-                <div className={styles.columValue + " " + styles.blueValue}>
-                  {userData?.answerCnt}
-                </div>
-              </div>
-              <div className={styles.grid4}>
-                <div className={styles.columName}>作成数</div>
-                <div className={styles.columName}>解かれた数</div>
-                <div className={styles.columValue + " " + styles.blueValue}>
-                  {userData?.createCnt}
-                </div>
-                <div className={styles.columValue + " " + styles.blueValue}>
-                  {userData?.solvedCnt}
-                </div>
-              </div>
-
-              <Button
-                variant="outlined"
-                fullWidth
-                onClick={() => signOut()}
-                color="red"
-                startIcon={<Logout />}
-              >
-                ログアウト
-              </Button>
-            </div>
-          </Popover>
+  return (
+    <>
+      <div
+        className={styles.chip}
+        onClick={(e: React.MouseEvent<HTMLElement>) => {
+          if (session.status != "authenticated") {
+            signIn("google", { prompt: "select_account" });
+            return;
+          }
+          setAnchorEl(e.currentTarget);
+          setOpen(!open);
+        }}
+      >
+        <Avatar src={session.data?.user?.image as string} />
+        <div className={styles.nickname}>
+          {session.status == "authenticated"
+            ? userData?.nickname || "-----"
+            : "ログイン"}
         </div>
+        <Popover
+          open={open}
+          anchorEl={anchorEl}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          transformOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <div className={styles.popperContent}>
+            <Button
+              startIcon={<Edit />}
+              color="blue"
+              onClick={() => {
+                setOpenNickname(!openNickname);
+              }}
+            >
+              ニックネーム
+            </Button>
+            <Button
+              startIcon={<Quiz />}
+              color="blue"
+              component="a"
+              href="/pages/quiz-view?range=mine"
+            >
+              作ったクイズ
+            </Button>
+            <div className={styles.grid4}>
+              <div className={styles.columName}>正答率</div>
+              <div className={styles.columName}>回答数</div>
+              <div className={styles.columValue + " " + styles.blueValue}>
+                {(
+                  (100 * (userData?.correctCnt || 0)) /
+                  (userData?.answerCnt || 1)
+                ).toFixed(1)}
+                %
+              </div>
+              <div className={styles.columValue + " " + styles.blueValue}>
+                {userData?.answerCnt}
+              </div>
+            </div>
+            <div className={styles.grid4}>
+              <div className={styles.columName}>作成数</div>
+              <div className={styles.columName}>解かれた数</div>
+              <div className={styles.columValue + " " + styles.blueValue}>
+                {userData?.createCnt}
+              </div>
+              <div className={styles.columValue + " " + styles.blueValue}>
+                {userData?.solvedCnt}
+              </div>
+            </div>
 
-        <NickNameInput
-          open={openNickname}
-          onClose={() => {
-            setOpenNickname(false);
-          }}
-        />
-      </>
-    );
-  }
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() => signOut()}
+              color="red"
+              startIcon={<Logout />}
+            >
+              ログアウト
+            </Button>
+          </div>
+        </Popover>
+      </div>
+
+      <NickNameInput
+        open={openNickname}
+        onClose={() => {
+          setOpenNickname(false);
+        }}
+      />
+    </>
+  );
 }
