@@ -28,7 +28,6 @@ import { useSession } from "next-auth/react";
 import { ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
 
@@ -72,6 +71,8 @@ export default function Home() {
   const [openCheckLog, setOpenCheckLog] = useState(false);
   const [openCnancelLog, setOpenCancelLog] = useState(false);
   const [isAllowToanvigate, setIsAllowToNavigate] = useState(false);
+  const [openUploadSuccess, setOpenUploadSuccess] = useState(false);
+  const [openUploadFailed, setOpenUploadFailed] = useState(false);
 
   const [openValidationAlert, setOpenValidationAlert] = useState(false);
   const [alertList, setAlertList] = useState<String[]>([]);
@@ -132,8 +133,12 @@ export default function Home() {
     formData.append("json", JSON.stringify(newquestion));
     axios
       .put("/api/quiz/update", formData)
-      .then(() => router.push("/"))
-      .catch((error) => {});
+      .then(() => {
+        setOpenUploadSuccess(true);
+      })
+      .catch(() => {
+        setOpenUploadFailed(true);
+      });
   };
 
   const openAlert = (text: string[]) => {
@@ -500,6 +505,45 @@ export default function Home() {
           ))}
         </Alert>
       </Snackbar>
+
+      <Dialog
+        open={openUploadSuccess}
+        onClose={() => {
+          setOpenUploadSuccess(false);
+          router.push("/");
+        }}
+      >
+        <DialogTitle color="green">投稿完了</DialogTitle>
+        <DialogContent>
+          クイズの投稿ができました！ホームに戻ります。
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color="green"
+            variant="contained"
+            onClick={() => {
+              setOpenUploadSuccess(false);
+              router.push("/");
+            }}
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openUploadFailed}
+        onClose={() => {
+          setOpenUploadFailed(false);
+          setOpenCheckLog(false);
+        }}
+      >
+        <DialogTitle color="red">投稿失敗</DialogTitle>
+        <DialogContent>
+          クイズの投稿に失敗しました…。少し時間を置いてお試しください。
+          症状が治らなければア▶イスにご連絡ください。
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
