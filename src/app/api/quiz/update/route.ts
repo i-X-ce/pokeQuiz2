@@ -7,16 +7,30 @@ import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import path from "path";
 import { s3Client } from "@/app/lib/s3";
+import sharp from "sharp";
+import * as Jimp from "jimp";
 
-async function createUploadParams(file: File, id: string, buffer: Buffer) {
-  const extension = path.extname(file.name);
+async function createUploadParams(id: string, buffer: Buffer) {
+  const image = await Jimp.Jimp.read(buffer);
+  const pngBuffer = await image.getBuffer(Jimp.JimpMime.png);
+  const compressedBuffer = await compressFileImage(pngBuffer);
+
   return new PutObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET_NAME, // S3のバケット名
-    Key: `uploads/${id + extension}`, // 保存するファイル名（例: uploads/filename.jpg）
-    Body: buffer, // ファイルのバイナリデータ
-    ContentType: file.type, // ファイルのMIMEタイプ
+    Key: `uploads/${id}.webp`, // 保存するファイル名（例: uploads/filename.jpg）
+    Body: compressedBuffer, // ファイルのバイナリデータ
+    ContentType: "image/webp", // ファイルのMIMEタイプ
     ACL: "private", // 読み取りアクセス設定（公開する場合）
   });
+  // const extension = path.extname(file.name);
+  // return new PutObjectCommand({
+  //   Bucket: process.env.AWS_S3_BUCKET_NAME, // S3のバケット名
+  //   Key: `uploads/${id + ".webp"}`, // 保存するファイル名（例: uploads/filename.jpg）
+  //   Body: buffer, // ファイルのバイナリデータ
+  //   ContentType: "image/webp", // ファイルのMIMEタイプ
+  //   // ContentType: file.type, // ファイルのMIMEタイプ
+  //   ACL: "private", // 読み取りアクセス設定（公開する場合）
+  // });
 }
 
 async function createDeleteParams(id: string, extension: string) {
@@ -24,6 +38,20 @@ async function createDeleteParams(id: string, extension: string) {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: `uploads/${id + extension}`,
   });
+}
+
+// 画像の圧縮
+async function compressFileImage(buffer: Buffer) {
+  try {
+    const compressedBuffer = await sharp(buffer)
+      .resize(800)
+      .webp({ quality: 80 })
+      .toBuffer();
+    return compressedBuffer;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function PUT(req: Request, res: any) {
@@ -46,15 +74,15 @@ export async function PUT(req: Request, res: any) {
         { $set: { createCnt: createCnt + 1 } }
       );
       if (image && image instanceof File) {
-        const buffer = Buffer.from(await image.arrayBuffer()); // バッファを取得
-        const uploadParams = await createUploadParams(
-          image,
-          newQuestion._id,
-          buffer
-        );
+        const buffer = Buffer.from(await image.arrayBuffer());
+        // const buffer = await compressFileImage(
+        //   Buffer.from(await image.arrayBuffer())
+        // ); // バッファを取得
+        const uploadParams = await createUploadParams(newQuestion._id, buffer);
         const uploadData = await s3Client.send(uploadParams);
         await Question.findByIdAndUpdate(newQuestion._id, {
-          img: path.extname(image.name),
+          // img: path.extname(image.name),
+          img: ".webp",
         });
         console.log(uploadData);
       }
@@ -74,11 +102,12 @@ export async function PUT(req: Request, res: any) {
       }
       if (image && image instanceof File) {
         const command = await createUploadParams(
-          image,
           id,
           Buffer.from(await image.arrayBuffer())
+          // await compressFileImage(Buffer.from(await image.arrayBuffer()))
         );
-        data.img = path.extname(image.name);
+        // data.img = path.extname(image.name);
+        data.img = ".webp";
         await s3Client.send(command);
       }
 

@@ -29,7 +29,7 @@ import { ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
 
 interface Question {
@@ -50,7 +50,8 @@ interface User {
   nickname: string;
 }
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 画像ファイルサイズの限度
+const FILE_ACCEPT = ".jpg,.png,.bmp,.tiff,.gif"; // アップロードできる拡張子
 
 export default function Home() {
   const { data: session } = useSession();
@@ -81,6 +82,7 @@ export default function Home() {
   const choicesValidation = useValidation("選択肢", 20);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     axios
@@ -128,7 +130,10 @@ export default function Home() {
     };
     formData.append("image", imgFile as File);
     formData.append("json", JSON.stringify(newquestion));
-    axios.put("/api/quiz/update", formData);
+    axios
+      .put("/api/quiz/update", formData)
+      .then(() => router.push("/"))
+      .catch((error) => {});
   };
 
   const openAlert = (text: string[]) => {
@@ -277,14 +282,25 @@ export default function Home() {
                   />
                   <VisuallyHiddenInput
                     type="file"
-                    accept="image/*"
+                    accept={FILE_ACCEPT}
                     onChange={(e) => {
                       const file: File | null = (e.target.files as FileList)[0];
                       if (!file) return;
-                      if (!file.type.startsWith("image/")) {
-                        openAlert(["画像ファイルのみアップロードできます。"]);
+                      const extnames = FILE_ACCEPT.split(",");
+                      let permit = false;
+                      extnames.forEach((extname) => {
+                        const fileExt = "." + file.name.split(".").pop();
+                        if (fileExt === extname) {
+                          permit = true;
+                        }
+                      });
+                      if (!permit) {
+                        openAlert([
+                          `決められた拡張子(${FILE_ACCEPT})の画像ファイルのみアップロードできます。`,
+                        ]);
                         return;
                       }
+
                       if (file.size > MAX_FILE_SIZE) {
                         openAlert([
                           `ファイルサイズが大きすぎます！最大${
@@ -433,18 +449,16 @@ export default function Home() {
           >
             キャンセル
           </Button>
-          <Link href="/">
-            <Button
-              variant="contained"
-              color="green"
-              sx={{ color: "var(--bc-white)" }}
-              onClick={(e) => {
-                handleSubmit(e);
-              }}
-            >
-              投稿
-            </Button>
-          </Link>
+          <Button
+            variant="contained"
+            color="green"
+            sx={{ color: "var(--bc-white)" }}
+            onClick={(e) => {
+              handleSubmit(e);
+            }}
+          >
+            投稿
+          </Button>
         </DialogActions>
       </Dialog>
 
