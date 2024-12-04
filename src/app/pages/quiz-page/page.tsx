@@ -16,7 +16,6 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 
 interface Question {
   _id: string;
@@ -106,6 +105,7 @@ export default function Home() {
               isCorrect: isCorrect,
               choiceAnswer: answerIndex,
               correctAnswer,
+              description,
             }
           : q
       )
@@ -156,9 +156,12 @@ export default function Home() {
     <>
       <Title title="結果発表！！" color="red" />
       <div className={styles.resultContainer}>
-        <div className={styles.score}>
-          {score}/{questions.length}
-        </div>
+        <span className={styles.resultTopContainer}>
+          <div className={styles.score}>
+            {score}/{questions.length}
+          </div>
+          <PastQuestionContainer questions={questions} />
+        </span>
         <span
           style={{
             display: "flex",
@@ -206,7 +209,6 @@ export default function Home() {
           </Button>
         </span>
       </div>
-      <PastQuestionContainer questions={questions} />
     </>
   ) : (
     <>
