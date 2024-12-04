@@ -3,6 +3,7 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CircularProgress,
   Collapse,
   Dialog,
   DialogActions,
@@ -11,6 +12,7 @@ import {
   Divider,
   IconButton,
   Popover,
+  Skeleton,
 } from "@mui/material";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
@@ -24,6 +26,7 @@ export default function QuizInfo(props: any) {
   const [moreAnchorEl, setMoreAnchorEl] = useState<HTMLButtonElement | null>(
     null
   );
+  const [loading, setLoading] = useState(true);
   const openMore = Boolean(moreAnchorEl);
   const [openDelete, setOpenDelete] = useState(false);
   const handleLoading = props.handleLoading;
@@ -32,6 +35,7 @@ export default function QuizInfo(props: any) {
 
   useEffect(() => {
     setOpenAnswer(false);
+    setLoading(true);
   }, [question]);
 
   return (
@@ -97,15 +101,18 @@ export default function QuizInfo(props: any) {
         </span>
         <Divider />
 
-        {question.img ? (
+        {question.img && loading && <Skeleton animation="wave" height={300} />}
+        {question.img && (
           <div className={styles.imgWrapper}>
             <img
+              onLoad={() => setLoading(false)}
               className={styles.questionImg}
               src={question.img}
               title={question.title}
+              style={{ display: loading ? "none" : "" }}
             />
           </div>
-        ) : null}
+        )}
 
         <p className={styles.question}>{question.question}</p>
 
