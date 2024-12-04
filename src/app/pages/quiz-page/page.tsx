@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
@@ -50,6 +51,7 @@ export default function Home() {
   const [openDescription, setOpenDescription] = useState(false);
   const session = useSession();
   const searchparams = useSearchParams();
+  const [imgLoading, setImgLoading] = useState(true);
 
   useEffect(() => {
     // fetch("/api/quiz/get-all")
@@ -124,6 +126,7 @@ export default function Home() {
       question.current = questions[nextQuestion];
       setIsAnswer(false);
       setOpenDescription(false);
+      setImgLoading(true);
     } else {
       // 終わり
       setIsFinished(true);
@@ -229,13 +232,20 @@ export default function Home() {
         <div className={styles.questionNumber}>
           Q.{currentQuestionIndex + 1}
         </div>
-        {question.current?.img ? (
+        {question.current?.img && imgLoading && (
+          <Skeleton height={300} width={300} />
+        )}
+        {question.current?.img && (
           <img
             className={styles.quesitonImg}
             src={question.current.img}
             title={question.current.title}
+            onLoad={() => {
+              setImgLoading(false);
+            }}
+            style={{ display: imgLoading ? "none" : "" }}
           />
-        ) : null}
+        )}
         <div className={styles.questionText}>{question.current!.question}</div>
       </div>
       {/* {isAnswer ? <DescriptionContainer {...question} /> : null} */}
