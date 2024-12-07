@@ -1,14 +1,7 @@
-import { Close, ExpandMore, PanoramaFishEye } from "@mui/icons-material";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  IconButton,
-  Pagination,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Close, PanoramaFishEye } from "@mui/icons-material";
+import { IconButton, Pagination } from "@mui/material";
 import styles from "./style.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Question {
   _id: string;
@@ -45,16 +38,13 @@ export default function PastQuestionContainer(props: any) {
       <div className={styles.correctIcons}>
         {questions.map((q: any, i: number) => (
           <IconButton
+            key={i}
             onClick={() => {
               handlePageChange(i + 1);
             }}
           >
             {q.isCorrect ? (
-              <PanoramaFishEye
-                key={i}
-                sx={{ fontSize: "2.3rem" }}
-                color="red"
-              />
+              <PanoramaFishEye sx={{ fontSize: "2.3rem" }} color="red" />
             ) : (
               <Close key={i} sx={{ fontSize: "2.3rem" }} color="blue" />
             )}
