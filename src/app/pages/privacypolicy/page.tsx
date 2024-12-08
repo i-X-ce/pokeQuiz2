@@ -2,11 +2,13 @@ import { Title } from "@/app/components/common/Title/page";
 import styles from "./style.module.css";
 
 export default function Home() {
+  let cnt = 1;
+
   return (
     <>
       <Title title={"プライバシーポリシー"} color="green"></Title>
       <div className={styles.body}>
-        <h2 className={styles.h2}>取得する情報</h2>
+        <h2 className={styles.h2}>{cnt++}.取得する情報</h2>
         <ol className={styles.ul}>
           <li>
             Googleアカウント情報
@@ -23,7 +25,7 @@ export default function Home() {
             </ul>
           </li>
         </ol>
-        <h2 className={styles.h2}>情報の利用目的</h2>
+        <h2 className={styles.h2}>{cnt++}.情報の利用目的</h2>
         <p>取得した情報は以下の目的で使用されます：</p>
         <ol className={styles.ul}>
           <li>
@@ -48,11 +50,11 @@ export default function Home() {
           </li>
           <p>※ これらの情報は、明示された目的以外には使用しません。</p>
         </ol>
-        <h2 className={styles.h2}>プライバシーポリシーの変更</h2>
+        <h2 className={styles.h2}>{cnt++}.プライバシーポリシーの変更</h2>
         <p>
           本ポリシーは、必要に応じて変更されることがあります。変更後の内容は、本アプリ内に掲示され、掲示後ユーザーが本アプリを利用した場合、変更内容に同意したものとみなされます。
         </p>
-        <h2 className={styles.h2}>お問い合わせ</h2>
+        <h2 className={styles.h2}>{cnt++}.お問い合わせ</h2>
         <p>
           プライバシーポリシーに関するお問い合わせは、以下の連絡先までお願いいたします：iceci2804@gmail.com
         </p>
