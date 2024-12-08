@@ -1,12 +1,19 @@
 import Link from "next/link";
 import styles from "./style.module.css";
 import { KeyboardArrowLeft } from "@mui/icons-material";
+import { RogoIcon } from "../RogoIcon";
 
-export function Title(props: any) {
-  const color = `background-${props.color}`;
+export function Title({
+  title,
+  color,
+}: {
+  title: string;
+  color: "red" | "green" | "blue" | "yellow" | "gray" | "white" | "black";
+}) {
+  const styleColor = `background-${color}`;
   return (
-    <div className={`${styles.wrapper} ${color}`}>
-      <Link href="/">
+    <div className={`${styles.wrapper} ${styleColor}`}>
+      {/* <Link href="/">
         <KeyboardArrowLeft
           sx={{
             fontSize: "3rem",
@@ -14,8 +21,9 @@ export function Title(props: any) {
             marginLeft: "20px",
           }}
         />
-      </Link>
-      <div className={styles.title}>{props.title}</div>
+      </Link> */}
+      <RogoIcon className={styles.rogo} />
+      <div className={styles.title}>{title}</div>
     </div>
   );
 }
