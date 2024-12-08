@@ -4,8 +4,10 @@
 
 .title {
   padding: 20px;
-  font-size: 2.5rem;
+  /* font-size: 2.5rem; */
+  height: 4rem;
   color: white;
+  fill: var(--bc-white);
   padding-right: 100px;
 }
 
