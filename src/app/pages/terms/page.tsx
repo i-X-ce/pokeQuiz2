@@ -1,4 +1,4 @@
-import { Title } from "@/app/components/common/Title/page";
+import { Title } from "@/app/components/common/Title";
 import styles from "./style.module.css";
 import Link from "next/link";
 

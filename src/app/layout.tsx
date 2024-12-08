@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { getServerSession, Session } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import SessionWrapper from "./components/common/SessionWrapper/page";
+import SessionWrapper from "./components/common/SessionWrapper";
 import { Kiwi_Maru } from "next/font/google";
-import { ThemeProviderWrapper } from "./components/common/ThemeProviderWrapper/page";
+import { ThemeProviderWrapper } from "./components/common/ThemeProviderWrapper";
 import { Footer } from "./components/common/Footer";
 
 export const metadata: Metadata = {

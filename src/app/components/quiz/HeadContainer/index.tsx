@@ -1,5 +1,5 @@
-import { Title } from "../../common/Title/page";
-import HeadChip from "../HeadChip/page";
+import { Title } from "../../common/Title";
+import HeadChip from "../HeadChip";
 import styles from "./style.module.css";
 
 export default function HeadContainer(props: any) {

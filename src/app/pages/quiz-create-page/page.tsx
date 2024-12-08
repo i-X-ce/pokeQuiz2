@@ -1,10 +1,10 @@
 "use client";
-import { Loading } from "@/app/components/common/Loading/page";
-import { Title } from "@/app/components/common/Title/page";
+import { Loading } from "@/app/components/common/Loading";
+import { Title } from "@/app/components/common/Title";
 import {
   Choice,
   ChoicesCreateContainer,
-} from "@/app/components/create/ChoicesCreateContainer/page";
+} from "@/app/components/create/ChoicesCreateContainer";
 import {
   Alert,
   Button,
@@ -27,7 +27,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
-import { AvatarChip } from "@/app/components/create/AvatarChip/page";
+import { AvatarChip } from "@/app/components/create/AvatarChip";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
 import LoginDialog from "@/app/components/common/LoginDialog";

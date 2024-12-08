@@ -1,6 +1,6 @@
 "use client";
-import { Title } from "@/app/components/common/Title/page";
-import QuizInfo from "@/app/components/view/QuizInfo/page";
+import { Title } from "@/app/components/common/Title";
+import QuizInfo from "@/app/components/view/QuizInfo";
 import {
   Alert,
   FormControl,
@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./style.module.css";
-import { Loading } from "@/app/components/common/Loading/page";
+import { Loading } from "@/app/components/common/Loading";
 import { useRouter, useSearchParams } from "next/navigation";
 import LoginDialog from "@/app/components/common/LoginDialog";
 

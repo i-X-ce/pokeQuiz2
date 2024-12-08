@@ -1,11 +1,11 @@
 "use client";
-import { Loading } from "@/app/components/common/Loading/page";
-import HeadContainer from "@/app/components/quiz/HeadContainer/page";
-import PastQuestionContainer from "@/app/components/quiz/PastQuestionContainer/page";
+import { Loading } from "@/app/components/common/Loading";
+import HeadContainer from "@/app/components/quiz/HeadContainer";
+import PastQuestionContainer from "@/app/components/quiz/PastQuestionContainer";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
-import { Title } from "@/app/components/common/Title/page";
+import { Title } from "@/app/components/common/Title";
 import {
   Button,
   Dialog,
