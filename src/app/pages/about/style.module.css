@@ -1,0 +1,20 @@
+.body {
+  padding: 20px 20vw;
+}
+
+.h2 {
+  margin: 20px 0px 5px 0px;
+  color: var(--bc-green);
+}
+
+.ul {
+  margin: 0px 3rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.blue {
+  color: var(--bc-blue);
+}
