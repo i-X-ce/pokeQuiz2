@@ -179,7 +179,7 @@ export default function Home() {
               </span>
             }
             variant="contained"
-            color="blue"
+            color="green"
             sx={{
               fontSize: "2rem",
               padding: "20px 150px 20px 50px",

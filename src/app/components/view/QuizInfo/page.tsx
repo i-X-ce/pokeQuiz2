@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { Delete, Edit, MoreVert } from "@mui/icons-material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import DescriptionWrapper from "../../common/DescriptionWrapper";
 
 export default function QuizInfo(props: any) {
   const question = props.question;
@@ -135,7 +136,9 @@ export default function QuizInfo(props: any) {
         </div>
 
         <Collapse in={openAnswer}>
-          <p className={styles.description}>{question.description}</p>
+          <DescriptionWrapper color="blue">
+            <p className={styles.description}>{question.description}</p>
+          </DescriptionWrapper>
         </Collapse>
       </CardContent>
 

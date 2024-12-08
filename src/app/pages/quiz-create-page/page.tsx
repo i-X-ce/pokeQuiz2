@@ -31,6 +31,7 @@ import { AvatarChip } from "@/app/components/create/AvatarChip/page";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
 import LoginDialog from "@/app/components/common/LoginDialog";
+import DescriptionWrapper from "@/app/components/common/DescriptionWrapper";
 
 interface Question {
   question: string;
@@ -450,37 +451,11 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div>{description}</div>
+          <DescriptionWrapper color="green">
+            <div className={styles.checkDescription}>{description}</div>
+          </DescriptionWrapper>
         </div>
-        {/* <dl className={styles.chkDl}>
-            <dt className={styles.chkDt}>投稿者:</dt>
-            <dd className={styles.chkDd}>
-              {anonymity ? "けつばん" : user.nickname}
-            </dd>
-            <dt className={styles.chkDt}>タイトル:</dt>
-            <dd className={styles.chkDd}>{title}</dd>
-            <dt className={styles.chkDt}>問題:</dt>
-            <dd className={styles.chkDd}>{question}</dd>
-            <dt className={styles.chkDt}>選択肢:</dt>
-            <dd className={styles.chkDd}>
-              {choices.map((c: Choice, i: number) => (
-                <div key={i}>{c.value}</div>
-              ))}
-            </dd>
-            <dt className={styles.chkDt}>答え:</dt>
-            <dd className={styles.chkDd}>
-              {
-                choices[
-                  Math.max(
-                    0,
-                    choices.findIndex((c) => c.choiced === true)
-                  )
-                ].value
-              }
-            </dd>
-            <dt className={styles.chkDt}>説明:</dt>
-            <dd className={styles.chkDd}>{description}</dd>
-          </dl> */}
+
         <DialogActions>
           <Button
             variant="outlined"

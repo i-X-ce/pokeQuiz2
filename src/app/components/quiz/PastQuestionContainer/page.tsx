@@ -2,6 +2,7 @@ import { Close, PanoramaFishEye } from "@mui/icons-material";
 import { IconButton, Pagination } from "@mui/material";
 import styles from "./style.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
+import DescriptionWrapper from "../../common/DescriptionWrapper";
 
 interface Question {
   _id: string;
@@ -106,7 +107,12 @@ export default function PastQuestionContainer(props: any) {
               </div>
             </span> */}
           </div>
-          <div className={styles.description}>{question?.description}</div>
+          <DescriptionWrapper
+            className={styles.descriptionWrapper}
+            color={question?.isCorrect ? "red" : "blue"}
+          >
+            <div className={styles.description}>{question?.description}</div>
+          </DescriptionWrapper>
           <Pagination
             sx={{ alignSelf: "center" }}
             count={questions.length}

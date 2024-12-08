@@ -1,0 +1,22 @@
+.body {
+  position: relative;
+}
+
+.bodyContainer {
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  background-color: var(--bc-white);
+  top: -1rem;
+  left: 1.5rem;
+  padding: 0.2rem;
+}
+
+.descriptionWrapper {
+  padding: 5px;
+  border: 3px dotted;
+  border-radius: 20px;
+  margin-top: 1rem;
+}

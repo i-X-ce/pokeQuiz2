@@ -175,3 +175,7 @@
   background-color: var(--bc-green);
   color: var(--bc-white);
 }
+
+.checkDescription {
+  margin: 10px;
+}

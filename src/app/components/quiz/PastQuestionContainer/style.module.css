@@ -81,7 +81,11 @@
 }
 
 .description {
-  margin: 10px 0px;
+  margin: 10px;
+}
+
+.descriptionWrapper {
+  margin: 10px 0;
 }
 
 /* .container {
