@@ -1,7 +1,6 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import User from "@/app/lib/models/userModel";
-import mongoose from "mongoose";
-import NextAuth, { SessionStrategy } from "next-auth";
+import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
 export const authOptions = {
@@ -12,7 +11,15 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({
+      user,
+      account,
+      profile,
+    }: {
+      user: any;
+      account: any;
+      profile: any;
+    }) {
       await connectToDatabase();
       const existingUser = await User.findOne({ email: user.email });
 
@@ -24,6 +31,7 @@ export const authOptions = {
         });
         user.isFirstLogin = true;
       } else {
+        await User.updateOne({ email: user.email }, { image: user.image });
         user.isFirstLogin = false;
       }
       return true;
