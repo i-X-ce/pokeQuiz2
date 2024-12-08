@@ -242,8 +242,13 @@ export default function Home() {
       <Paper className={styles.paper} elevation={5}>
         <form action="" method="post" onSubmit={handleSubmit}>
           <TitleTag title="タイトル">
-            <p>投稿するクイズのタイトルを記入してください！</p>
-            <p>最も大きく映るのでかっこいいやつをお願いします。</p>
+            <p>投稿するクイズのタイトルを書いてください！</p>
+            <p>
+              最も大きく映るのでかっこいいよくて関連性のあるものをお願いします。
+            </p>
+            <p>
+              また、匿名ボタンにチェックすると匿名でクイズを投稿することができます。
+            </p>
           </TitleTag>
           <span className={styles.titleAndName}>
             <TextField
@@ -252,7 +257,7 @@ export default function Home() {
               error={titleValidation.error(title)}
               label={titleValidation.label(title)}
               helperText={titleValidation.helperText(title)}
-              placeholder="こんにちは"
+              placeholder="例) なかよしバッヂのジャンプ先"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               color="green"
@@ -273,9 +278,7 @@ export default function Home() {
             </span>
           </span>
           <TitleTag title="問題文">
-            <p>
-              クイズの問題文をここに書いてください！初代ポケモンのバグや任意コード実行に関することならなんでも大歓迎です！
-            </p>
+            <p>クイズの問題文をここに書いてください！</p>
             <p>
               ファイルサイズが{MAX_FILE_SIZE / (1024 * 1024)}
               MBまでの画像もアップロード可能です。
@@ -364,13 +367,13 @@ export default function Home() {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               color="green"
+              placeholder="例) なかよしバッヂのジャンプ先アドレスのメモリの役割のうち、正しいのはどれでしょう？"
             />
           </span>
 
           <TitleTag title="選択肢">
-            <p>
-              ユーザーが選択する文章をここに書いてください！ボタンにチェックするとその選択肢が正解になります。
-            </p>
+            <p>ユーザーが選択する文章をここに書いてください！</p>
+            <p>ボタンにチェックするとその選択肢が正解になります。</p>
             <p>最大で8つまで選択肢を増やすことができます。</p>
           </TitleTag>
           <ChoicesCreateContainer
@@ -394,6 +397,7 @@ export default function Home() {
             onChange={(e) => setDescription(e.target.value)}
             color="green"
             sx={{ marginBottom: "20px" }}
+            placeholder="例) なかよしバッヂはサファリボールの残り個数のアドレスにジャンプします。このメモリや、次のメモリに未定義命令など、フリーズする可能性のある命令が入ると困るので必ずサファリボールの個数を調整してからなかよしバッヂを使いましょう。"
           />
           <span className={styles.submitButtons}>
             <Button

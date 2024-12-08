@@ -76,7 +76,7 @@ export function ChoicesCreateContainer({
             label={validation.label(c.value)}
             helperText={validation.helperText(c.value)}
             // label={"選択肢" + (i + 1)}
-            placeholder="152"
+            placeholder="例) サファリボールの個数"
             value={c.value}
             onChange={(e) => updateChoice(i, e.target.value)}
             color="green"

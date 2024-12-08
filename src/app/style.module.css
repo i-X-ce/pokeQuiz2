@@ -1,7 +1,48 @@
 .buttonContainer {
-  margin: 50px 100px;
+  margin: 0px 20px;
+  min-width: 50vw;
 }
 
 .childButtonContainer {
   display: flex;
+}
+
+.topContainer {
+  display: flex;
+  justify-content: center;
+  margin: 50px 0px;
+  align-items: center;
+}
+
+.rogoContainer {
+  margin: 0px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rogo {
+  height: 200px;
+  fill: var(--bc-black);
+  margin: 0px 20px;
+}
+
+.sloganWrapper {
+  display: flex;
+  align-items: end;
+  border-bottom: 1px solid var(--bc-black);
+  padding-bottom: 20px;
+  text-shadow: 3px 3px 3px var(--bc-shadow);
+  padding: 20px 50px;
+}
+
+.slogan {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.sloganDetails {
+  font-size: 1.2rem;
+  margin: 20px;
+  text-shadow: 3px 3px 3px var(--bc-shadow);
 }

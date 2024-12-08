@@ -17,6 +17,7 @@ import {
 } from "@mui/icons-material";
 import { ChildButton } from "./components/common/ChildButton";
 import { useSession } from "next-auth/react";
+import { RogoIcon } from "./components/common/RogoIcon";
 
 export default function Home() {
   const session = useSession();
@@ -24,71 +25,89 @@ export default function Home() {
   return (
     <>
       <HomeTitle />
-      <div className={styles.buttonContainer}>
-        <HomeButton
-          color={"red"}
-          title={"クイズをとく"}
-          startIcon={<HelpCenter />}
-        >
-          <span className={styles.childButtonContainer}>
-            <ChildButton
-              title={"むずかしい"}
-              startIcon={<SentimentDissatisfied />}
-              link={"/pages/quiz-page?difficulty=hard"}
-              color={"red"}
-            />
-            <ChildButton
-              title={"ふつう"}
-              startIcon={<SentimentNeutral />}
-              link={"/pages/quiz-page?difficulty=normal"}
-              color={"red"}
-            />
-            <ChildButton
-              title={"かんたん"}
-              startIcon={<SentimentSatisfiedAlt />}
-              link={"/pages/quiz-page?difficulty=easy"}
-              color={"red"}
-            />
-          </span>
-        </HomeButton>
-        <HomeButton
-          color={"green"}
-          title={"クイズをつくる"}
-          startIcon={<AddBox />}
-          link="/pages/quiz-create-page?id=new"
-          disabled={session.status !== "authenticated"}
-        />
+      <div className={styles.topContainer}>
+        <div className={styles.rogoContainer}>
+          <div className={styles.sloganWrapper}>
+            <RogoIcon className={styles.rogo} />
+            <div className={styles.slogan}>
+              <p>知らなかった</p>
+              <p>そんなの...</p>
+            </div>
+          </div>
+          <div className={styles.sloganDetails}>
+            <p>
+              初代ポケモンのバグに関するあんなクイズやこんなクイズ、たくさん集めました。
+            </p>
+            <p>きっとまだ見たことのない未知の問題にも出会えるはずです。</p>
+            <p>探してみませんか？あなたにとっての"けつばん"を...。</p>
+          </div>
+        </div>
+        <div className={styles.buttonContainer}>
+          <HomeButton
+            color={"red"}
+            title={"クイズをとく"}
+            startIcon={<HelpCenter />}
+          >
+            <span className={styles.childButtonContainer}>
+              <ChildButton
+                title={"むずかしい"}
+                startIcon={<SentimentDissatisfied />}
+                link={"/pages/quiz-page?difficulty=hard"}
+                color={"red"}
+              />
+              <ChildButton
+                title={"ふつう"}
+                startIcon={<SentimentNeutral />}
+                link={"/pages/quiz-page?difficulty=normal"}
+                color={"red"}
+              />
+              <ChildButton
+                title={"かんたん"}
+                startIcon={<SentimentSatisfiedAlt />}
+                link={"/pages/quiz-page?difficulty=easy"}
+                color={"red"}
+              />
+            </span>
+          </HomeButton>
+          <HomeButton
+            color={"green"}
+            title={"クイズをつくる"}
+            startIcon={<AddBox />}
+            link="/pages/quiz-create-page?id=new"
+            disabled={session.status !== "authenticated"}
+          />
 
-        <HomeButton
-          color={"blue"}
-          title={"クイズをみる"}
-          startIcon={<ViewModule />}
-        >
-          <span className={styles.childButtonContainer}>
-            <ChildButton
-              title={"みんなのクイズ"}
-              startIcon={<SupervisorAccount />}
-              link={"/pages/quiz-view?range=all"}
-              color={"blue"}
-            />
-            <ChildButton
-              title={"じぶんのクイズ"}
-              startIcon={<Face />}
-              link={"/pages/quiz-view?range=mine"}
-              color={"blue"}
-              disabled={session.status !== "authenticated"}
-            />
-          </span>
-        </HomeButton>
-        <HomeButton
-          color={"yellow"}
-          title={"ランキング"}
-          startIcon={<WorkspacePremium />}
-          link="/pages/ranking"
-        />
+          <HomeButton
+            color={"blue"}
+            title={"クイズをみる"}
+            startIcon={<ViewModule />}
+          >
+            <span className={styles.childButtonContainer}>
+              <ChildButton
+                title={"みんなのクイズ"}
+                startIcon={<SupervisorAccount />}
+                link={"/pages/quiz-view?range=all"}
+                color={"blue"}
+              />
+              <ChildButton
+                title={"じぶんのクイズ"}
+                startIcon={<Face />}
+                link={"/pages/quiz-view?range=mine"}
+                color={"blue"}
+                disabled={session.status !== "authenticated"}
+              />
+            </span>
+          </HomeButton>
+          <HomeButton
+            color={"yellow"}
+            title={"ランキング"}
+            startIcon={<WorkspacePremium />}
+            link="/pages/ranking"
+          />
+        </div>
       </div>
 
-      <Button
+      {/* <Button
         onClick={() => {
           axios.delete("/api/quiz/delete-all");
         }}
@@ -117,7 +136,7 @@ export default function Home() {
         }}
       >
         ダミーユーザー作成
-      </Button>
+      </Button> */}
     </>
   );
 }
