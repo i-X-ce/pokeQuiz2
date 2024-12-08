@@ -5,6 +5,7 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import SessionWrapper from "./components/common/SessionWrapper/page";
 import { Kiwi_Maru } from "next/font/google";
 import { ThemeProviderWrapper } from "./components/common/ThemeProviderWrapper/page";
+import { Footer } from "./components/common/Footer";
 
 export const metadata: Metadata = {
   title: "BugPokeQuiz",
@@ -27,7 +28,10 @@ export default async function RootLayout({
     <SessionWrapper session={session as Session}>
       <ThemeProviderWrapper>
         <html lang="ja">
-          <body className={kiwiMaru.className}>{children}</body>
+          <body className={kiwiMaru.className}>
+            {children}
+            <Footer />
+          </body>
         </html>
       </ThemeProviderWrapper>
     </SessionWrapper>

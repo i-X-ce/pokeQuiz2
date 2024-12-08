@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 20px;
+  margin: 20px 0px;
+  align-items: center;
+  color: var(--bc-gray);
+}
+
+.linkContainer {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+  user-select: none;
+  cursor: default;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.rogo {
+  height: 2.5rem;
+  fill: var(--bc-gray);
+}
