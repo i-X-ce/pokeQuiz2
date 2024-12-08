@@ -256,9 +256,8 @@ export default function Home() {
           onClose={() => {
             setOpenDescription(false);
           }}
-          sx={{ padding: "50px" }}
         >
-          <DialogTitle>
+          <div className={styles.descriptionDialogContainer}>
             <div
               className={`${styles.isCorrect} ${
                 question.current?.isCorrect ? "font-red" : "font-blue"
@@ -266,8 +265,6 @@ export default function Home() {
             >
               {question.current?.isCorrect ? "正解" : "不正解"}
             </div>
-          </DialogTitle>
-          <DialogContent>
             <div className={styles.correctAnswer}>
               正解は「
               {
@@ -278,7 +275,7 @@ export default function Home() {
               」!
             </div>
             <div>{question.current?.description}</div>
-          </DialogContent>
+          </div>
           <Divider />
           <Button
             color="primary"

@@ -95,3 +95,8 @@
   justify-content: space-around;
   align-items: center;
 }
+
+.descriptionDialogContainer {
+  padding: 20px 40px;
+  min-width: 20vw;
+}
