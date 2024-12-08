@@ -17,7 +17,7 @@
   display: flex;
 }
 
-.chkDl {
+/* .chkDl {
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 10px;
@@ -32,7 +32,7 @@
 
 .chkDd {
   text-align: start;
-}
+} */
 
 .titleTag {
   display: flex;
@@ -122,4 +122,56 @@
 
 .imgDelBtn {
   position: absolute;
+}
+
+.checkContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 5px;
+}
+
+.checkUser {
+  font-size: small;
+  color: var(--bc-gray);
+}
+
+.checkTitle {
+  font-size: large;
+  font-weight: bold;
+  color: var(--bc-green);
+}
+
+.checkQuestion {
+  display: inline;
+}
+
+.checkImg {
+  float: left;
+  width: 30%;
+  margin: 5px;
+}
+
+.checkChoices {
+  display: grid;
+  position: relative;
+  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+}
+
+.checkChoice {
+  display: flex;
+  color: var(--bc-green);
+  background-color: var(--bc-white);
+  border: 1px solid var(--bc-green);
+  border-radius: 500px;
+  margin: 5px;
+  padding: 3px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkChoiceCorrect {
+  background-color: var(--bc-green);
+  color: var(--bc-white);
 }

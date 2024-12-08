@@ -428,8 +428,31 @@ export default function Home() {
           </DialogContentText>
         </DialogContent>
         <Divider />
-        <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
-          <dl className={styles.chkDl}>
+        <div className={styles.checkContainer}>
+          <div className={styles.checkUser}>
+            投稿者:{anonymity ? "けつばん" : user.nickname}
+          </div>
+          <div className={styles.checkTitle}>{title}</div>
+          <div className={styles.checkQuestion}>
+            {imgSrc && <img src={imgSrc} className={styles.checkImg}></img>}
+            {question}
+          </div>
+          <div className={styles.checkChoices}>
+            {choices.map((c: Choice, i: number) => (
+              <div
+                key={i}
+                className={
+                  styles.checkChoice +
+                  (c.choiced ? " " + styles.checkChoiceCorrect : "")
+                }
+              >
+                {c.value}
+              </div>
+            ))}
+          </div>
+          <div>{description}</div>
+        </div>
+        {/* <dl className={styles.chkDl}>
             <dt className={styles.chkDt}>投稿者:</dt>
             <dd className={styles.chkDd}>
               {anonymity ? "けつばん" : user.nickname}
@@ -457,8 +480,7 @@ export default function Home() {
             </dd>
             <dt className={styles.chkDt}>説明:</dt>
             <dd className={styles.chkDd}>{description}</dd>
-          </dl>
-        </DialogContent>
+          </dl> */}
         <DialogActions>
           <Button
             variant="outlined"
