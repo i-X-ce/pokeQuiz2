@@ -56,8 +56,11 @@ export default function Home() {
         </p>
         <h2 className={styles.h2}>{cnt++}.お問い合わせ</h2>
         <p>
-          プライバシーポリシーに関するお問い合わせは、以下の連絡先までお願いいたします：iceci2804@gmail.com
+          プライバシーポリシーに関するお問い合わせは、以下の連絡先までお願いいたします
         </p>
+        <a href="mailto:iceci2804@gmail.com?subject=BugPokeQuiz_プライバシーポリシー">
+          iceci2804@gmail.com
+        </a>
       </div>
     </>
   );

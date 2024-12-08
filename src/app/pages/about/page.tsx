@@ -46,10 +46,10 @@ export default function Home() {
         <h2 className={styles.h2}>さいごに</h2>
         <p>
           当サイトは個人が運営・開発・デザインを行っています。クオリティを高めるために努力をしていますが、至らない点もあるかと思います。何か要望やご意見等ありましたら
-          <a href="https://x.com/i_c_e_i_c_e_">X（@i_c_e_i_c_e_）</a>
+          <a href="https://x.com/i_c_e_i_c_e_">X(@i_c_e_i_c_e_)</a>
           のダイレクトメッセージ や、
-          <a href="mailto:example@example.com?subject=BugPokeQuiz">
-            メール（iceci2804@gmail.com）
+          <a href="mailto:iceci2804@gmail.com?subject=BugPokeQuiz">
+            メール(iceci2804@gmail.com)
           </a>
           までご連絡ください。うれしいご感想を
           <a
