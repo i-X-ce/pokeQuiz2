@@ -1,7 +1,7 @@
 import { Close, PanoramaFishEye } from "@mui/icons-material";
 import { IconButton, Pagination } from "@mui/material";
 import styles from "./style.module.css";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 interface Question {
   _id: string;
@@ -28,10 +28,12 @@ export default function PastQuestionContainer(props: any) {
     setQuestion(questions[0]);
   }, []);
 
-  const handlePageChange = (n: number) => {
-    setPage(n - 1);
-    setQuestion(questions[n - 1]);
+  const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
+    setPage(page - 1);
+    setQuestion(questions[page - 1]);
   };
+
+  const styleColor = question?.isCorrect ? "var(--bc-red)" : "var(--bc-blue)";
 
   return (
     <div className={styles.container}>
@@ -39,8 +41,8 @@ export default function PastQuestionContainer(props: any) {
         {questions.map((q: any, i: number) => (
           <IconButton
             key={i}
-            onClick={() => {
-              handlePageChange(i + 1);
+            onClick={(e) => {
+              handlePageChange(e, i + 1);
             }}
           >
             {q.isCorrect ? (
@@ -72,8 +74,26 @@ export default function PastQuestionContainer(props: any) {
             ) : null}
             <div className={styles.questionText}>{question?.question}</div>
           </div>
-          <div className={styles.choiceContainer}>
-            <span className={styles.choiceSet}>
+          <div className={styles.choices}>
+            {question?.choices.map((c: any, i: number) => (
+              <div
+                key={i}
+                className={styles.choice}
+                style={{
+                  color:
+                    question.choiceAnswer === i
+                      ? "var(--bc-white)"
+                      : styleColor,
+                  backgroundColor:
+                    question.choiceAnswer === i
+                      ? styleColor
+                      : "var(--bc-white)",
+                }}
+              >
+                {c + (question.correctAnswer === i ? "(正解)" : "")}
+              </div>
+            ))}
+            {/* <span className={styles.choiceSet}>
               <div>あなた</div>
               <div className={styles.choice + " " + styles.redBg}>
                 {question?.choices[question.choiceAnswer]}
@@ -84,13 +104,15 @@ export default function PastQuestionContainer(props: any) {
               <div className={styles.choice + " " + styles.greenBg}>
                 {question?.choices[question.correctAnswer]}
               </div>
-            </span>
+            </span> */}
           </div>
           <div className={styles.description}>{question?.description}</div>
           <Pagination
+            sx={{ alignSelf: "center" }}
             count={questions.length}
-            onChange={(e, n) => handlePageChange(n)}
-            color="blue"
+            onChange={handlePageChange}
+            page={page + 1}
+            color={question?.isCorrect ? "red" : "blue"}
           />
         </div>
       </div>
