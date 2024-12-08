@@ -3,9 +3,12 @@ import Link from "next/link";
 import { RogoIcon } from "../RogoIcon";
 import styles from "./style.module.css";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useState } from "react";
+import LoginDialog from "../LoginDialog";
 
 export function Footer() {
   const session = useSession();
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
 
   return (
     <footer className={styles.container}>
@@ -14,7 +17,7 @@ export function Footer() {
         <li
           onClick={() => {
             if (session.status === "authenticated") signOut();
-            else signIn("google", { prompt: "select_account" });
+            else setOpenLoginDialog(true);
           }}
         >
           {session.status === "authenticated" ? "ログアウト" : "ログイン"}
@@ -40,6 +43,12 @@ export function Footer() {
           </Link>
         </li>
       </ul>
+      <LoginDialog
+        open={openLoginDialog}
+        onClose={() => {
+          setOpenLoginDialog(false);
+        }}
+      />
     </footer>
   );
 }

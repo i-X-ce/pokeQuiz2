@@ -1,0 +1,11 @@
+.container {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.description {
+  color: var(--bc-gray);
+  font-size: 0.8rem;
+}

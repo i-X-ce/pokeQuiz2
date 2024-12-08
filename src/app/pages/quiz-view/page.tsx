@@ -14,7 +14,8 @@ import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./style.module.css";
 import { Loading } from "@/app/components/common/Loading/page";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import LoginDialog from "@/app/components/common/LoginDialog";
 
 interface Question {
   _id: string;
@@ -42,11 +43,14 @@ export default function Home() {
   const searchParams = useSearchParams();
   const [order, setOrder] = useState("newest");
   const [openAlert, setOpneAlert] = useState(false);
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  const router = useRouter();
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
+    const range = searchParams.get("range");
     axios
       .get("/api/quiz/get-count", {
-        params: { range: searchParams.get("range") },
+        params: { range: range || "all" },
       })
       .then((res) => res.data)
       .then((data) => {
@@ -54,6 +58,9 @@ export default function Home() {
           Math.floor(data / quizLimitPerPage) +
             (data % quizLimitPerPage > 0 ? 1 : 0)
         );
+      })
+      .catch((error) => {
+        console.log(error);
       });
     axios
       .get("/api/quiz/get-view", {
@@ -61,12 +68,16 @@ export default function Home() {
           index,
           size,
           sortType,
-          range: searchParams.get("range"),
+          range: range || "all",
         },
       })
       .then((res) => res.data)
       .then((data) => {
         setQuestions([...data]);
+      })
+      .catch((error) => {
+        console.log(error);
+        setOpenLoginDialog(true);
       });
   };
 
@@ -84,7 +95,18 @@ export default function Home() {
     loadingQuestions(0, quizLimitPerPage, "newest");
   }, []);
 
-  if (!questions) return <Loading />;
+  if (!questions)
+    return (
+      <>
+        <Loading />
+        <LoginDialog
+          open={openLoginDialog}
+          onClose={() => {
+            router.push("/");
+          }}
+        />
+      </>
+    );
 
   return (
     <>

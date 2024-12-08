@@ -30,6 +30,7 @@ import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
+import LoginDialog from "@/app/components/common/LoginDialog";
 
 interface Question {
   question: string;
@@ -73,6 +74,7 @@ export default function Home() {
   const [isAllowToanvigate, setIsAllowToNavigate] = useState(false);
   const [openUploadSuccess, setOpenUploadSuccess] = useState(false);
   const [openUploadFailed, setOpenUploadFailed] = useState(false);
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
 
   const [openValidationAlert, setOpenValidationAlert] = useState(false);
   const [alertList, setAlertList] = useState<String[]>([]);
@@ -88,13 +90,14 @@ export default function Home() {
   useEffect(() => {
     axios
       .get("/api/user/get", {
-        params: { email: session?.user?.email, otherParam: "value" },
+        params: { email: session?.user?.email },
       })
       .then((res) => {
         setUser(res.data);
       })
       .catch((error) => {
         console.error("ユーザーデータが取得できません", error);
+        setOpenLoginDialog(true);
       });
     loadingQuestion();
 
@@ -219,7 +222,17 @@ export default function Home() {
   };
 
   if (!user) {
-    return <Loading />;
+    return (
+      <>
+        <Loading />
+        <LoginDialog
+          open={openLoginDialog}
+          onClose={() => {
+            router.push("/");
+          }}
+        />
+      </>
+    );
   }
 
   return (

@@ -6,6 +6,7 @@ import axios from "axios";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { NickNameInput } from "../NickNameInput";
+import LoginDialog from "../LoginDialog";
 
 interface User {
   image: string;
@@ -22,6 +23,7 @@ export default function LoginBtn() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [userData, setUserData] = useState<User>();
   const [openNickname, setOpenNickname] = useState(false);
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
 
   useEffect(() => {
     axios
@@ -29,7 +31,8 @@ export default function LoginBtn() {
       .then((res) => res.data)
       .then((data) => {
         setUserData(data);
-      });
+      })
+      .catch((error) => console.log(error));
   }, [session, openNickname]);
 
   return (
@@ -38,7 +41,8 @@ export default function LoginBtn() {
         className={styles.chip}
         onClick={(e: React.MouseEvent<HTMLElement>) => {
           if (session.status != "authenticated") {
-            signIn("google", { prompt: "select_account" });
+            // signIn("google", { prompt: "select_account" });
+            setOpenLoginDialog(true);
             return;
           }
           setAnchorEl(e.currentTarget);
@@ -46,7 +50,15 @@ export default function LoginBtn() {
         }}
       >
         <Avatar src={session.data?.user?.image as string} />
-        <div className={styles.nickname}>
+        <div
+          className={styles.nickname}
+          style={{
+            color:
+              session.status == "authenticated"
+                ? "var(--bc-black)"
+                : "var(--bc-gray)",
+          }}
+        >
           {session.status == "authenticated"
             ? userData?.nickname || "-----"
             : "ログイン"}
@@ -117,6 +129,13 @@ export default function LoginBtn() {
         open={openNickname}
         onClose={() => {
           setOpenNickname(false);
+        }}
+      />
+
+      <LoginDialog
+        open={openLoginDialog}
+        onClose={() => {
+          setOpenLoginDialog(false);
         }}
       />
     </>
