@@ -1,6 +1,9 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
 import User from "@/app/lib/models/userModel";
+import { s3Client } from "@/app/lib/s3";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -84,11 +87,37 @@ export async function GET(req: NextRequest) {
     { $limit: size },
   ]);
 
-  questions.forEach((q) => {
+  // questions.forEach(async (q) => {
+  //   q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
+  //   delete q.userInfo;
+  //   delete q.userId;
+
+  //   if (q.img) {
+  //     const command = new GetObjectCommand({
+  //       Bucket: process.env.AWS_S3_BUCKET_NAME,
+  //       Key: "uploads/" + q._id + q.img,
+  //     });
+  //     q.img = await getSignedUrl(s3Client, command, {
+  //       expiresIn: 1800,
+  //     });
+  //   }
+  // });
+
+  for (const q of questions) {
     q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
     delete q.userInfo;
     delete q.userId;
-  });
+
+    if (q.img) {
+      const command = new GetObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: "uploads/" + q._id + q.img,
+      });
+      q.img = await getSignedUrl(s3Client, command, {
+        expiresIn: 60,
+      });
+    }
+  }
 
   return NextResponse.json(questions, { status: 200 });
 }

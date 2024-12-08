@@ -1,5 +1,4 @@
 .container {
-  margin: 30px 0;
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -8,9 +7,14 @@
 
 .choice {
   display: flex;
-  margin: 10px;
+  margin: 5px 10px;
 }
 
 .add {
   color: var(--bc-white);
+}
+
+.ratio {
+  aspect-ratio: 1/1;
+  height: 100%;
 }

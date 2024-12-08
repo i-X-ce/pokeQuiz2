@@ -5,7 +5,7 @@ export const quizSchema = new Schema(
     question: String,
     choices: [String],
     correctAnswer: Number,
-    imageUrl: String,
+    img: String,
     answerCnt: Number,
     correctCnt: Number,
     description: String,

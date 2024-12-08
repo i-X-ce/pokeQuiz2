@@ -12,6 +12,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
@@ -22,12 +23,12 @@ interface Question {
   question: string;
   choices: string[];
   correctAnswer: Number;
-  imageUrl?: String;
+  img?: string;
   answerCnt: Number;
   correctCnt: Number;
-  description: String;
-  userName?: String;
-  title: String;
+  description: string;
+  userName?: string;
+  title: string;
   isCorrect: boolean;
   choiceAnswer: number;
   userId: string;
@@ -50,6 +51,7 @@ export default function Home() {
   const [openDescription, setOpenDescription] = useState(false);
   const session = useSession();
   const searchparams = useSearchParams();
+  const [imgLoading, setImgLoading] = useState(true);
 
   useEffect(() => {
     // fetch("/api/quiz/get-all")
@@ -105,6 +107,7 @@ export default function Home() {
               isCorrect: isCorrect,
               choiceAnswer: answerIndex,
               correctAnswer,
+              description,
             }
           : q
       )
@@ -123,6 +126,7 @@ export default function Home() {
       question.current = questions[nextQuestion];
       setIsAnswer(false);
       setOpenDescription(false);
+      setImgLoading(true);
     } else {
       // 終わり
       setIsFinished(true);
@@ -155,9 +159,12 @@ export default function Home() {
     <>
       <Title title="結果発表！！" color="red" />
       <div className={styles.resultContainer}>
-        <div className={styles.score}>
-          {score}/{questions.length}
-        </div>
+        <span className={styles.resultTopContainer}>
+          <div className={styles.score}>
+            {score}/{questions.length}
+          </div>
+          <PastQuestionContainer questions={questions} />
+        </span>
         <span
           style={{
             display: "flex",
@@ -205,7 +212,6 @@ export default function Home() {
           </Button>
         </span>
       </div>
-      <PastQuestionContainer questions={questions} />
     </>
   ) : (
     <>
@@ -223,7 +229,23 @@ export default function Home() {
         score={score}
       />
       <div className={styles.questionContainer}>
-        <div className={styles.questionNumber}>{currentQuestionIndex + 1}</div>
+        <div className={styles.questionNumber}>
+          Q.{currentQuestionIndex + 1}
+        </div>
+        {question.current?.img && imgLoading && (
+          <Skeleton height={300} width={300} />
+        )}
+        {question.current?.img && (
+          <img
+            className={styles.quesitonImg}
+            src={question.current.img}
+            title={question.current.title}
+            onLoad={() => {
+              setImgLoading(false);
+            }}
+            style={{ display: imgLoading ? "none" : "" }}
+          />
+        )}
         <div className={styles.questionText}>{question.current!.question}</div>
       </div>
       {/* {isAnswer ? <DescriptionContainer {...question} /> : null} */}

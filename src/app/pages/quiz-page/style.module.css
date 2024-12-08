@@ -21,8 +21,10 @@
   z-index: -1;
 }
 
-.questionNumber::before {
-  content: "Q.";
+.quesitonImg {
+  height: 400px;
+  margin: 20px;
+  box-shadow: 3px 3px 10px 2px var(--bc-shadow);
 }
 
 .choicesContainer {
@@ -86,4 +88,10 @@
 
 .isCorrect {
   font-size: 2rem;
+}
+
+.resultTopContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }

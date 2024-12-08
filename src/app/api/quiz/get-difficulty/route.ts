@@ -1,5 +1,8 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
+import { s3Client } from "@/app/lib/s3";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -60,11 +63,21 @@ export async function GET(req: NextRequest) {
       delete q.correctAnswer;
       delete q.description;
       // delete q.userId;
+      if (q.img) {
+        const command = new GetObjectCommand({
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key: "uploads/" + q._id + q.img,
+        });
+        q.img = await getSignedUrl(s3Client, command, {
+          expiresIn: 1800,
+        });
+      }
       resQuestions.push(q);
     }
 
     return NextResponse.json(resQuestions, { status: 200 });
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json(
       {
         message: "Internal server error",
