@@ -13,7 +13,16 @@ export function Footer() {
             利用規約
           </Link>
         </li>
-        <li>このサイトについて</li>
+        <li>
+          <Link className={styles.link} href={"/pages/privacypolicy"}>
+            プライバシーポリシー
+          </Link>
+        </li>
+        <li>
+          <Link className={styles.link} href={"/pages/about"}>
+            このサイトについて
+          </Link>
+        </li>
         <li>
           <Link className={styles.link} href={"https://x.com/i_c_e_i_c_e_"}>
             @i_c_e_i_c_e_
