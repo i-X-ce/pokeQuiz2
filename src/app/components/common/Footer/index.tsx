@@ -8,7 +8,11 @@ export function Footer() {
       <RogoIcon className={styles.rogo} />
       <ul className={styles.linkContainer}>
         <li>ログアウト</li>
-        <li>利用規約</li>
+        <li>
+          <Link className={styles.link} href={"/pages/terms"}>
+            利用規約
+          </Link>
+        </li>
         <li>このサイトについて</li>
         <li>
           <Link className={styles.link} href={"https://x.com/i_c_e_i_c_e_"}>

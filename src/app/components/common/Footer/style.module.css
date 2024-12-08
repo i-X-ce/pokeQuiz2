@@ -10,7 +10,7 @@
 .linkContainer {
   display: flex;
   list-style: none;
-  gap: 30px;
+  /* gap: 30px; */
   user-select: none;
   cursor: default;
 }
