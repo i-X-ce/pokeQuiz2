@@ -7,10 +7,10 @@ export default function Home() {
       <Title title={"プライバシーポリシー"} color="green"></Title>
       <div className={styles.body}>
         <h2 className={styles.h2}>取得する情報</h2>
-        <ol>
+        <ol className={styles.ul}>
           <li>
             Googleアカウント情報
-            <ul>
+            <ul className={styles.ul}>
               <li>アイコン画像</li>
               <li>名前</li>
               <li>メールアドレス</li>
@@ -18,17 +18,17 @@ export default function Home() {
           </li>
           <li>
             ユーザーが提供する情報
-            <ul>
+            <ul className={styles.ul}>
               <li>クイズ作成時にアップロードされた画像や文章</li>
             </ul>
           </li>
         </ol>
         <h2 className={styles.h2}>情報の利用目的</h2>
         <p>取得した情報は以下の目的で使用されます：</p>
-        <ol>
+        <ol className={styles.ul}>
           <li>
             メールアドレス
-            <ul>
+            <ul className={styles.ul}>
               <li>ユーザーアカウントの識別</li>
               <li>サービス運営上必要な連絡</li>
             </ul>
@@ -36,13 +36,13 @@ export default function Home() {
 
           <li>
             名前・アイコン画像
-            <ul>
+            <ul className={styles.ul}>
               <li>アカウントプロフィールの表示</li>
             </ul>
           </li>
           <li>
             ユーザーが作成したコンテンツ
-            <ul>
+            <ul className={styles.ul}>
               <li>他のユーザーに共有されるクイズ内容として利用</li>
             </ul>
           </li>

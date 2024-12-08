@@ -13,12 +13,12 @@ export default function Home() {
           本利用規約（以下「本規約」といいます）は、BugPokeQuiz（以下「本サービス」といいます）をご利用いただくすべてのユーザー（以下「ユーザー」といいます）に適用されるものとします。本サービスを利用することで、本規約に同意したものとみなされます。
         </p>
         <h2 className={styles.h2}>第2条（取得する情報とその利用目的）</h2>
-        <ol>
+        <ol className={styles.ul}>
           <li>
             <p>
               ユーザーが本サービスにログインする際、以下の情報を取得します：
             </p>
-            <ul>
+            <ul className={styles.ul}>
               <li>Googleのアイコン画像</li>
               <li>名前</li>
               <li>メールアドレス</li>
@@ -33,13 +33,13 @@ export default function Home() {
           </li>
         </ol>
         <h2 className={styles.h2}>第3条（クイズ作成機能の利用）</h2>
-        <ol>
+        <ol className={styles.ul}>
           <li>
             本サービスでは、ユーザーがクイズを作成する際に画像をアップロードする機能を提供します。
           </li>
           <li>
             以下に該当する内容の画像や文章の投稿を禁止します：
-            <ul>
+            <ul className={styles.ul}>
               <li>公序良俗に反するもの</li>
               <li>差別的または侮辱的な内容を含むもの</li>
               <li>その他、運営が不適切と判断したもの</li>
@@ -50,7 +50,7 @@ export default function Home() {
           </li>
         </ol>
         <h2 className={styles.h2}>第4条（免責事項）</h2>
-        <ol>
+        <ol className={styles.ul}>
           <li>
             本サービスの利用に関連して発生したトラブルや損害について、運営は一切の責任を負いません。
           </li>

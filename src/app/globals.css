@@ -47,9 +47,3 @@
 .font-yellow {
   color: var(--bc-yellow);
 }
-
-ul,
-ol,
-li {
-  margin: 0px 10px;
-}
