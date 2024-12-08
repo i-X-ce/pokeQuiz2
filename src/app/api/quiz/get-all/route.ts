@@ -6,11 +6,11 @@ export async function GET() {
   await connectToDatabase();
 
   const questions = await Question.find({ userId: { $ne: null } })
-    .populate("userId")
+    .populate("userId", "-email -image")
     .lean();
   const res = questions.map((q) => ({
     ...q,
-    userName: q.anonymity ? "けつばん" : q.userId.nickname,
+    userName: q.anonymity || !q.userId ? "けつばん" : q.userId.nickname,
   }));
   return NextResponse.json(res);
 }

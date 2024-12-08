@@ -1,0 +1,11 @@
+.users {
+  margin: 30px;
+  font-size: larger;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}

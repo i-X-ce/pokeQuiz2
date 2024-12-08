@@ -2,20 +2,18 @@
   padding: 0;
   margin: 0;
   color: inherit;
+  font-family: "Kiwi Maru";
 }
 
 :root {
   --bc-white: #ffffff;
+  --bc-gray: #808080;
   --bc-black: #000000;
   --bc-shadow: #00000034;
   --bc-red: #fa4949;
   --bc-green: #22b94a;
   --bc-blue: #3e98ff;
   --bc-yellow: #ffca38;
-}
-
-svg {
-  width: 20px;
 }
 
 .background-red {

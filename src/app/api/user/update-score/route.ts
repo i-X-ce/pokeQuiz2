@@ -3,7 +3,8 @@ import User from "@/app/lib/models/userModel";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+// ユーザーの正答率を更新する
+export async function PUT(req: NextRequest) {
   await connectToDatabase();
   const session = await getServerSession();
 
@@ -11,12 +12,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
   }
 
-  const { nickname, answerCnt, correctCnt } = await req.json();
-
+  const { addAnswerCnt, addCorrectCnt } = await req.json();
   await User.findOneAndUpdate(
-    { email: session.user!.email },
-    { nickname, answerCnt, correctCnt }
+    { email: session.user?.email },
+    { $inc: { answerCnt: addAnswerCnt, correctCnt: addCorrectCnt } }
   );
-  console.log(session.user?.email, nickname, "を更新");
   return NextResponse.json({ message: "ユーザーが更新されました" });
 }

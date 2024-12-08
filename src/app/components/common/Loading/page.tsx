@@ -1,3 +1,9 @@
+import { Backdrop, CircularProgress, LinearProgress } from "@mui/material";
+
 export function Loading() {
-  return <div>Loading...</div>;
+  return (
+    <Backdrop open>
+      <CircularProgress color="white" />
+    </Backdrop>
+  );
 }

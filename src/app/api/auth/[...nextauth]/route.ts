@@ -29,10 +29,13 @@ export const authOptions = {
       return true;
     },
   },
-  async session({ session, token }) {
-    session.user.isFirstLogin = token.isFirstLogin || false;
-    return session;
-  },
+  // async session({ session, token }) {
+  //   session.user.isFirstLogin = token.isFirstLogin || false;
+  //   return session;
+  // },
+  // session: {
+  //   jwt: true,
+  // },
   // session: {
   //   strategy: "jwt" as SessionStrategy,
   // },

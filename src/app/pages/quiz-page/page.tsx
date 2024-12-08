@@ -14,6 +14,8 @@ import {
   Divider,
 } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 interface Question {
   _id: string;
@@ -46,10 +48,29 @@ export default function Home() {
   const [isFinished, setIsFinished] = useState(false);
   const [isAnswer, setIsAnswer] = useState<boolean>(false);
   const [openDescription, setOpenDescription] = useState(false);
+  const session = useSession();
+  const searchparams = useSearchParams();
 
   useEffect(() => {
-    fetch("/api/quiz/get-all")
-      .then((res) => res.json())
+    // fetch("/api/quiz/get-all")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setQuestions(data);
+    //     question.current = data[0];
+    //     console.log(data);
+    //   })
+    //   .catch((err) => console.error("Error fetching quiz data:", err));
+
+    axios
+      .get("/api/quiz/get-difficulty", {
+        params: {
+          questionCount: 5,
+          difficulty: searchparams.get("difficulty"),
+        },
+      })
+      .then((res) => {
+        return res.data;
+      })
       .then((data) => {
         setQuestions(data);
         question.current = data[0];
@@ -57,18 +78,34 @@ export default function Home() {
       .catch((err) => console.error("Error fetching quiz data:", err));
   }, []);
 
-  // ボタン押したとき
-  const handleAnswer = (answerIndex: number) => {
+  // 選択肢を押したとき
+  const handleAnswer = async (answerIndex: number) => {
     setOpenDescription(true);
     if (isAnswer) return;
+    const correctData = await axios.get("/api/quiz/get-correctAnswer", {
+      params: { id: question.current?._id, answerIndex },
+    });
+    const { isCorrect, description, correctAnswer } = correctData.data;
+    // const isCorrect =
+    //   (question.current!.correctAnswer as number) === answerIndex;
+    question.current = {
+      ...question.current,
+      isCorrect,
+      description,
+      correctAnswer,
+    } as Question;
+    console.log(isCorrect, description);
+
     setIsAnswer(true);
-    const isCorrect =
-      (question.current!.correctAnswer as number) === answerIndex;
-    question.current = { ...question.current, isCorrect } as Question;
     setQuestions((prevQuestions) =>
       prevQuestions.map((q, index) =>
         index === currentQuestionIndex
-          ? { ...q, isCorrect: isCorrect, choiceAnswer: answerIndex }
+          ? {
+              ...q,
+              isCorrect: isCorrect,
+              choiceAnswer: answerIndex,
+              correctAnswer,
+            }
           : q
       )
     );
@@ -89,14 +126,23 @@ export default function Home() {
     } else {
       // 終わり
       setIsFinished(true);
-      questions.forEach(async (temp) => {
-        const updateData = {
-          ...temp,
-          answerCnt: ((temp.answerCnt as number) || 0) + 1,
-          correctCnt:
-            ((temp.correctCnt as number) || 0) + (temp.isCorrect ? 1 : 0),
-        };
-        axios.put("/api/quiz/update", updateData);
+      let correctCnt = 0;
+      // questions.forEach(async (q) => {
+      //   const updateData = {
+      //     ...q,
+      //     answerCnt: ((q.answerCnt as number) || 0) + 1,
+      //     correctCnt:
+      //       ((q.correctCnt as number) || 0) + (q.isCorrect ? 1 : 0),
+      //   };
+      //   axios.put("/api/quiz/update", updateData);
+      //   correctCnt += q.isCorrect ? 1 : 0;
+      // });
+      axios.put("/api/quiz/update-cnt", questions);
+      // ユーザーの正答率等を更新
+      if (session.status != "authenticated") return;
+      axios.put("/api/user/update-score", {
+        addAnswerCnt: questions.length,
+        addCorrectCnt: questions.filter((q) => q.isCorrect).length,
       });
     }
   };
@@ -134,7 +180,7 @@ export default function Home() {
               color: "var(--bc-white)",
             }}
             component="a"
-            href="/pages/quiz-page"
+            href={"/pages/quiz-page?" + searchparams.toString()}
           >
             もう一度
           </Button>

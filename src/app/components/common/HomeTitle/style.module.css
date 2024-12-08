@@ -1,0 +1,60 @@
+.allWrapper {
+  position: relative;
+}
+
+.title {
+  padding: 20px;
+  font-size: 2.5rem;
+  color: white;
+  padding-right: 100px;
+}
+
+.titleWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  border-end-end-radius: 500px;
+  box-shadow: 3px 3px 3px var(--bc-shadow);
+  padding-bottom: 20px;
+  background-color: var(--bc-red);
+}
+
+.topWrapper {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+.loginWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-end-start-radius: 500px;
+  box-shadow: 3px 3px 3px var(--bc-shadow);
+  padding-bottom: 20px;
+  background-color: var(--bc-yellow);
+  margin-left: 30px;
+}
+
+.bottomWrapper {
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+  margin: 20px 0;
+}
+
+.greenDecoration {
+  background-color: var(--bc-green);
+  width: 30%;
+  border-radius: 0 500px 500px 0;
+  box-shadow: 3px 3px 3px var(--bc-shadow);
+}
+
+.blueDecoration {
+  background-color: var(--bc-blue);
+  width: 20%;
+  border-radius: 500px 0 0 500px;
+  box-shadow: 3px 3px 3px var(--bc-shadow);
+}

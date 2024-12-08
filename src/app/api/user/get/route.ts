@@ -1,11 +1,14 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import User from "@/app/lib/models/userModel";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   await connectToDatabase();
-  const email = req.nextUrl.searchParams.get("email");
-  console.log();
+  const session = await getServerSession();
+
+  // const email = req.nextUrl.searchParams.get("email");
+  const email = session?.user?.email;
 
   if (!email) {
     return NextResponse.json(

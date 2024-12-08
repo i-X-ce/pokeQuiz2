@@ -1,0 +1,45 @@
+.user {
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+  border-bottom: 1px solid var(--bc-shadow);
+  padding: 10px 0;
+}
+
+.user:hover {
+  background-color: var(--bc-shadow);
+  transition: 0.3s;
+}
+
+.avatarChip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 20px;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+}
+
+.dummy {
+  background-color: var(--bc-yellow);
+  color: var(--bc-white);
+}
+
+.rank {
+  text-align: center;
+  width: 1.2em;
+}
+
+.first {
+  color: rgb(205, 193, 31);
+}
+
+.second {
+  color: rgb(160, 160, 160);
+}
+
+.third {
+  color: rgb(161, 124, 45);
+}

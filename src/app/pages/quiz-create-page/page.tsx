@@ -6,6 +6,7 @@ import {
   ChoicesCreateContainer,
 } from "@/app/components/create/ChoicesCreateContainer/page";
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -15,6 +16,7 @@ import {
   Divider,
   FormControlLabel,
   Paper,
+  Snackbar,
   Switch,
   TextField,
 } from "@mui/material";
@@ -23,6 +25,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip/page";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface Question {
   question: string;
@@ -32,6 +36,7 @@ interface Question {
   title: String;
   userId: string;
   anonymity: boolean;
+  _id: string | null;
 }
 
 interface User {
@@ -56,10 +61,15 @@ export default function Home() {
   const [openCnancelLog, setOpenCancelLog] = useState(false);
   const [isAllowToanvigate, setIsAllowToNavigate] = useState(false);
 
+  const [openValidationAlert, setOpenValidationAlert] = useState(false);
+  const [alertList, setAlertList] = useState<String[]>([]);
+
   const titleValidation = useValidation("タイトル", 30);
   const questionValidation = useValidation("問題文", 300);
   const descriptionValidation = useValidation("解説", 300);
   const choicesValidation = useValidation("選択肢", 20);
+
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     axios
@@ -72,9 +82,10 @@ export default function Home() {
       .catch((error) => {
         console.error("ユーザーデータが取得できません", error);
       });
+    loadingQuestion();
 
     // ページの移動があると警告を出す
-    const handleBeforeUnload = (event) => {
+    const handleBeforeUnload = (event: any) => {
       if (isAllowToanvigate) return;
       event.preventDefault();
       event.returnValue = "";
@@ -87,9 +98,10 @@ export default function Home() {
 
   // submit時の処理
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
     const correctAnswer = choices.findIndex((c) => c.choiced === true);
-    if (correctAnswer === -1 || validationCheckAll()) return;
+    const ok = validationCheckAll();
+    setOpenValidationAlert(ok);
+    if (ok) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
     const newquestion: Question = {
       title,
@@ -99,28 +111,91 @@ export default function Home() {
       description,
       userId: user?._id || "",
       anonymity,
+      _id: searchParams.get("id"),
     };
     axios.put("/api/quiz/update", newquestion);
   };
 
   // すべてのバリデーションをチェックする
   const validationCheckAll = () => {
-    // const ok =
-    //   titleValidation.current.lastError(title) &&
-    //   questionValidation.current.lastError(question) &&
-    //   descriptionValidation.current.lastError(description);
-    // setTitle(title); // 強制的に再レンダリング
-    // return ok;
+    interface ValidationGroup {
+      validation: any;
+      value: String;
+    }
+    const validations: ValidationGroup[] = [
+      { validation: titleValidation, value: title },
+      { validation: questionValidation, value: question },
+      { validation: descriptionValidation, value: description },
+    ];
+    let newAlertlist: string[] = [];
+    validations.forEach((v, i) => {
+      if (v.validation.error(v.value))
+        newAlertlist = [...newAlertlist, v.validation.helperText(v.value)];
+      else if (v.value.length <= 0)
+        newAlertlist = [
+          ...newAlertlist,
+          `${v.validation.title()}を入力してください`,
+        ];
+    });
+    let choiceValidationErrorF = false,
+      choiceNullErrorF = false; // バリデーションFと入力してくださいF
+    choices.forEach((c: Choice, i: number) => {
+      if (choicesValidation.error(c.value) && !choiceValidationErrorF) {
+        newAlertlist = [
+          ...newAlertlist,
+          choicesValidation.helperText(c.value) as string,
+        ];
+        choiceValidationErrorF = true;
+      }
+      if (c.value.length <= 0 && !choiceNullErrorF) {
+        newAlertlist = [
+          ...newAlertlist,
+          `入力していない${choicesValidation.title()}があります`,
+        ];
+        choiceNullErrorF = true;
+      }
+    });
+    if (choices.findIndex((c) => c.choiced) === -1)
+      newAlertlist = [...newAlertlist, "正解となる選択肢を一つ選んでください"];
+    setAlertList(newAlertlist);
+    console.log(newAlertlist);
+    const isError = newAlertlist.length >= 1;
+    setOpenValidationAlert(isError);
+    return isError;
+  };
+
+  // idに値を入れた場合はクイズをダウンロードする
+  const loadingQuestion = () => {
+    const quizId = searchParams.get("id");
+    if (quizId === "new") return;
+    axios
+      .get("/api/quiz/get", { params: { id: quizId } })
+      .then((res) => res.data)
+      .then((data) => {
+        const quiz = data.quiz;
+        console.log(data);
+        setTitle(quiz.title);
+        setQuestion(quiz.question);
+        setDescription(quiz.description);
+        setAnonymity(quiz.anonymity);
+        const newChoices = quiz.choices.map((c: any, i: number) => ({
+          choiced: i === quiz.correctAnswer,
+          value: c,
+        }));
+        setChoices(newChoices);
+      })
+      .catch((error) => {
+        console.error("クイズデータが取得できません", error);
+      });
   };
 
   if (!user) {
     return <Loading />;
   }
 
-  fetch;
   return (
     <>
-      <Title title="クイズを作る" color="green" />
+      <Title title="クイズをつくる" color="green" />
       <Paper className={styles.paper} elevation={5}>
         <form action="" method="post" onSubmit={handleSubmit}>
           <span className={styles.titleAndName}>
@@ -140,6 +215,7 @@ export default function Home() {
               <FormControlLabel
                 control={
                   <Switch
+                    checked={anonymity}
                     onChange={(e) => setAnonymity(e.target.checked)}
                     color="green"
                   />
@@ -189,7 +265,10 @@ export default function Home() {
               やめる
             </Button>
             <Button
-              onClick={() => setOpenCheckLog(true)}
+              onClick={() => {
+                const ok = validationCheckAll();
+                setOpenCheckLog(!ok);
+              }}
               variant="contained"
               color="green"
               size="large"
@@ -212,6 +291,10 @@ export default function Home() {
         <Divider />
         <DialogContent sx={{ display: "flex", justifyContent: "center" }}>
           <dl className={styles.chkDl}>
+            <dt className={styles.chkDt}>投稿者:</dt>
+            <dd className={styles.chkDd}>
+              {anonymity ? "けつばん" : user.nickname}
+            </dd>
             <dt className={styles.chkDt}>タイトル:</dt>
             <dd className={styles.chkDd}>{title}</dd>
             <dt className={styles.chkDt}>問題:</dt>
@@ -245,13 +328,18 @@ export default function Home() {
           >
             キャンセル
           </Button>
-          <Button
-            variant="contained"
-            color="green"
-            sx={{ color: "var(--bc-white)" }}
-          >
-            投稿
-          </Button>
+          <Link href="/">
+            <Button
+              variant="contained"
+              color="green"
+              sx={{ color: "var(--bc-white)" }}
+              onClick={(e) => {
+                handleSubmit(e);
+              }}
+            >
+              投稿
+            </Button>
+          </Link>
         </DialogActions>
       </Dialog>
 
@@ -279,6 +367,20 @@ export default function Home() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* バリデーションに引っかかった時のアラート */}
+
+      <Snackbar
+        open={openValidationAlert}
+        autoHideDuration={6000}
+        onClose={() => setOpenValidationAlert(false)}
+      >
+        <Alert severity="error">
+          {alertList.map((a: String, i: number) => (
+            <p key={i}>{a}</p>
+          ))}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
@@ -300,9 +402,14 @@ export const useValidation = (title: string, maxLength: number) => {
     return `${title} (${value.length}/${maxLength})`;
   };
 
+  const getTitle = () => {
+    return title;
+  };
+
   return {
     error: isError,
     helperText: getHelperText,
     label: getLabel,
+    title: getTitle,
   };
 };

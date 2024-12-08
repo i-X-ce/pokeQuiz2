@@ -3,15 +3,16 @@
   font-size: 2.5rem;
   color: white;
   padding-right: 100px;
-  padding-bottom: 50px;
 }
 
 .wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
   top: 0;
   left: 0;
-  z-index: -1;
   border-end-end-radius: 500px;
   box-shadow: 3px 3px 3px var(--bc-shadow);
   max-width: 60vw;
+  padding-bottom: 20px;
 }
