@@ -181,7 +181,7 @@ export default function Home() {
             variant="contained"
             color="green"
             sx={{
-              fontSize: "2rem",
+              fontSize: "var(--font-size-xxl)",
               padding: "20px 150px 20px 50px",
               borderRadius: "20px 0 0 20px",
               color: "var(--bc-white)",
@@ -200,7 +200,7 @@ export default function Home() {
             variant="contained"
             color="yellow"
             sx={{
-              fontSize: "2rem",
+              fontSize: "var(--font-size-xxl)",
               padding: "20px 50px 20px 150px",
               borderRadius: "0 20px 20px 0",
               color: "var(--bc-white)",

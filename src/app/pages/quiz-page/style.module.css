@@ -22,7 +22,7 @@
 }
 
 .quesitonImg {
-  height: 400px;
+  width: 30vw;
   margin: 20px;
   box-shadow: 3px 3px 10px 2px var(--bc-shadow);
 }
@@ -48,6 +48,9 @@
   cursor: default;
   font-size: var(--font-size-xxl);
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .choice:hover {
@@ -99,4 +102,43 @@
 .descriptionDialogContainer {
   padding: 20px 40px;
   min-width: 20vw;
+}
+
+@media (max-width: 1100px) {
+  .resultTopContainer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 700px) {
+  .questionNumber {
+    font-size: 7rem;
+  }
+  .questionContainer {
+    min-height: 10rem;
+  }
+
+  .choicesContainer {
+    grid-template-columns: 1fr;
+  }
+  .quesitonImg {
+    width: 70vw;
+  }
+
+  .choicesContainer {
+    margin: 0px 10px;
+  }
+
+  .score {
+    font-size: 10rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .questionNumber {
+    font-size: 5rem;
+  }
+  .questionContainer {
+    min-height: 7rem;
+  }
 }

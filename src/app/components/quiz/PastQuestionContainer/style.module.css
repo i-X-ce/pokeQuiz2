@@ -1,5 +1,5 @@
 .container {
-  width: 50%;
+  min-width: 50%;
   margin: 30px 0px;
   transition: 0.3s;
   position: relative;
@@ -135,3 +135,19 @@
 .correctAnswer {
   background-color: var(--bc-green);
 } */
+
+@media (max-width: 1100px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    width: 80%;
+  }
+
+  .choices {
+    grid-template-columns: 1fr;
+  }
+}
