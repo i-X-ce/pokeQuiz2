@@ -1,6 +1,6 @@
 .users {
   margin: 30px;
-  font-size: larger;
+  font-size: var(--font-size-lg);
 }
 
 .center {
@@ -22,7 +22,7 @@
 }
 
 .championCardRank {
-  font-size: 1.5rem;
+  font-size: var(--font-size-xl);
 }
 
 .championCardFirst {
@@ -60,7 +60,7 @@
 }
 
 .championCardName {
-  font-size: 2rem;
+  font-size: var(--font-size-xxl);
 }
 
 .championCardDetails {
@@ -77,9 +77,9 @@
 }
 
 .championCardDetailCellTitle {
-  font-size: 1.1rem;
+  font-size: var(--font-size-md);
 }
 
 .championCardDetailCellValue {
-  font-size: 2rem;
+  font-size: var(--font-size-xxl);
 }

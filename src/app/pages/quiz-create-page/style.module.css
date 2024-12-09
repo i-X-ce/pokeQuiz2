@@ -132,12 +132,12 @@
 }
 
 .checkUser {
-  font-size: small;
+  font-size: var(--font-size-sm);
   color: var(--bc-gray);
 }
 
 .checkTitle {
-  font-size: large;
+  font-size: var(--font-size-lg);
   font-weight: bold;
   color: var(--bc-green);
 }

@@ -1,6 +1,6 @@
 .headChip {
   position: relative;
-  font-size: 1.5rem;
+  font-size: var(--font-size-lg);
   color: var(--bc-white);
   padding: 10px 20px;
   text-align: end;
@@ -16,13 +16,20 @@
 
 .headChipContent {
   background-color: var(--bc-white);
-  font-size: 1.8rem;
+  font-size: var(--font-size-xl);
   padding: 5px 20px;
   border-radius: 0 0 20px 20px;
   box-shadow: inset 3px 3px 3px var(--bc-shadow);
+  white-space: nowrap;
 }
 
 .role {
   padding: 10px 20px;
   color: var(--bc-white);
+  white-space: nowrap;
+}
+
+@media (max-whidth: 1300px) {
+  .headChipContent {
+  }
 }

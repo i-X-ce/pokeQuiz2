@@ -1,6 +1,6 @@
 .titleButton {
   color: var(--bc-white);
-  font-size: 2rem;
+  font-size: var(--font-size-xxl);
   padding: 20px 30px;
   border-radius: 500px;
   box-shadow: 3px 3px 3px var(--bc-shadow);

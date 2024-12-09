@@ -20,6 +20,6 @@
 }
 
 .rogo {
-  height: 2.5rem;
+  height: var(--font-size-xxl);
   fill: var(--bc-gray);
 }

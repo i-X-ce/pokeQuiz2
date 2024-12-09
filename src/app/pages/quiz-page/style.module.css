@@ -10,7 +10,7 @@
 
 .questionText {
   margin: 20px;
-  font-size: 3.2rem;
+  font-size: var(--font-size-xxxl);
   text-align: center;
 }
 
@@ -41,12 +41,12 @@
   margin: 5px;
   padding: 10px 20px;
   border-radius: 100px;
-  font-size: large;
+  font-size: var(--font-size-lg);
   box-shadow: 3px 3px 3px var(--bc-shadow);
   border: 5px solid;
   transition: 0.3s;
   cursor: default;
-  font-size: 2rem;
+  font-size: var(--font-size-xxl);
   text-align: center;
 }
 
@@ -87,7 +87,7 @@
 }
 
 .isCorrect {
-  font-size: 2rem;
+  font-size: var(--font-size-xxl);
 }
 
 .resultTopContainer {

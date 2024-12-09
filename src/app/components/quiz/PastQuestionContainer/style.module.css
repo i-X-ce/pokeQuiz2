@@ -19,7 +19,7 @@
 
 .title {
   color: var(--bc-white);
-  font-size: 2rem;
+  font-size: var(--font-size-xxl);
 }
 
 .redBg {

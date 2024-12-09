@@ -14,7 +14,7 @@
 }
 
 .nickname {
-  font-size: x-large;
+  font-size: var(--font-size-xl);
   margin: 0 10px;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .columValue {
-  font-size: 2rem;
+  font-size: var(--font-size-xxl);
   margin: 0 5px;
 }
 
