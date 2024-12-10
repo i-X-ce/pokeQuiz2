@@ -1,6 +1,8 @@
 .buttonContainer {
   margin: 0px 20px;
   min-width: 50vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .childButtonContainer {
@@ -9,7 +11,7 @@
 
 .topContainer {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   margin: 50px 0px;
   align-items: center;
 }
@@ -22,9 +24,10 @@
 }
 
 .rogo {
-  height: 200px;
+  height: 150px;
   fill: var(--bc-black);
   margin: 0px 20px;
+  margin-bottom: var(--space-md);
 }
 
 .sloganWrapper {
@@ -45,4 +48,18 @@
   font-size: var(--font-size-lg);
   margin: 20px;
   text-shadow: 3px 3px 3px var(--bc-shadow);
+}
+
+@media (max-width: 700px) {
+  .topContainer {
+    align-items: stretch;
+  }
+
+  .childButtonContainer {
+    flex-direction: column;
+  }
+
+  .buttonContainer {
+    grid-template-columns: auto;
+  }
 }

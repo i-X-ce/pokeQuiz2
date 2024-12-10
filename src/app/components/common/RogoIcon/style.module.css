@@ -1,3 +1,9 @@
-.svg {
-  height: 2rem;
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shadow {
+  filter: drop-shadow(3px 3px 3px var(--bc-shadow));
 }

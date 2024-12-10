@@ -24,9 +24,9 @@ export default function Home() {
 
   return (
     <>
-      <HomeTitle />
+      {/* <HomeTitle /> */}
       <div className={styles.topContainer}>
-        <div className={styles.rogoContainer}>
+        {/* <div className={styles.rogoContainer}>
           <div className={styles.sloganWrapper}>
             <RogoIcon className={styles.rogo} />
             <div className={styles.slogan}>
@@ -41,12 +41,16 @@ export default function Home() {
             <p>きっとまだ見たことのない未知の問題にも出会えるはずです。</p>
             <p>探してみませんか？あなたにとっての"けつばん"を...。</p>
           </div>
-        </div>
+        </div> */}
+        <RogoIcon className={styles.rogo} text shadow />
         <div className={styles.buttonContainer}>
           <HomeButton
             color={"red"}
             title={"クイズをとく"}
-            startIcon={<HelpCenter />}
+            startIcon={
+              <HelpCenter sx={{ fontSize: "var(--font-size-xxxl)" }} />
+            }
+            childrenTitle="難易度"
           >
             <span className={styles.childButtonContainer}>
               <ChildButton
@@ -72,7 +76,7 @@ export default function Home() {
           <HomeButton
             color={"green"}
             title={"クイズをつくる"}
-            startIcon={<AddBox />}
+            startIcon={<AddBox sx={{ fontSize: "var(--font-size-xxxl)" }} />}
             link="/pages/quiz-create-page?id=new"
             disabled={session.status !== "authenticated"}
           />
@@ -80,7 +84,10 @@ export default function Home() {
           <HomeButton
             color={"blue"}
             title={"クイズをみる"}
-            startIcon={<ViewModule />}
+            startIcon={
+              <ViewModule sx={{ fontSize: "var(--font-size-xxxl)" }} />
+            }
+            childrenTitle="どっちをみる？"
           >
             <span className={styles.childButtonContainer}>
               <ChildButton
@@ -101,7 +108,9 @@ export default function Home() {
           <HomeButton
             color={"yellow"}
             title={"ランキング"}
-            startIcon={<WorkspacePremium />}
+            startIcon={
+              <WorkspacePremium sx={{ fontSize: "var(--font-size-xxxl)" }} />
+            }
             link="/pages/ranking"
           />
         </div>

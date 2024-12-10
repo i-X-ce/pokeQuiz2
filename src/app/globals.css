@@ -23,6 +23,12 @@
   --font-size-xl: 1.75rem;
   --font-size-xxl: 2.25rem;
   --font-size-xxxl: 2.75rem;
+
+  --space-xs: 5px;
+  --space-sm: 10px;
+  --space-md: 20px;
+  --space-lg: 40px;
+  --space-xl: 60px;
 }
 
 .background-red {
@@ -80,6 +86,12 @@
     --font-size-xl: 1rem;
     --font-size-xxl: 1.25rem;
     --font-size-xxxl: 1.75rem;
+
+    --space-xs: 3px;
+    --space-sm: 5px;
+    --space-md: 10px;
+    --space-lg: 20px;
+    --space-xl: 40px;
   }
 }
 

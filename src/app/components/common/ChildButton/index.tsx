@@ -35,7 +35,7 @@ export function ChildButton({
 
   return (
     <div className={styles.button + " " + titleColor} onClick={handleClick}>
-      <span>
+      <span className={styles.buttonContent}>
         {startIcon}
         {title}
       </span>

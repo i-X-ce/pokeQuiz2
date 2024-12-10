@@ -1,17 +1,14 @@
-import { Collapse } from "@mui/material";
+import {
+  Collapse,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Divider,
+} from "@mui/material";
 import { ReactNode, useState } from "react";
 import styles from "./style.module.css";
 import { ArrowDropDownCircle, KeyboardArrowRight } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
-
-type Props = {
-  color: "red" | "green" | "blue" | "yellow";
-  title: string;
-  children?: ReactNode;
-  startIcon?: ReactNode;
-  link?: string;
-  disabled?: boolean;
-};
 
 export function HomeButton({
   color,
@@ -20,19 +17,28 @@ export function HomeButton({
   startIcon,
   link,
   disabled,
-}: Props) {
+  childrenTitle,
+}: {
+  color: "red" | "green" | "blue" | "yellow";
+  title: string;
+  children?: ReactNode;
+  startIcon?: ReactNode;
+  link?: string;
+  disabled?: boolean;
+  childrenTitle?: string;
+}) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  const titleColor = disabled
-    ? styles.disabled
-    : color === "red"
-    ? styles.red
-    : color === "green"
-    ? styles.green
-    : color === "blue"
-    ? styles.blue
-    : styles.yellow;
+  // const titleColor = disabled
+  //   ? styles.disabled
+  //   : color === "red"
+  //   ? styles.red
+  //   : color === "green"
+  //   ? styles.green
+  //   : color === "blue"
+  //   ? styles.blue
+  //   : styles.yellow;
 
   const handleClick = () => {
     if (disabled) return;
@@ -43,9 +49,17 @@ export function HomeButton({
     setOpen((prev) => !prev);
   };
 
+  const styleColor = `var(--bc-${color})`;
+
   return (
-    <>
+    <div className={styles.parentContainer} onClick={handleClick}>
       <div
+        className={styles.container + (disabled ? " " + styles.disabled : "")}
+        style={{ backgroundColor: styleColor }}
+      >
+        {startIcon}
+        {title}
+        {/* <div
         className={styles.titleButton + " " + titleColor}
         onClick={handleClick}
       >
@@ -63,7 +77,14 @@ export function HomeButton({
           )}
         </span>
       </div>
-      <Collapse in={open}>{children}</Collapse>
-    </>
+      <Collapse in={open}>{children}</Collapse> */}
+      </div>
+
+      <Dialog open={open} maxWidth={false}>
+        <DialogTitle>{childrenTitle}</DialogTitle>
+        <Divider />
+        <div className={styles.dialogContainer}>{children}</div>
+      </Dialog>
+    </div>
   );
 }

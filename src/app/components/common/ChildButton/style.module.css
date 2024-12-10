@@ -1,5 +1,5 @@
 .button {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -8,10 +8,11 @@
   border: 3px solid;
   text-decoration: none;
   padding: 5px 20px;
-  margin: 10px;
+  margin: var(--space-sm);
   transition: 0.3s;
   cursor: default;
   user-select: none;
+  white-space: nowrap;
 }
 
 .button:hover {
@@ -61,4 +62,10 @@
 
 .yellow:hover {
   background-color: var(--bc-yellow);
+}
+
+.buttonContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
