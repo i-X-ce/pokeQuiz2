@@ -18,3 +18,9 @@
 .blue {
   color: var(--bc-blue);
 }
+
+@media (max-width: 700px) {
+  .body {
+    padding: 20px 5vw;
+  }
+}

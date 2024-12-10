@@ -5,6 +5,11 @@
   font-family: "Kiwi Maru";
 }
 
+body {
+  margin: 0;
+  padding: 0.1px;
+}
+
 :root {
   --bc-white: #ffffff;
   --bc-gray: #808080;

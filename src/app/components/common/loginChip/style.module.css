@@ -2,11 +2,12 @@
   background-color: var(--bc-white);
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: var(--space-sm);
   border-radius: 500px;
   cursor: default;
   user-select: none;
   transition: 0.3s;
+  box-shadow: 3px 3px 10px 5px var(--bc-shadow);
 }
 
 .chip:hover {
@@ -14,7 +15,7 @@
 }
 
 .nickname {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-lg);
   margin: 0 10px;
 }
 
@@ -35,6 +36,7 @@
 
 .columName {
   border-bottom: 1px solid var(--bc-shadow);
+  font-size: var(--font-size-lg);
 }
 
 .columValue {

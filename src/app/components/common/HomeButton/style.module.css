@@ -32,7 +32,6 @@
 
 .disabled {
   opacity: 0.3;
-  
 }
 
 /* .titleButton {
@@ -98,5 +97,9 @@
 
   .parentContainer:hover .container {
     transform: rotate(2deg) scale(1.1);
+  }
+
+  .parentContainer:hover .disabled {
+    transform: none;
   }
 }

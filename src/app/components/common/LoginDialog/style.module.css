@@ -7,5 +7,5 @@
 
 .description {
   color: var(--bc-gray);
-  font-size: var(--bc-gray-xs);
+  font-size: var(--font-size-xs);
 }

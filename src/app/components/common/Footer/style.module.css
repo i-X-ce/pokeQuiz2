@@ -27,10 +27,14 @@
 
 @media (max-width: 700px) {
   .container {
-    display: block;
+    flex-direction: column;
+    gap: 2px;
   }
 
   .linkContainer {
-    display: block;
+    flex-direction: column;
+    padding: 0px;
+    gap: 1px;
+    align-items: center;
   }
 }

@@ -10,20 +10,26 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 
 export function NickNameInput({
   open,
   onClose,
+  nickname,
+  onChange,
 }: {
   open: boolean;
   onClose: any;
+  nickname: string;
+  onChange:
+    | ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    | undefined;
 }) {
-  const [nickname, setNickname] = useState("");
+  // const [nickname, setNickname] = useState("");
 
   const handleNicknameSubmit = async () => {
     await axios.post("/api/user/set", {
-      nickname: nickname,
+      nickname,
     });
   };
 
@@ -44,7 +50,7 @@ export function NickNameInput({
       <DialogTitle>ニックネーム変更</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          5文字以内のニックネームに変更できます。不適切なニックネームを付けないでね！
+          5文字以内のニックネームに変更できます。
         </DialogContentText>
         <TextField
           required
@@ -55,9 +61,7 @@ export function NickNameInput({
           value={nickname}
           error={isError()}
           helperText={helperText()}
-          onChange={(e) => {
-            setNickname(e.target.value);
-          }}
+          onChange={onChange}
         />
         <DialogActions>
           <Button variant="outlined" color="blue" onClick={onClose}>
@@ -66,7 +70,7 @@ export function NickNameInput({
           <Button
             variant="contained"
             color="blue"
-            onClick={() => {
+            onClick={(e) => {
               if (isError()) return;
               handleNicknameSubmit();
               onClose();

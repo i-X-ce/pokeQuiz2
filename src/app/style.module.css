@@ -10,6 +10,7 @@
 }
 
 .topContainer {
+  position: relative;
   display: flex;
   flex-direction: column;
   margin: 50px 0px;
@@ -28,6 +29,7 @@
   fill: var(--bc-black);
   margin: 0px 20px;
   margin-bottom: var(--space-md);
+  transition: 0.3s;
 }
 
 .sloganWrapper {
@@ -50,6 +52,13 @@
   text-shadow: 3px 3px 3px var(--bc-shadow);
 }
 
+.topTag {
+  position: absolute;
+  padding: var(--space-md);
+  z-index: 1;
+  right: 0;
+}
+
 @media (max-width: 700px) {
   .topContainer {
     align-items: stretch;
@@ -61,5 +70,9 @@
 
   .buttonContainer {
     grid-template-columns: auto;
+  }
+
+  .rogo {
+    height: 100px;
   }
 }

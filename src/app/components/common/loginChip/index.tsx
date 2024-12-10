@@ -17,13 +17,14 @@ interface User {
   solvedCnt: number;
 }
 
-export default function LoginBtn() {
+export default function LoginChip() {
   const session = useSession();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [userData, setUserData] = useState<User>();
   const [openNickname, setOpenNickname] = useState(false);
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  const [nickname, setNickname] = useState("");
 
   useEffect(() => {
     axios
@@ -31,9 +32,10 @@ export default function LoginBtn() {
       .then((res) => res.data)
       .then((data) => {
         setUserData(data);
+        setNickname(data.nickname);
       })
       .catch((error) => console.log(error));
-  }, [session, openNickname]);
+  }, []);
 
   return (
     <>
@@ -60,7 +62,7 @@ export default function LoginBtn() {
           }}
         >
           {session.status == "authenticated"
-            ? userData?.nickname || "-----"
+            ? nickname.slice(0, 5) || "-----"
             : "ログイン"}
         </div>
         <Popover
@@ -129,6 +131,10 @@ export default function LoginBtn() {
         open={openNickname}
         onClose={() => {
           setOpenNickname(false);
+        }}
+        nickname={nickname}
+        onChange={(e) => {
+          setNickname(e.target.value);
         }}
       />
 

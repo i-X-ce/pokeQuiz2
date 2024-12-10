@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import styles from "./style.module.css";
-import LoginBtn from "../LoginChip";
+import LoginChip from "../LoginChip";
 import { Paper, Popper } from "@mui/material";
 import { RogoIcon } from "../RogoIcon";
 
@@ -15,7 +15,7 @@ export function HomeTitle() {
           <RogoIcon text className={styles.title} />
         </div>
         <div className={styles.loginWrapper}>
-          <LoginBtn />
+          <LoginChip />
         </div>
       </div>
       <div className={styles.bottomWrapper}>
