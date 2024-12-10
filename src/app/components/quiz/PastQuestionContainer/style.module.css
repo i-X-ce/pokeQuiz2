@@ -1,5 +1,5 @@
 .container {
-  min-width: 50%;
+  width: 50%;
   margin: 30px 0px;
   transition: 0.3s;
   position: relative;

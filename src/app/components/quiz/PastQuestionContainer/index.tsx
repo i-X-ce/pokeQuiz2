@@ -1,4 +1,4 @@
-import { Close, PanoramaFishEye } from "@mui/icons-material";
+import { AutoAwesome, Close, PanoramaFishEye } from "@mui/icons-material";
 import { IconButton, Pagination } from "@mui/material";
 import styles from "./style.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -91,7 +91,9 @@ export default function PastQuestionContainer(props: any) {
                       : "var(--bc-white)",
                 }}
               >
-                {c + (question.correctAnswer === i ? "(正解)" : "")}
+                {question.correctAnswer === i && <AutoAwesome />}
+                {c}
+                {/* {c + (question.correctAnswer === i ? "(正解)" : "")} */}
               </div>
             ))}
             {/* <span className={styles.choiceSet}>
