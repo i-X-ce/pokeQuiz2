@@ -83,3 +83,15 @@
 .championCardDetailCellValue {
   font-size: var(--font-size-xxl);
 }
+
+@media (max-width: 1000px) {
+  .champions {
+    display: block;
+  }
+
+  .championCardFirst,
+  .championCardSecond,
+  .championCardThird {
+    margin-top: 0;
+  }
+}

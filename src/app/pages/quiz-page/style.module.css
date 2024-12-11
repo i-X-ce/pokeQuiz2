@@ -97,9 +97,10 @@
 }
 
 .score {
-  font-size: 15rem;
+  font-size: calc(var(--font-size-xxxl) * 5);
   color: var(--bc-red);
   text-align: center;
+  text-shadow: 3px 3px 3px var(--bc-shadow);
 }
 
 .correctAnswer {
@@ -146,9 +147,9 @@
     margin: 0px 10px;
   }
 
-  .score {
+  /* .score {
     font-size: 10rem;
-  }
+  } */
 }
 
 @media (max-width: 400px) {

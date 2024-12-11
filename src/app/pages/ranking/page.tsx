@@ -103,7 +103,9 @@ function ChampionCard({ user, rank }: { user: User; rank: number }) {
   return (
     <div className={rankClass} style={{ gridArea: rankName }}>
       <div className={styles.championCardIconWrapper}>
-        <WorkspacePremium sx={{ color: styleColor }} fontSize="large" />
+        <WorkspacePremium
+          sx={{ color: styleColor, fontSize: "var(--font-size-xxxl)" }}
+        />
         <div className={styles.championCardRank} style={{ color: styleColor }}>
           {rankName}
         </div>

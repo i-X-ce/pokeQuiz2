@@ -47,9 +47,16 @@ export default function PastQuestionContainer(props: any) {
             }}
           >
             {q.isCorrect ? (
-              <PanoramaFishEye sx={{ fontSize: "2.3rem" }} color="red" />
+              <PanoramaFishEye
+                sx={{ fontSize: "var(--font-size-xxxl)" }}
+                color="red"
+              />
             ) : (
-              <Close key={i} sx={{ fontSize: "2.3rem" }} color="blue" />
+              <Close
+                key={i}
+                sx={{ fontSize: "var(--font-size-xxxl)" }}
+                color="blue"
+              />
             )}
           </IconButton>
         ))}

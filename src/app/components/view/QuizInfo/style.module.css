@@ -1,9 +1,9 @@
 .card {
-  margin: 10px;
+  margin: var(--space-sm);
 }
 
 .cardTitle {
-  /* font-size: 1.2rem; */
+  font-size: var(--font-size-lg);
 }
 
 .cardContent {
@@ -16,6 +16,7 @@
   display: flex;
   gap: 10px;
   margin: 8px 0px;
+  font-size: var(--font-size-md);
 }
 
 .questionImg {
@@ -37,11 +38,12 @@
 
 .choicesContainer {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 .question {
-  margin: 10px;
+  margin: var(--space-sm);
+  font-size: var(--font-size-md);
 }
 
 .choice {
@@ -57,6 +59,7 @@
   color: var(--bc-blue);
   user-select: none;
   cursor: default;
+  font-size: var(--font-size-md);
 }
 
 .choice:hover {
@@ -70,7 +73,8 @@
 }
 
 .description {
-  margin: 10px;
+  margin: var(--space-sm);
+  font-size: var(--font-size-md);
 }
 
 .titleContainer {

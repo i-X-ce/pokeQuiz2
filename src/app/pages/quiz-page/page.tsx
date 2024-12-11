@@ -175,14 +175,15 @@ export default function Home() {
           <Button
             startIcon={
               <span style={{ display: "flex", alignItems: "center" }}>
-                <KeyboardArrowLeft sx={{ fontSize: "3rem" }} />
+                <KeyboardArrowLeft sx={{ fontSize: "var(--font-size-xxxl)" }} />
               </span>
             }
             variant="contained"
             color="green"
             sx={{
               fontSize: "var(--font-size-xxl)",
-              padding: "20px 150px 20px 50px",
+              padding:
+                "var(--space-md) calc(var(--space-md) * 4) var(--space-md) var(--space-md)",
               borderRadius: "20px 0 0 20px",
               color: "var(--bc-white)",
             }}
@@ -194,14 +195,17 @@ export default function Home() {
           <Button
             endIcon={
               <span style={{ display: "flex", alignItems: "center" }}>
-                <KeyboardArrowRight sx={{ fontSize: "3rem" }} />
+                <KeyboardArrowRight
+                  sx={{ fontSize: "var(--font-size-xxxl)" }}
+                />
               </span>
             }
             variant="contained"
             color="yellow"
             sx={{
               fontSize: "var(--font-size-xxl)",
-              padding: "20px 50px 20px 150px",
+              padding:
+                "var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) * 4) ",
               borderRadius: "0 20px 20px 0",
               color: "var(--bc-white)",
             }}

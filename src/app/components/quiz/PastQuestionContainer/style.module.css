@@ -42,6 +42,7 @@
   width: 30%;
   float: left;
   margin: 10px;
+  box-shadow: 3px 3px 10px var(--bc-shadow);
 }
 
 .questionSmallContainers {
@@ -144,7 +145,7 @@
 
 @media (max-width: 700px) {
   .container {
-    width: 80%;
+    width: 90%;
   }
 
   .choices {
