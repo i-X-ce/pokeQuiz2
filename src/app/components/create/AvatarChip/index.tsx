@@ -10,6 +10,7 @@ export function AvatarChip({
   userName: string;
 }) {
   const session = useSession();
+  const size = "var(--font-size-xxxl)";
 
   if (!session) return null;
   return (
@@ -17,9 +18,16 @@ export function AvatarChip({
       <div>投稿者</div>
       <div className={styles.avatarInfo}>
         {anonymity ? (
-          <Avatar sx={{ bgcolor: "var(--bc-green)" }}>?</Avatar>
+          <Avatar
+            sx={{ bgcolor: "var(--bc-green)", width: size, height: size }}
+          >
+            ?
+          </Avatar>
         ) : (
-          <Avatar src={session.data?.user?.image || ""} />
+          <Avatar
+            src={session.data?.user?.image || ""}
+            sx={{ width: size, height: size }}
+          />
         )}
         <div className={styles.userName}>
           {anonymity ? "けつばん" : userName}

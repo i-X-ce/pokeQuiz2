@@ -240,7 +240,26 @@ export default function Home() {
     <>
       <Title title="クイズをつくる" color="green" />
       <Paper className={styles.paper} elevation={5}>
-        <form action="" method="post" onSubmit={handleSubmit}>
+        <form
+          action=""
+          method="post"
+          onSubmit={handleSubmit}
+          style={{ position: "relative", padding: "0.1px" }}
+        >
+          <span className={styles.nameContainer}>
+            <AvatarChip anonymity={anonymity} userName={user.nickname} />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={anonymity}
+                  onChange={(e) => setAnonymity(e.target.checked)}
+                  color="green"
+                />
+              }
+              label="匿名"
+              labelPlacement="top"
+            />
+          </span>
           <TitleTag title="タイトル">
             <p>投稿するクイズのタイトルを書いてください！</p>
             <p>
@@ -250,6 +269,7 @@ export default function Home() {
               また、匿名ボタンにチェックすると匿名でクイズを投稿することができます。
             </p>
           </TitleTag>
+
           <span className={styles.titleAndName}>
             <TextField
               required
@@ -262,20 +282,6 @@ export default function Home() {
               onChange={(e) => setTitle(e.target.value)}
               color="green"
             />
-            <span className={styles.nameContainer}>
-              <AvatarChip anonymity={anonymity} userName={user.nickname} />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={anonymity}
-                    onChange={(e) => setAnonymity(e.target.checked)}
-                    color="green"
-                  />
-                }
-                label="匿名"
-                labelPlacement="top"
-              />
-            </span>
           </span>
           <TitleTag title="問題文">
             <p>クイズの問題文をここに書いてください！</p>

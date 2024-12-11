@@ -1,6 +1,7 @@
 .paper {
+  position: relative;
   margin: 30px;
-  padding: 40px;
+  padding: var(--space-md) var(--space-lg);
 }
 
 .titleAndName {
@@ -15,6 +16,8 @@
 
 .nameContainer {
   display: flex;
+  position: absolute;
+  right: 0;
 }
 
 /* .chkDl {
@@ -38,7 +41,7 @@
   display: flex;
   align-items: center;
   color: var(--bc-green);
-  margin: 30px 0 10px 0;
+  margin: var(--space-lg) 0 var(--space-sm) 0;
 }
 
 .titleTagWrapper {
@@ -54,6 +57,7 @@
 
 .titleTagH2 {
   font-weight: bold;
+  font-size: var(--font-size-lg);
   margin-right: 10px;
 }
 
@@ -112,6 +116,7 @@
 
 .questionBox {
   display: flex;
+  flex-direction: row;
 }
 
 .img {
@@ -178,4 +183,27 @@
 
 .checkDescription {
   margin: 10px;
+}
+
+@media (max-width: 1000px) {
+  .questionBox {
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .nameContainer {
+    position: relative;
+    justify-content: center;
+  }
+
+  .imgBox {
+    max-width: 80%;
+  }
+
+  .checkChoices {
+    grid-template-columns: 1fr;
+  }
 }

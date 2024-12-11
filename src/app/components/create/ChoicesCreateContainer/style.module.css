@@ -8,13 +8,15 @@
 .choice {
   display: flex;
   margin: 5px 10px;
+  position: relative;
 }
 
 .add {
   color: var(--bc-white);
 }
 
-.ratio {
-  aspect-ratio: 1/1;
-  height: 100%;
+@media (max-width: 1000px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
 }

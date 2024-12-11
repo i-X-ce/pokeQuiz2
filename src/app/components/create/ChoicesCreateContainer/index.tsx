@@ -1,8 +1,6 @@
 import { Add, Delete } from "@mui/icons-material";
 import { Button, IconButton, Radio, TextField } from "@mui/material";
 import styles from "./style.module.css";
-import { useEffect } from "react";
-import { useValidation } from "@/app/pages/quiz-create-page/page";
 
 const MAX_CHOICES_NUM = 8;
 
@@ -63,12 +61,12 @@ export function ChoicesCreateContainer({
     <span className={styles.container}>
       {choices.map((c: Choice, i: number) => (
         <div key={i} className={styles.choice}>
-          <Radio
+          {/* <Radio
             className={styles.ratio}
             checked={choices[i].choiced || false}
             onChange={() => selectAnswer(i)}
             color="green"
-          />
+          /> */}
           <TextField
             required
             fullWidth
@@ -80,10 +78,27 @@ export function ChoicesCreateContainer({
             value={c.value}
             onChange={(e) => updateChoice(i, e.target.value)}
             color="green"
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <Radio
+                    // className={styles.ratio}
+                    checked={choices[i].choiced || false}
+                    onChange={() => selectAnswer(i)}
+                    color="green"
+                  />
+                ),
+                endAdornment: (
+                  <IconButton
+                    // className={styles.ratio + " " + styles.trash}
+                    onClick={() => deleteChoice(i)}
+                  >
+                    <Delete />
+                  </IconButton>
+                ),
+              },
+            }}
           />
-          <IconButton className={styles.ratio} onClick={() => deleteChoice(i)}>
-            <Delete />
-          </IconButton>
         </div>
       ))}
       {choices.length < MAX_CHOICES_NUM ? (
@@ -92,7 +107,7 @@ export function ChoicesCreateContainer({
           color="green"
           startIcon={<Add className={styles.add} />}
           onClick={addChoice}
-          sx={{ margin: "10px 65px" }}
+          sx={{ margin: "var(--space-sm)" }}
         />
       ) : null}
     </span>
