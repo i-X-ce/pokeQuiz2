@@ -17,6 +17,7 @@ export function NickNameInput({
   onClose,
   nickname,
   onChange,
+  onEnter,
 }: {
   open: boolean;
   onClose: any;
@@ -24,10 +25,12 @@ export function NickNameInput({
   onChange:
     | ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     | undefined;
+  onEnter?: any;
 }) {
   // const [nickname, setNickname] = useState("");
 
   const handleNicknameSubmit = async () => {
+    onEnter(nickname);
     await axios.post("/api/user/set", {
       nickname,
     });

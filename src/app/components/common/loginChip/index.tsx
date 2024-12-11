@@ -25,6 +25,7 @@ export default function LoginChip() {
   const [openNickname, setOpenNickname] = useState(false);
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const [nickname, setNickname] = useState("");
+  const [nicknameTmp, setNicknameTmp] = useState("");
 
   useEffect(() => {
     axios
@@ -33,6 +34,7 @@ export default function LoginChip() {
       .then((data) => {
         setUserData(data);
         setNickname(data.nickname);
+        setNicknameTmp(data.nickname);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -132,10 +134,11 @@ export default function LoginChip() {
         onClose={() => {
           setOpenNickname(false);
         }}
-        nickname={nickname}
+        nickname={nicknameTmp}
         onChange={(e) => {
-          setNickname(e.target.value);
+          setNicknameTmp(e.target.value);
         }}
+        onEnter={setNickname}
       />
 
       <LoginDialog
