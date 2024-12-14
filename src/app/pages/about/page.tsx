@@ -16,7 +16,7 @@ export default function Home() {
         <p>このサイトを制作した目的は主にこの3つです。</p>
         <ol className={styles.ul}>
           <li>
-            <p className={styles.bold}>交流の場を作りたい</p>
+            <p className={styles.bold}>魔境を作りたい</p>
             <p>
               当然といえば当然ですが、初代ポケモンバグ専用のプラットフォームというのはあまりないです。迷えるバグプレイヤーをこのサイトにかき集めてバグ蟲毒を作りたいんです。
             </p>
