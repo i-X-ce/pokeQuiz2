@@ -79,8 +79,8 @@ export function AnimationBG() {
       if (rectanglesRef.current.length < 30) {
         const xMax = Math.floor(canvas.width / RECTANGLE_SIZE);
         const yMax = Math.floor(canvas.height / RECTANGLE_SIZE);
-        const width = Math.floor(Math.random() * 20) + 1;
-        const height = Math.floor(Math.random() * 20) + 1;
+        const width = Math.floor(Math.random() * 20) + 2;
+        const height = Math.floor(Math.random() * 20) + 2;
         const x = Math.floor(Math.random() * (xMax - width));
         const y = Math.floor(Math.random() * (yMax - height));
         // マスの占有状況を確認
