@@ -11,7 +11,7 @@
 }
 
 .chip:hover {
-  background-color: var(--bc-shadow);
+  background-color: var(--bc-gray);
 }
 
 .nickname {
