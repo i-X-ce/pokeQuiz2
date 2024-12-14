@@ -110,5 +110,11 @@ body {
     --font-size-xl: 0.875rem;
     --font-size-xxl: 1rem;
     --font-size-xxxl: 1.25rem;
+
+    --space-xs: 1px;
+    --space-sm: 3px;
+    --space-md: 5px;
+    --space-lg: 10px;
+    --space-xl: 20px;
   }
 }

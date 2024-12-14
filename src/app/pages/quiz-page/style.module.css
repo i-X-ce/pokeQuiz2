@@ -9,7 +9,7 @@
 }
 
 .questionText {
-  margin: 20px;
+  margin: var(--space-md);
   font-size: var(--font-size-xxxl);
   text-align: center;
 }

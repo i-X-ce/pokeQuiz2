@@ -141,7 +141,7 @@ class Rectangle {
   context: CanvasRenderingContext2D;
   appearingTime: number = APPEARING_TIME;
   isVertical: boolean = Math.random() < 0.5;
-  padding: number = 5; // パディングの追加
+  padding: number = 10; // パディングの追加
 
   constructor(
     x: number,
@@ -197,7 +197,7 @@ class Rectangle {
     const adjustedWidth = (width - this.padding * 2) * wRatio;
     const adjustedHeight = (height - this.padding * 2) * hRatio;
     const maxRadius = Math.min(adjustedWidth, adjustedHeight) / 2;
-    const radius = Math.min(10, maxRadius); // 角の半径を調整
+    const radius = Math.min(30, maxRadius); // 角の半径を調整
     this.context.fillStyle = this.color;
     this.context.beginPath();
     this.roundRect(xPos, yPos, adjustedWidth, adjustedHeight, radius);

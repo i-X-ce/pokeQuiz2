@@ -25,5 +25,6 @@
   .chips {
     flex-direction: column;
     align-items: end;
+    margin-top: var(--space-md);
   }
 }
