@@ -6,6 +6,7 @@ import SessionWrapper from "./components/common/SessionWrapper";
 import { Kiwi_Maru } from "next/font/google";
 import { ThemeProviderWrapper } from "./components/common/ThemeProviderWrapper";
 import { Footer } from "./components/common/Footer";
+import { AnimationBG } from "./components/common/AnimationBG";
 
 export const metadata: Metadata = {
   title: "BugPokeQuiz",
@@ -31,6 +32,7 @@ export default async function RootLayout({
           <body className={kiwiMaru.className}>
             {children}
             <Footer />
+            <AnimationBG />
           </body>
         </html>
       </ThemeProviderWrapper>

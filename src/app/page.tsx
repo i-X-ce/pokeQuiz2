@@ -19,6 +19,7 @@ import { ChildButton } from "./components/common/ChildButton";
 import { useSession } from "next-auth/react";
 import { RogoIcon } from "./components/common/RogoIcon";
 import LoginChip from "./components/common/LoginChip";
+import { AnimationBG } from "./components/common/AnimationBG";
 
 export default function Home() {
   const session = useSession();
