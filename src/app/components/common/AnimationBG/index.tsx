@@ -85,10 +85,18 @@ export function AnimationBG() {
         const y = Math.floor(Math.random() * (yMax - height));
         // マスの占有状況を確認
         let canPlace = true;
+
+        let xMin = x + width,
+          yMin = y + height;
+
+        canPlace = !occupiedCells.has(`${x},${y}`);
         for (let i = x; i < x + width; i++) {
           for (let j = y; j < y + height; j++) {
             if (occupiedCells.has(`${i},${j}`)) {
-              canPlace = false;
+              xMin = Math.min(xMin, i - 1);
+              yMin = Math.min(yMin, j - 1);
+              if (xMin - x <= 1 || yMin - y <= 1) canPlace = false;
+              // canPlace = false;
               break;
             }
           }
@@ -99,8 +107,8 @@ export function AnimationBG() {
           const rectangle = new Rectangle(
             x,
             y,
-            width,
-            height,
+            xMin - x,
+            yMin - y,
             colors[Math.floor(Math.random() * colors.length)],
             life,
             context
@@ -197,7 +205,7 @@ class Rectangle {
     const adjustedWidth = (width - this.padding * 2) * wRatio;
     const adjustedHeight = (height - this.padding * 2) * hRatio;
     const maxRadius = Math.min(adjustedWidth, adjustedHeight) / 2;
-    const radius = Math.min(30, maxRadius); // 角の半径を調整
+    const radius = Math.min(20, maxRadius); // 角の半径を調整
     this.context.fillStyle = this.color;
     this.context.beginPath();
     this.roundRect(xPos, yPos, adjustedWidth, adjustedHeight, radius);
