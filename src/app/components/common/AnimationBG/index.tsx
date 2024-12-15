@@ -50,7 +50,7 @@ export function AnimationBG() {
     const colors = [colorRed, colorGreen, colorBlue, colorYellow];
 
     // 四角形の固定サイズを設定
-    const RECTANGLE_SIZE = 50; // 任意のピクセル値
+    const RECTANGLE_SIZE = 100; // 任意のピクセル値
     Rectangle.dw = RECTANGLE_SIZE;
     Rectangle.dh = RECTANGLE_SIZE;
 
@@ -79,23 +79,34 @@ export function AnimationBG() {
       if (rectanglesRef.current.length < 30) {
         const xMax = Math.floor(canvas.width / RECTANGLE_SIZE);
         const yMax = Math.floor(canvas.height / RECTANGLE_SIZE);
-        const width = Math.floor(Math.random() * 20) + 2;
-        const height = Math.floor(Math.random() * 20) + 2;
-        const x = Math.floor(Math.random() * (xMax - width));
-        const y = Math.floor(Math.random() * (yMax - height));
+        const width = Math.floor(Math.random() * 10) + 1;
+        const height = Math.floor(Math.random() * 10) + 1;
+        let x = Math.floor(Math.random() * (xMax - width));
+        let y = Math.floor(Math.random() * (yMax - height));
         // マスの占有状況を確認
         let canPlace = true;
 
+        let cnt = 0;
+        while (occupiedCells.has(`${x},${y}`)) {
+          if (cnt > 100) {
+            canPlace = false;
+            break;
+          }
+          x = (x + 1) % xMax;
+          y = (y + 1) % yMax;
+          cnt++;
+        }
+
         let xMin = x + width,
           yMin = y + height;
+        // canPlace = !occupiedCells.has(`${x},${y}`);
 
-        canPlace = !occupiedCells.has(`${x},${y}`);
         for (let i = x; i < x + width; i++) {
           for (let j = y; j < y + height; j++) {
             if (occupiedCells.has(`${i},${j}`)) {
               xMin = Math.min(xMin, i - 1);
               yMin = Math.min(yMin, j - 1);
-              if (xMin - x <= 1 || yMin - y <= 1) canPlace = false;
+              if (xMin - x <= 0 || yMin - y <= 0) canPlace = false;
               // canPlace = false;
               break;
             }
@@ -178,6 +189,7 @@ class Rectangle {
       if (this.appearingTime <= 0) {
         this.appearing = false;
         this.appearingTime = APPEARING_TIME;
+        this.isVertical = Math.random() < 0.5;
       }
       return;
     } else if (this.disappearing) {
