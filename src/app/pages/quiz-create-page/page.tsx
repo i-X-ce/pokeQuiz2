@@ -22,6 +22,7 @@ import {
   styled,
   Switch,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -303,11 +304,14 @@ export default function Home() {
               {imgSrc ? <img className={styles.img} src={imgSrc}></img> : null}
               {imgSrc ? null : (
                 <IconButton component="label" size="large">
-                  <AddPhotoAlternate
-                    className={styles.imgUploadBtn}
-                    color="green"
-                    fontSize="large"
-                  />
+                  <Tooltip title="画像をアップロード">
+                    <AddPhotoAlternate
+                      className={styles.imgUploadBtn}
+                      color="green"
+                      fontSize="large"
+                    />
+                  </Tooltip>
+
                   <VisuallyHiddenInput
                     type="file"
                     accept={FILE_ACCEPT}
@@ -349,17 +353,19 @@ export default function Home() {
                 </IconButton>
               )}
               {imgHover && imgSrc && (
-                <IconButton
-                  className={styles.imgDelBtn}
-                  onClick={() => {
-                    setImgDelete(true);
-                    setImgFile(null);
-                    setImgSrc("");
-                  }}
-                  color="red"
-                >
-                  <Delete fontSize="large" />
-                </IconButton>
+                <Tooltip title="画像を削除">
+                  <IconButton
+                    className={styles.imgDelBtn}
+                    onClick={() => {
+                      setImgDelete(true);
+                      setImgFile(null);
+                      setImgSrc("");
+                    }}
+                    color="red"
+                  >
+                    <Delete fontSize="large" />
+                  </IconButton>
+                </Tooltip>
               )}
             </div>
             <TextField

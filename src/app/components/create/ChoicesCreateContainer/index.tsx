@@ -1,5 +1,5 @@
 import { Add, Delete } from "@mui/icons-material";
-import { Button, IconButton, Radio, TextField } from "@mui/material";
+import { Button, IconButton, Radio, TextField, Tooltip } from "@mui/material";
 import styles from "./style.module.css";
 
 const MAX_CHOICES_NUM = 8;
@@ -81,20 +81,24 @@ export function ChoicesCreateContainer({
             slotProps={{
               input: {
                 startAdornment: (
-                  <Radio
-                    // className={styles.ratio}
-                    checked={choices[i].choiced || false}
-                    onChange={() => selectAnswer(i)}
-                    color="green"
-                  />
+                  <Tooltip title="正解にする" arrow>
+                    <Radio
+                      // className={styles.ratio}
+                      checked={choices[i].choiced || false}
+                      onChange={() => selectAnswer(i)}
+                      color="green"
+                    />
+                  </Tooltip>
                 ),
                 endAdornment: (
-                  <IconButton
-                    // className={styles.ratio + " " + styles.trash}
-                    onClick={() => deleteChoice(i)}
-                  >
-                    <Delete />
-                  </IconButton>
+                  <Tooltip title="削除" arrow>
+                    <IconButton
+                      // className={styles.ratio + " " + styles.trash}
+                      onClick={() => deleteChoice(i)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Tooltip>
                 ),
               },
             }}
@@ -102,13 +106,15 @@ export function ChoicesCreateContainer({
         </div>
       ))}
       {choices.length < MAX_CHOICES_NUM ? (
-        <Button
-          variant="contained"
-          color="green"
-          startIcon={<Add className={styles.add} />}
-          onClick={addChoice}
-          sx={{ margin: "var(--space-sm)" }}
-        />
+        <Tooltip title="選択肢を追加" arrow>
+          <Button
+            variant="contained"
+            color="green"
+            startIcon={<Add className={styles.add} />}
+            onClick={addChoice}
+            sx={{ margin: "var(--space-sm)" }}
+          />
+        </Tooltip>
       ) : null}
     </span>
   );
