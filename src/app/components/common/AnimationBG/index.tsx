@@ -76,11 +76,11 @@ export function AnimationBG() {
       });
 
       // 四角形を追加
-      if (rectanglesRef.current.length < 30) {
+      if (rectanglesRef.current.length < 50) {
         const xMax = Math.floor(canvas.width / RECTANGLE_SIZE);
         const yMax = Math.floor(canvas.height / RECTANGLE_SIZE);
-        const width = Math.floor(Math.random() * 10) + 1;
-        const height = Math.floor(Math.random() * 10) + 1;
+        const width = Math.floor(Math.random() * 5) + 2;
+        const height = Math.floor(Math.random() * 5) + 2;
         let x = Math.floor(Math.random() * (xMax - width));
         let y = Math.floor(Math.random() * (yMax - height));
         // マスの占有状況を確認
@@ -97,18 +97,50 @@ export function AnimationBG() {
           cnt++;
         }
 
-        let xMin = x + width,
-          yMin = y + height;
+        let hMin = height;
         // canPlace = !occupiedCells.has(`${x},${y}`);
+        let rectMax = { width: 0, height: 0 };
 
-        for (let i = x; i < x + width; i++) {
-          for (let j = y; j < y + height; j++) {
-            if (occupiedCells.has(`${i},${j}`)) {
-              xMin = Math.min(xMin, i - 1);
-              yMin = Math.min(yMin, j - 1);
-              if (xMin - x <= 0 || yMin - y <= 0) canPlace = false;
-              // canPlace = false;
-              break;
+        for (let i = 0; i < width; i++) {
+          for (let j = 0; j < hMin; j++) {
+            if (occupiedCells.has(`${i + x},${j + y}`)) {
+              hMin = Math.min(hMin, j);
+              // if (hMin - y <= 0) {
+              //   canPlace = false;
+              //   break;
+              // }
+            } else {
+              const w = i + 1,
+                h = j + 1;
+              if (rectMax.width * rectMax.height < w * h) {
+                rectMax = { width: w, height: h };
+              }
+            }
+          }
+          if (!canPlace) break;
+        }
+
+        let wMin = width;
+
+        for (let i = 0; i < height; i++) {
+          for (let j = 0; j < wMin; j++) {
+            if (occupiedCells.has(`${j + x},${i + y}`)) {
+              wMin = Math.min(wMin, j);
+              // if (wMin - x <= 0) {
+              //   canPlace = false;
+              //   break;
+              // }
+            } else {
+              const w = j + 1,
+                h = i + 1;
+              if (rectMax.width * rectMax.height < w * h) {
+                rectMax = { width: w, height: h };
+              } else if (
+                rectMax.width * rectMax.height == w * h &&
+                Math.random() < 0.5
+              ) {
+                rectMax = { ...rectMax, width: w, height: h };
+              }
             }
           }
           if (!canPlace) break;
@@ -118,8 +150,8 @@ export function AnimationBG() {
           const rectangle = new Rectangle(
             x,
             y,
-            xMin - x,
-            yMin - y,
+            rectMax.width,
+            rectMax.height,
             colors[Math.floor(Math.random() * colors.length)],
             life,
             context
