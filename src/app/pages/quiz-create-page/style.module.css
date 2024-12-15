@@ -1,6 +1,6 @@
 .paper {
   position: relative;
-  margin: 30px;
+  margin: var(--space-md);
   padding: var(--space-md) var(--space-lg);
 }
 
@@ -47,17 +47,17 @@
 .titleTagWrapper {
   display: flex;
   align-items: center;
-  margin: 10px 0px;
-  padding: 10px 30px;
-  border: 1px solid var(--bc-green);
-  border-radius: 500px;
+  margin: var(--space-sm) 0px;
+  padding: var(--space-sm) var(--space-md);
+  /* border-bottom: 1px solid var(--bc-green); */
+  /* border-radius: 500px; */
   user-select: none;
   transition: 0.3s;
 }
 
 .titleTagH2 {
   font-weight: bold;
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   margin-right: 10px;
 }
 
