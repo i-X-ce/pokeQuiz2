@@ -9,6 +9,9 @@ import {
   Pagination,
   Select,
   Snackbar,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
 } from "@mui/material";
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -16,6 +19,7 @@ import styles from "./style.module.css";
 import { Loading } from "@/app/components/common/Loading";
 import { useRouter, useSearchParams } from "next/navigation";
 import LoginDialog from "@/app/components/common/LoginDialog";
+import { Face, SupervisorAccount } from "@mui/icons-material";
 
 interface Question {
   _id: string;
@@ -45,6 +49,7 @@ export default function Home() {
   const [openAlert, setOpneAlert] = useState(false);
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const router = useRouter();
+  const [pageRange, setPageRange] = useState("all");
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
     const range = searchParams.get("range");
@@ -58,6 +63,7 @@ export default function Home() {
           Math.floor(data / quizLimitPerPage) +
             (data % quizLimitPerPage > 0 ? 1 : 0)
         );
+        setPageRange(range || "all");
       })
       .catch((error) => {
         console.log(error);
@@ -117,6 +123,35 @@ export default function Home() {
           "クイズをみる"
         }
       />
+      <ToggleButtonGroup
+        value={pageRange}
+        exclusive
+        color="blue"
+        onChange={(e, v) => {
+          setPageRange(v);
+          router.push("/pages/quiz-view?range=" + v);
+        }}
+      >
+        <ToggleButton
+          value="all"
+          component="a"
+          href="/pages/quiz-view?range=all"
+        >
+          <Tooltip title="みんなの">
+            <SupervisorAccount />
+          </Tooltip>
+        </ToggleButton>
+        <ToggleButton
+          value="mine"
+          component="a"
+          href="/pages/quiz-view?range=mine"
+        >
+          <Tooltip title="じぶんの">
+            <Face />
+          </Tooltip>
+        </ToggleButton>
+      </ToggleButtonGroup>
+
       <div className={styles.mainContent}>
         <span className={styles.center}>
           <FormControl>
