@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const sortQuestions = await Question.aggregate([
+    const questions = await Question.aggregate([
       { $match: { userId: { $ne: null } } },
       {
         $lookup: {
@@ -40,29 +40,49 @@ export async function GET(req: NextRequest) {
         $sort: { divisionResult: 1 },
       },
     ]);
-    const collectionSize = sortQuestions.length;
 
-    let resQuestions: any[] = [];
-    let mp = new Set<number>();
-    for (let i = 0; i < Math.min(questionCount, collectionSize); i++) {
-      let index = 0;
-      const difNum =
-        difficulty === "hard" ? 0 : difficulty === "normal" ? 1 : 2;
+    let resQuestions = [];
 
-      do {
-        index = Math.floor(
-          (Math.random() * collectionSize) / 3 + (difNum * collectionSize) / 3
-        );
-        if (mp.has(index)) continue;
-        mp.add(index);
-        break;
-      } while (true);
-      let q = sortQuestions[index];
+    // 新しい問題
+    if (difficulty === "newest") {
+      const newQuestions = questions.filter(
+        (q: any) => (q.answerCnt || 0) < 10
+      );
+      newQuestions.sort(() => Math.random() - 0.5);
+      resQuestions = newQuestions.slice(0, questionCount);
+    } else {
+      // 難易度別問題
+      let filteredQuestions = questions.filter(
+        (q: any) => (q.answerCnt || 0) >= 10
+      );
+      const collectionSize = filteredQuestions.length;
+      let startIndex;
+      switch (difficulty) {
+        case "hard":
+          startIndex = 0;
+          break;
+        case "normal":
+          startIndex = Math.floor(collectionSize / 3);
+          break;
+        case "easy":
+          startIndex = Math.floor((collectionSize / 3) * 2);
+          break;
+        default:
+          startIndex = 0;
+      }
+      filteredQuestions = filteredQuestions.filter((q: any, index: number) => {
+        return index >= startIndex && index < startIndex + collectionSize / 3;
+      });
+      filteredQuestions.sort(() => Math.random() - 0.5);
+      resQuestions = filteredQuestions.slice(0, questionCount);
+    }
+
+    for (let i = 0; i < resQuestions.length; i++) {
+      let q = resQuestions[i];
       q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
       delete q.userInfo;
       delete q.correctAnswer;
       delete q.description;
-      // delete q.userId;
       if (q.img) {
         const command = new GetObjectCommand({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -72,10 +92,43 @@ export async function GET(req: NextRequest) {
           expiresIn: 1800,
         });
       }
-      resQuestions.push(q);
     }
-
     return NextResponse.json(resQuestions, { status: 200 });
+
+    // let resQuestions: any[] = [];
+    // let mp = new Set<number>();
+    // for (let i = 0; i < Math.min(questionCount, collectionSize); i++) {
+    //   let index = 0;
+    //   const difNum =
+    //     difficulty === "hard" ? 0 : difficulty === "normal" ? 1 : 2;
+
+    //   do {
+    //     index = Math.floor(
+    //       (Math.random() * collectionSize) / 3 + (difNum * collectionSize) / 3
+    //     );
+    //     if (mp.has(index)) continue;
+    //     mp.add(index);
+    //     break;
+    //   } while (true);
+    //   let q = filteredQuestions[index];
+    //   q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
+    //   delete q.userInfo;
+    //   delete q.correctAnswer;
+    //   delete q.description;
+    //   // delete q.userId;
+    //   if (q.img) {
+    //     const command = new GetObjectCommand({
+    //       Bucket: process.env.AWS_S3_BUCKET_NAME,
+    //       Key: "uploads/" + q._id + q.img,
+    //     });
+    //     q.img = await getSignedUrl(s3Client, command, {
+    //       expiresIn: 1800,
+    //     });
+    //   }
+    //   resQuestions.push(q);
+    // }
+
+    // return NextResponse.json(resQuestions, { status: 200 });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json(

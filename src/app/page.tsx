@@ -6,6 +6,7 @@ import { HomeTitle } from "./components/common/HomeTitle";
 import { HomeButton } from "./components/common/HomeButton";
 import {
   AddBox,
+  AutoAwesome,
   Face,
   HelpCenter,
   SentimentDissatisfied,
@@ -58,6 +59,12 @@ export default function Home() {
             childrenTitle="難易度"
           >
             <span className={styles.childButtonContainer}>
+              <ChildButton
+                title={"あたらしい"}
+                startIcon={<AutoAwesome />}
+                link={"/pages/quiz-page?difficulty=newest"}
+                color={"red"}
+              />
               <ChildButton
                 title={"むずかしい"}
                 startIcon={<SentimentDissatisfied />}

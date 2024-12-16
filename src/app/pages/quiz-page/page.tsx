@@ -10,13 +10,14 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Divider,
   Skeleton,
 } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Question {
   _id: string;
@@ -52,6 +53,8 @@ export default function Home() {
   const session = useSession();
   const searchparams = useSearchParams();
   const [imgLoading, setImgLoading] = useState(true);
+  const [openFaild, setOpenFaild] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     // fetch("/api/quiz/get-all")
@@ -76,6 +79,9 @@ export default function Home() {
       .then((data) => {
         setQuestions(data);
         question.current = data[0];
+        if (data.length === 0) {
+          setOpenFaild(true);
+        }
       })
       .catch((err) => console.error("Error fetching quiz data:", err));
   }, []);
@@ -152,7 +158,28 @@ export default function Home() {
   };
 
   if (questions.length === 0) {
-    return <Loading />;
+    return (
+      <>
+        <Loading />
+        <Dialog
+          open={openFaild}
+          onClose={() => {
+            setOpenFaild(false);
+            router.push("/");
+          }}
+        >
+          <DialogTitle>ごめんね！</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              クイズを取得できませんでした！しばらく待ってからお試しください。
+            </DialogContentText>
+            <DialogContentText>
+              新しい問題が枯渇しているのかも！問題の投稿をお願いします！！
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
+      </>
+    );
   }
 
   return isFinished ? (
