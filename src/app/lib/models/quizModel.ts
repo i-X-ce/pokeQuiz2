@@ -16,6 +16,9 @@ export const quizSchema = new Schema(
   { timestamps: true }
 );
 
+// テキストインデックスを追加
+quizSchema.index({ title: "text", question: "text", description: "text" });
+
 const Question =
   mongoose.models.Question || mongoose.model("Question", quizSchema); // 'Question'という名前でコレクションが作成される(既に存在している場合は上書きせず)
 export default Question;

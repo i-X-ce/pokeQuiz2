@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
   const size: number = Number(req.nextUrl.searchParams.get("size")); // 取得するクイズの数
   const sortType = req.nextUrl.searchParams.get("sortType");
   const range = req.nextUrl.searchParams.get("range");
+  const searchQuery = req.nextUrl.searchParams.get("searchQuery");
 
   if (index === undefined || size === undefined || sortType === undefined) {
     return NextResponse.json(
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
   }
 
   let sortField: string = "createdAt",
-    sortOrder: number = 1;
+    sortOrder: 1 | -1 = 1;
   switch (sortType) {
     case "newest":
       sortField = "createdAt";
@@ -50,7 +51,7 @@ export async function GET(req: NextRequest) {
       break;
   }
 
-  let match = { $match: { userId: { $ne: null } } };
+  let match: any = { $match: { userId: { $ne: null } } };
   const email = (await getServerSession())?.user?.email;
   const userId = (await User.findOne({ email }))?._id;
 
@@ -58,11 +59,26 @@ export async function GET(req: NextRequest) {
   if (range === "mine") {
     if (!email) {
       return NextResponse.json(
-        { error: "No query parameters provided" },
-        { status: 400 }
+        { message: "You do not have permission." },
+        { status: 403 }
       );
     }
     match = { $match: { userId: userId } };
+  }
+
+  if (searchQuery) {
+    const keywords = searchQuery
+      ?.replace(" ", ",")
+      .replace("　", ",")
+      .split(",")
+      .filter((k) => k !== "")
+      .join("|");
+    match.$match.$or = [
+      { title: { $regex: keywords, $options: "i" } },
+      { question: { $regex: keywords, $options: "i" } },
+      { description: { $regex: keywords, $options: "i" } },
+      { choices: { $regex: keywords, $options: "i" } },
+    ];
   }
 
   let questions = await Question.aggregate([
@@ -83,8 +99,8 @@ export async function GET(req: NextRequest) {
       },
     },
     { $sort: { [sortField]: sortOrder } },
-    { $skip: index },
-    { $limit: size },
+    // { $skip: index },
+    // { $limit: size },
   ]);
 
   // questions.forEach(async (q) => {
@@ -102,7 +118,8 @@ export async function GET(req: NextRequest) {
   //     });
   //   }
   // });
-
+  const allSize = questions.length;
+  questions = questions.slice(index, index + size);
   for (const q of questions) {
     q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
     delete q.userInfo;
@@ -119,5 +136,5 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json(questions, { status: 200 });
+  return NextResponse.json({ questions, allSize }, { status: 200 });
 }

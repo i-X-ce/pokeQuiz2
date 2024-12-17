@@ -3,6 +3,9 @@ import { Title } from "@/app/components/common/Title";
 import QuizInfo from "@/app/components/view/QuizInfo";
 import {
   Alert,
+  Dialog,
+  DialogContent,
+  DialogContentText,
   FormControl,
   InputLabel,
   MenuItem,
@@ -50,24 +53,27 @@ export default function Home() {
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
   const router = useRouter();
   const [pageRange, setPageRange] = useState("all");
+  const [openFaild, setOpenFaild] = useState(false);
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
     const range = searchParams.get("range");
-    axios
-      .get("/api/quiz/get-count", {
-        params: { range: range || "all" },
-      })
-      .then((res) => res.data)
-      .then((data) => {
-        setTotalPages(
-          Math.floor(data / quizLimitPerPage) +
-            (data % quizLimitPerPage > 0 ? 1 : 0)
-        );
-        setPageRange(range || "all");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    setPageRange(range || "all");
+
+    // axios
+    //   .get("/api/quiz/get-count", {
+    //     params: { range: range || "all" },
+    //   })
+    //   .then((res) => res.data)
+    //   .then((data) => {
+    //     setTotalPages(
+    //       Math.floor(data / quizLimitPerPage) +
+    //         (data % quizLimitPerPage > 0 ? 1 : 0)
+    //     );
+    //     setPageRange(range || "all");
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
     axios
       .get("/api/quiz/get-view", {
         params: {
@@ -79,11 +85,16 @@ export default function Home() {
       })
       .then((res) => res.data)
       .then((data) => {
-        setQuestions([...data]);
+        setTotalPages(
+          Math.floor(data.allSize / quizLimitPerPage) +
+            (data.allSize % quizLimitPerPage > 0 ? 1 : 0)
+        );
+        setQuestions([...data.questions]);
       })
       .catch((error) => {
         console.log(error);
-        setOpenLoginDialog(true);
+        if (range === "mine" && error.status === 403) setOpenLoginDialog(true);
+        else setOpenFaild(true);
       });
   };
 
@@ -111,6 +122,12 @@ export default function Home() {
             router.push("/");
           }}
         />
+        <Dialog open={openFaild} onClose={() => router.push("/")}>
+          <Alert severity="error">エラーが発生しました。</Alert>
+          <DialogContent>
+            <DialogContentText>クイズを取得できません。</DialogContentText>
+          </DialogContent>
+        </Dialog>
       </>
     );
 
