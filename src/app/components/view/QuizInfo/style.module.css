@@ -53,7 +53,7 @@
   justify-content: center;
   margin: 3px;
   padding: 5px;
-  border-radius: 100px;
+  border-radius: var(--font-size-lg);
   border: solid 2px var(--bc-blue);
   transition: 0.3s;
   color: var(--bc-blue);
@@ -85,4 +85,10 @@
 .deleteTitle {
   color: var(--bc-red);
   font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .choicesContainer {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 }
