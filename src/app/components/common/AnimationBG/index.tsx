@@ -76,7 +76,7 @@ export function AnimationBG() {
       });
 
       // 四角形を追加
-      if (rectanglesRef.current.length < 50) {
+      if (rectanglesRef.current.length < 20) {
         const xMax = Math.floor(canvas.width / RECTANGLE_SIZE);
         const yMax = Math.floor(canvas.height / RECTANGLE_SIZE);
         const width = Math.floor(Math.random() * 5) + 2;
@@ -88,7 +88,7 @@ export function AnimationBG() {
 
         let cnt = 0;
         while (occupiedCells.has(`${x},${y}`)) {
-          if (cnt > 100) {
+          if (cnt > 10) {
             canPlace = false;
             break;
           }
