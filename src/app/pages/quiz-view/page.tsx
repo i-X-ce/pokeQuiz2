@@ -7,22 +7,24 @@ import {
   DialogContent,
   DialogContentText,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Pagination,
   Select,
   Snackbar,
+  TextField,
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
 } from "@mui/material";
 import axios from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { Loading } from "@/app/components/common/Loading";
 import { useRouter, useSearchParams } from "next/navigation";
 import LoginDialog from "@/app/components/common/LoginDialog";
-import { Face, SupervisorAccount } from "@mui/icons-material";
+import { Close, Face, Search, SupervisorAccount } from "@mui/icons-material";
 
 interface Question {
   _id: string;
@@ -54,34 +56,18 @@ export default function Home() {
   const router = useRouter();
   const [pageRange, setPageRange] = useState("all");
   const [openFaild, setOpenFaild] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const allSize = useRef(0);
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
     const range = searchParams.get("range");
     setPageRange(range || "all");
 
-    // axios
-    //   .get("/api/quiz/get-count", {
-    //     params: { range: range || "all" },
-    //   })
-    //   .then((res) => res.data)
-    //   .then((data) => {
-    //     setTotalPages(
-    //       Math.floor(data / quizLimitPerPage) +
-    //         (data % quizLimitPerPage > 0 ? 1 : 0)
-    //     );
-    //     setPageRange(range || "all");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    const params: any = { index, size, sortType, range: range || "all" };
+    if (searchQuery) params.searchQuery = searchQuery;
     axios
       .get("/api/quiz/get-view", {
-        params: {
-          index,
-          size,
-          sortType,
-          range: range || "all",
-        },
+        params,
       })
       .then((res) => res.data)
       .then((data) => {
@@ -90,6 +76,7 @@ export default function Home() {
             (data.allSize % quizLimitPerPage > 0 ? 1 : 0)
         );
         setQuestions([...data.questions]);
+        allSize.current = data.allSize;
       })
       .catch((error) => {
         console.log(error);
@@ -149,28 +136,29 @@ export default function Home() {
           router.push("/pages/quiz-view?range=" + v);
         }}
       >
-        <ToggleButton
-          value="all"
-          component="a"
-          href="/pages/quiz-view?range=all"
-        >
-          <Tooltip title="みんなの">
+        <Tooltip title="みんなの">
+          <ToggleButton
+            value="all"
+            component="a"
+            href="/pages/quiz-view?range=all"
+          >
             <SupervisorAccount />
-          </Tooltip>
-        </ToggleButton>
-        <ToggleButton
-          value="mine"
-          component="a"
-          href="/pages/quiz-view?range=mine"
-        >
-          <Tooltip title="じぶんの">
+          </ToggleButton>
+        </Tooltip>
+
+        <Tooltip title="じぶんの">
+          <ToggleButton
+            value="mine"
+            component="a"
+            href="/pages/quiz-view?range=mine"
+          >
             <Face />
-          </Tooltip>
-        </ToggleButton>
+          </ToggleButton>
+        </Tooltip>
       </ToggleButtonGroup>
 
       <div className={styles.mainContent}>
-        <span className={styles.center}>
+        <span className={styles.center + " " + styles.topInput}>
           <FormControl>
             <InputLabel>並び替え</InputLabel>
             <Select
@@ -189,41 +177,87 @@ export default function Home() {
               <MenuItem value="answerLowest">出題数が少ない順</MenuItem>
             </Select>
           </FormControl>
-        </span>
-        <span className={styles.center}>
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={(e, n: number) => {
-              handlePageChange(n, sortType);
+          <TextField
+            variant="standard"
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <Tooltip title="検索">
+                    <IconButton
+                      onClick={() => handlePageChange(page, sortType)}
+                    >
+                      <Search />
+                    </IconButton>
+                  </Tooltip>
+                ),
+                endAdornment: (
+                  <Tooltip title="クリア">
+                    <IconButton
+                      onClick={() => setSearchQuery("")}
+                      sx={{
+                        color: searchQuery === "" ? "transparent" : "",
+                        pointerEvents: searchQuery === "" ? "none" : "",
+                      }}
+                    >
+                      <Close />
+                    </IconButton>
+                  </Tooltip>
+                ),
+              },
             }}
-            color="blue"
-          />
-        </span>
-        <div className={styles.cardContainer}>
-          {questions?.map((q: Question, i: number) => (
-            <QuizInfo
-              key={i + page * quizLimitPerPage}
-              question={q}
-              handleLoading={() => {
-                handlePageChange(page, order);
-              }}
-              handleAlert={() => {
-                setOpneAlert(true);
-              }}
-            />
-          ))}
-        </div>
-        <span className={styles.center}>
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={(e, n: number) => {
-              handlePageChange(n, sortType);
+            value={searchQuery}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setSearchQuery(e.target.value);
             }}
-            color="blue"
-          />
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handlePageChange(page, sortType);
+              }
+            }}
+          ></TextField>
         </span>
+        {allSize.current !== 0 ? (
+          <>
+            <span className={styles.center}>
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={(e, n: number) => {
+                  handlePageChange(n, sortType);
+                }}
+                color="blue"
+              />
+            </span>
+            <div className={styles.cardContainer}>
+              {questions?.map((q: Question, i: number) => (
+                <QuizInfo
+                  key={i + page * quizLimitPerPage}
+                  question={q}
+                  handleLoading={() => {
+                    handlePageChange(page, order);
+                  }}
+                  handleAlert={() => {
+                    setOpneAlert(true);
+                  }}
+                />
+              ))}
+            </div>
+            <span className={styles.center}>
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={(e, n: number) => {
+                  handlePageChange(n, sortType);
+                }}
+                color="blue"
+              />
+            </span>
+          </>
+        ) : (
+          <div className={styles.allsizeError}>
+            <Alert severity="error">クイズが見つかりません！</Alert>
+          </div>
+        )}
       </div>
 
       <Snackbar

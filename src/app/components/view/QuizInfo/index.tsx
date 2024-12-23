@@ -13,10 +13,11 @@ import {
   IconButton,
   Popover,
   Skeleton,
+  Tooltip,
 } from "@mui/material";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
-import { Delete, Edit, MoreVert } from "@mui/icons-material";
+import { Delete, Edit, MoreVert, Twitter } from "@mui/icons-material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
@@ -44,15 +45,32 @@ export default function QuizInfo(props: any) {
       <CardContent>
         <span className={styles.titleContainer}>
           <h2 className={styles.cardTitle}>{question.title}</h2>
-          {question.isMe ? (
-            <IconButton
-              onClick={(e) => {
-                setMoreAnchorEl(e.currentTarget);
-              }}
-            >
-              <MoreVert />
-            </IconButton>
-          ) : null}
+          {question.isMe && (
+            <span>
+              {/* Twitterに共有するボタン */}
+              <Tooltip title="Twitterで共有">
+                <IconButton
+                  size="small"
+                  onClick={() => {
+                    const url = `https://twitter.com/intent/tweet?text=${question.title}&url=${location.href}`;
+                    window.open(url, "_blank");
+                  }}
+                >
+                  <Twitter />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="オプション">
+                <IconButton
+                  size="small"
+                  onClick={(e) => {
+                    setMoreAnchorEl(e.currentTarget);
+                  }}
+                >
+                  <MoreVert />
+                </IconButton>
+              </Tooltip>
+            </span>
+          )}
           <Popover
             open={openMore}
             anchorEl={moreAnchorEl}
