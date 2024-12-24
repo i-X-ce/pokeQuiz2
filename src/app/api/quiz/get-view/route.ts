@@ -71,14 +71,16 @@ export async function GET(req: NextRequest) {
       ?.replace(" ", ",")
       .replace("　", ",")
       .split(",")
-      .filter((k) => k !== "")
-      .join("|");
-    match.$match.$or = [
-      { title: { $regex: keywords, $options: "i" } },
-      { question: { $regex: keywords, $options: "i" } },
-      { description: { $regex: keywords, $options: "i" } },
-      { choices: { $regex: keywords, $options: "i" } },
-    ];
+      .filter((k) => k !== "");
+
+    match.$match.$and = keywords.map((keyword) => ({
+      $or: [
+        { title: { $regex: keyword, $options: "i" } },
+        { question: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+        { choices: { $regex: keyword, $options: "i" } },
+      ],
+    }));
   }
 
   let questions = await Question.aggregate([
