@@ -66,8 +66,12 @@
 
 .championCardDetails {
   padding: 20px 30px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: var(--space-md);
 }
 
 .championCardDetailCell {
