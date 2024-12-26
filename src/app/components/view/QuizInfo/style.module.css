@@ -1,5 +1,18 @@
 .card {
   margin: var(--space-sm);
+  background-color: var(--bc-white);
+  border-radius: var(--font-size-md);
+  box-shadow: 1px 1px 3px 1px var(--bc-shadow);
+  padding: var(--space-md);
+  border: solid 3px transparent;
+  filter: none;
+  cursor: pointer;
+}
+
+.selectedCard {
+  border-color: var(--bc-blue);
+  filter: brightness(70%);
+  transition: 0.3s;
 }
 
 .cardTitle {
@@ -58,14 +71,13 @@
   transition: 0.3s;
   color: var(--bc-blue);
   user-select: none;
-  cursor: default;
   font-size: var(--font-size-md);
 }
 
-.choice:hover {
+/* .choice:hover {
   background-color: var(--bc-shadow);
   color: var(--bc-white);
-}
+} */
 
 .correctChoice {
   background-color: var(--bc-blue);
@@ -85,6 +97,15 @@
 .deleteTitle {
   color: var(--bc-red);
   font-weight: bold;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+}
+
+.absoluteContainer {
+  position: absolute;
 }
 
 @media (max-width: 700px) {

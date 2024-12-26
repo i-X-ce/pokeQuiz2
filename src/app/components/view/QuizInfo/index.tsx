@@ -1,9 +1,6 @@
 import {
   Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  CircularProgress,
+  Checkbox,
   Collapse,
   Dialog,
   DialogActions,
@@ -34,6 +31,7 @@ export default function QuizInfo(props: any) {
   const handleLoading = props.handleLoading;
   const handleAlert = props.handleAlert;
   const router = useRouter();
+  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
     setOpenAnswer(false);
@@ -41,14 +39,20 @@ export default function QuizInfo(props: any) {
   }, [question]);
 
   return (
-    <Card className={styles.card}>
-      <CardContent>
+    <>
+      <div
+        className={styles.card + (selected ? " " + styles.selectedCard : "")}
+        onClick={(e) => {
+          setSelected(!selected);
+          console.log(selected);
+        }}
+      >
         <span className={styles.titleContainer}>
           <h2 className={styles.cardTitle}>{question.title}</h2>
           {question.isMe && (
-            <span>
+            <span className={styles.iconContainer}>
               {/* Twitterに共有するボタン */}
-              <Tooltip title="Twitterで共有">
+              {/* <Tooltip title="Twitterで共有">
                 <IconButton
                   size="small"
                   onClick={() => {
@@ -58,11 +62,12 @@ export default function QuizInfo(props: any) {
                 >
                   <Twitter />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip title="オプション">
                 <IconButton
                   size="small"
                   onClick={(e) => {
+                    e.stopPropagation();
                     setMoreAnchorEl(e.currentTarget);
                   }}
                 >
@@ -71,32 +76,6 @@ export default function QuizInfo(props: any) {
               </Tooltip>
             </span>
           )}
-          <Popover
-            open={openMore}
-            anchorEl={moreAnchorEl}
-            onClose={() => {
-              setMoreAnchorEl(null);
-            }}
-          >
-            <Button
-              startIcon={<Edit />}
-              color="blue"
-              fullWidth
-              onClick={() => {
-                router.push(`/pages/quiz-create-page?id=${question._id}`);
-              }}
-            >
-              編集
-            </Button>
-            <Button
-              startIcon={<Delete />}
-              color="red"
-              fullWidth
-              onClick={() => setOpenDelete(true)}
-            >
-              削除
-            </Button>
-          </Popover>
         </span>
         <span className={styles.cardHeader}>
           <span>
@@ -144,9 +123,9 @@ export default function QuizInfo(props: any) {
                   : ""
               }`}
               key={i}
-              onClick={() => {
-                setOpenAnswer(!openAnswer);
-              }}
+              // onClick={() => {
+              //   setOpenAnswer(!openAnswer);
+              // }}
             >
               <p>{c}</p>
             </div>
@@ -158,52 +137,84 @@ export default function QuizInfo(props: any) {
             <p className={styles.description}>{question.description}</p>
           </DescriptionWrapper>
         </Collapse>
-      </CardContent>
+      </div>
 
-      {/* 削除ダイアログ */}
-      <Dialog
-        open={openDelete}
-        onClose={() => {
-          setOpenDelete(false);
-          setMoreAnchorEl(null);
-        }}
-      >
-        <DialogTitle className={styles.deleteTitle}>クイズの削除</DialogTitle>
-        <DialogContent>
-          <p>削除を選択しました。一度削除したクイズは二度と復元できません。</p>
-          <p>削除してもよろしいですか？</p>
-        </DialogContent>
-        <DialogActions>
+      <span className={styles.absoluteContainer}>
+        <Popover
+          className={styles.popover}
+          open={openMore}
+          anchorEl={moreAnchorEl}
+          onClose={() => {
+            setMoreAnchorEl(null);
+          }}
+        >
           <Button
-            variant="outlined"
-            color="red"
+            startIcon={<Edit />}
+            color="blue"
+            fullWidth
             onClick={() => {
-              setOpenDelete(false);
-              setMoreAnchorEl(null);
+              router.push(`/pages/quiz-create-page?id=${question._id}`);
             }}
           >
-            キャンセル
+            編集
           </Button>
           <Button
-            variant="contained"
+            startIcon={<Delete />}
             color="red"
-            onClick={() => {
-              axios
-                .delete("/api/quiz/delete", {
-                  params: { id: question._id },
-                })
-                .then(() => {
-                  handleLoading();
-                  handleAlert();
-                });
-              setOpenDelete(false);
-              setMoreAnchorEl(null);
-            }}
+            fullWidth
+            onClick={() => setOpenDelete(true)}
           >
             削除
           </Button>
-        </DialogActions>
-      </Dialog>
-    </Card>
+        </Popover>
+
+        {/* 削除ダイアログ */}
+        <Dialog
+          open={openDelete}
+          onClose={() => {
+            setOpenDelete(false);
+            setMoreAnchorEl(null);
+          }}
+        >
+          <DialogTitle className={styles.deleteTitle}>クイズの削除</DialogTitle>
+          <DialogContent>
+            <p>
+              削除を選択しました。一度削除したクイズは二度と復元できません。
+            </p>
+            <p>削除してもよろしいですか？</p>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="outlined"
+              color="red"
+              onClick={() => {
+                setOpenDelete(false);
+                setMoreAnchorEl(null);
+              }}
+            >
+              キャンセル
+            </Button>
+            <Button
+              variant="contained"
+              color="red"
+              onClick={() => {
+                axios
+                  .delete("/api/quiz/delete", {
+                    params: { id: question._id },
+                  })
+                  .then(() => {
+                    handleLoading();
+                    handleAlert();
+                  });
+                setOpenDelete(false);
+                setMoreAnchorEl(null);
+              }}
+            >
+              削除
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </span>
+    </>
   );
 }
