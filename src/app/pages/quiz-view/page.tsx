@@ -6,12 +6,14 @@ import {
   Dialog,
   DialogContent,
   DialogContentText,
+  Divider,
   FormControl,
   IconButton,
   InputLabel,
   MenuItem,
   Pagination,
   Select,
+  Slide,
   Snackbar,
   TextField,
   ToggleButton,
@@ -24,7 +26,15 @@ import styles from "./style.module.css";
 import { Loading } from "@/app/components/common/Loading";
 import { useRouter, useSearchParams } from "next/navigation";
 import LoginDialog from "@/app/components/common/LoginDialog";
-import { Close, Face, Search, SupervisorAccount } from "@mui/icons-material";
+import {
+  Close,
+  Face,
+  Help,
+  PlayArrow,
+  Search,
+  SupervisorAccount,
+  Twitter,
+} from "@mui/icons-material";
 
 interface Question {
   _id: string;
@@ -42,6 +52,8 @@ interface Question {
   userId: string;
 }
 
+type Selected = { id: string; title: string };
+
 const quizLimitPerPage = 20; // 1ページに入れるクイズの数
 
 export default function Home() {
@@ -58,6 +70,7 @@ export default function Home() {
   const [openFaild, setOpenFaild] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const allSize = useRef(0);
+  const [selectedQs, setSelectedQs] = useState<Selected[]>([]);
 
   const loadingQuestions = (index: number, size: number, sortType: String) => {
     const range = searchParams.get("range");
@@ -93,6 +106,24 @@ export default function Home() {
       quizLimitPerPage,
       sortType
     );
+  };
+
+  const handleSelectedQs = (selectedQuestion: Selected) => {
+    if (selectedQs?.some((i) => i.id === selectedQuestion.id)) {
+      setSelectedQs(selectedQs.filter((i) => i.id !== selectedQuestion.id));
+      return false;
+    } else {
+      if (selectedQs.length >= 5) return false;
+      setSelectedQs([...selectedQs, selectedQuestion]);
+      return true;
+    }
+  };
+
+  const playURL: () => string = () => {
+    const url = new URL("/pages/quiz-page", location.href);
+    url.searchParams.append("difficulty", "specific");
+    url.searchParams.append("ids", selectedQs.map((i) => i.id).join(","));
+    return url.toString();
   };
 
   useEffect(() => {
@@ -214,6 +245,7 @@ export default function Home() {
                 handlePageChange(page, sortType);
               }
             }}
+            sx={{ margin: "0 var(--space-md)" }}
           ></TextField>
         </span>
         {allSize.current !== 0 ? (
@@ -239,6 +271,8 @@ export default function Home() {
                   handleAlert={() => {
                     setOpneAlert(true);
                   }}
+                  handleSelectedQs={handleSelectedQs}
+                  selected={selectedQs?.some((i) => i.id === q._id)}
                 />
               ))}
             </div>
@@ -271,6 +305,75 @@ export default function Home() {
           クイズを削除しました。
         </Alert>
       </Snackbar>
+
+      <Slide in={selectedQs.length >= 1} direction="up">
+        <div className={styles.selectedTab}>
+          <div className={styles.selectedTabButtons}>
+            <Tooltip title="クイズをとく" arrow placement="top">
+              <IconButton onClick={() => router.push(playURL())}>
+                <PlayArrow />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Twitterで共有" arrow placement="top">
+              <IconButton
+                onClick={() => {
+                  const tweetText = "オススメのバグクイズです！！";
+                  const tweetUrl = encodeURIComponent(playURL());
+                  const twitterAppUrl = `twitter://post?message=${encodeURIComponent(tweetText)}&url=${tweetUrl}`;
+                  const twitterWebUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${tweetUrl}`;
+
+                  // ユーザーエージェントをチェックしてモバイルデバイスの場合のみアプリを開く
+                  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+                  if (isMobile) {
+                    // Twitterアプリがインストールされている場合はアプリを開く
+                    window.open(twitterAppUrl, "_blank");
+
+                    // Twitterアプリがインストールされていない場合はWebページを開く
+                    setTimeout(() => {
+                      window.open(twitterWebUrl, "_blank");
+                    }, 500);
+                  } else {
+                    // PCの場合は直接Webページを開く
+                    window.open(twitterWebUrl, "_blank");
+                  }
+                }}
+              >
+                <Twitter />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <Divider />
+          <div className={styles.selectedQuestions}>
+            {[...Array(5)].map((_, i) => (
+              <Tooltip
+                key={i}
+                title={i < selectedQs.length ? selectedQs[i].title : "未選択"}
+                arrow
+              >
+                <IconButton
+                  onClick={() => {
+                    if (i >= selectedQs.length) return;
+                    handleSelectedQs(selectedQs[i]);
+                  }}
+                  color={i < selectedQs.length ? "blue" : "default"}
+                >
+                  <Help />
+                </IconButton>
+              </Tooltip>
+            ))}
+            <Tooltip title="クリア" arrow>
+              <IconButton
+                onClick={() => {
+                  setSelectedQs([]);
+                }}
+              >
+                <Close />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+      </Slide>
     </>
   );
 }

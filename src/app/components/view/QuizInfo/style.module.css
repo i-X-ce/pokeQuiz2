@@ -7,12 +7,13 @@
   border: solid 3px transparent;
   filter: none;
   cursor: pointer;
+  transition-property: border-color, filter;
+  transition-duration: 0.3s;
 }
 
 .selectedCard {
   border-color: var(--bc-blue);
   filter: brightness(70%);
-  transition: 0.3s;
 }
 
 .cardTitle {

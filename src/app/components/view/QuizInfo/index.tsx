@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -13,14 +14,24 @@ import {
   Tooltip,
 } from "@mui/material";
 import styles from "./style.module.css";
-import { useEffect, useState } from "react";
 import { Delete, Edit, MoreVert, Twitter } from "@mui/icons-material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
 
-export default function QuizInfo(props: any) {
-  const question = props.question;
+export default function QuizInfo({
+  question,
+  handleSelectedQs: handleSelectedIds,
+  handleLoading,
+  handleAlert,
+  selected,
+}: {
+  question: any;
+  handleSelectedQs: (selectedQuestion: any) => boolean;
+  handleLoading: () => void;
+  handleAlert: () => void;
+  selected: boolean;
+}) {
   const [openAnswer, setOpenAnswer] = useState(false);
   const [moreAnchorEl, setMoreAnchorEl] = useState<HTMLButtonElement | null>(
     null
@@ -28,10 +39,7 @@ export default function QuizInfo(props: any) {
   const [loading, setLoading] = useState(true);
   const openMore = Boolean(moreAnchorEl);
   const [openDelete, setOpenDelete] = useState(false);
-  const handleLoading = props.handleLoading;
-  const handleAlert = props.handleAlert;
   const router = useRouter();
-  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
     setOpenAnswer(false);
@@ -43,26 +51,17 @@ export default function QuizInfo(props: any) {
       <div
         className={styles.card + (selected ? " " + styles.selectedCard : "")}
         onClick={(e) => {
-          setSelected(!selected);
-          console.log(selected);
+          const ok: boolean = handleSelectedIds({
+            id: question._id,
+            title: question.title,
+          });
+          // setSelected(ok);
         }}
       >
         <span className={styles.titleContainer}>
           <h2 className={styles.cardTitle}>{question.title}</h2>
           {question.isMe && (
             <span className={styles.iconContainer}>
-              {/* Twitterに共有するボタン */}
-              {/* <Tooltip title="Twitterで共有">
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    const url = `https://twitter.com/intent/tweet?text=${question.title}&url=${location.href}`;
-                    window.open(url, "_blank");
-                  }}
-                >
-                  <Twitter />
-                </IconButton>
-              </Tooltip> */}
               <Tooltip title="オプション">
                 <IconButton
                   size="small"
@@ -123,9 +122,6 @@ export default function QuizInfo(props: any) {
                   : ""
               }`}
               key={i}
-              // onClick={() => {
-              //   setOpenAnswer(!openAnswer);
-              // }}
             >
               <p>{c}</p>
             </div>
@@ -168,7 +164,6 @@ export default function QuizInfo(props: any) {
           </Button>
         </Popover>
 
-        {/* 削除ダイアログ */}
         <Dialog
           open={openDelete}
           onClose={() => {
