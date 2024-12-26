@@ -65,13 +65,21 @@ export default function Home() {
     //     console.log(data);
     //   })
     //   .catch((err) => console.error("Error fetching quiz data:", err));
-
+    const difficulty = searchparams.get("difficulty");
+    const params =
+      difficulty === "specific"
+        ? {
+            ids: searchparams.get("ids"),
+            questionCount: 5,
+            difficulty,
+          }
+        : {
+            questionCount: 5,
+            difficulty,
+          };
     axios
       .get("/api/quiz/get-difficulty", {
-        params: {
-          questionCount: 5,
-          difficulty: searchparams.get("difficulty"),
-        },
+        params,
       })
       .then((res) => {
         return res.data;

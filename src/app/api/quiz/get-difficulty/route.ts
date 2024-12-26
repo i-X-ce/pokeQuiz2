@@ -4,6 +4,7 @@ import { s3Client } from "@/app/lib/s3";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextRequest, NextResponse } from "next/server";
+import { ObjectId } from "mongodb";
 
 export async function GET(req: NextRequest) {
   await connectToDatabase();
@@ -20,8 +21,23 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    let matches: any = { $match: { userId: { $ne: null } } };
+    if (difficulty === "specific") {
+      const ids = req.nextUrl.searchParams
+        .get("ids")
+        ?.split(",")
+        .map((id) => new ObjectId(id));
+      if (!ids) {
+        return NextResponse.json(
+          { message: "Parameters not set correctly." },
+          { status: 404 }
+        );
+      }
+      matches.$match._id = { $in: ids };
+    }
+
     const questions = await Question.aggregate([
-      { $match: { userId: { $ne: null } } },
+      matches,
       {
         $lookup: {
           from: "users",
@@ -50,6 +66,8 @@ export async function GET(req: NextRequest) {
       );
       newQuestions.sort(() => Math.random() - 0.5);
       resQuestions = newQuestions.slice(0, questionCount);
+    } else if (difficulty === "specific") {
+      resQuestions = questions;
     } else {
       // 難易度別問題
       let filteredQuestions = questions.filter(
