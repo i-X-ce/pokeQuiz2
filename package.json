@@ -16,7 +16,6 @@
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
-    "@next/font": "^14.2.15",
     "aws-sdk": "^2.1692.0",
     "axios": "^1.7.7",
     "formidable": "^3.5.2",
