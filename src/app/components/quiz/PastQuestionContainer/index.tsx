@@ -1,8 +1,14 @@
-import { AutoAwesome, Close, PanoramaFishEye } from "@mui/icons-material";
-import { IconButton, Pagination } from "@mui/material";
+import {
+  AutoAwesome,
+  Close,
+  PanoramaFishEye,
+  Twitter,
+} from "@mui/icons-material";
+import { IconButton, Pagination, Tooltip } from "@mui/material";
 import styles from "./style.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
+import shareOnTwitter from "@/app/lib/shareOnTwitter";
 
 interface Question {
   _id: string;
@@ -38,29 +44,55 @@ export default function PastQuestionContainer(props: any) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.correctIcons}>
-        {questions.map((q: any, i: number) => (
+      <span className={styles.iconHeader}>
+        <div className={styles.correctIcons}>
+          {questions.map((q: any, i: number) => (
+            <Tooltip key={i} title={`Q${i + 1}.${questions[i].title}`} arrow>
+              <IconButton
+                onClick={(e) => {
+                  handlePageChange(e, i + 1);
+                }}
+              >
+                {q.isCorrect ? (
+                  <PanoramaFishEye
+                    sx={{ fontSize: "var(--font-size-xxxl)" }}
+                    color="red"
+                  />
+                ) : (
+                  <Close
+                    key={i}
+                    sx={{ fontSize: "var(--font-size-xxxl)" }}
+                    color="blue"
+                  />
+                )}
+              </IconButton>
+            </Tooltip>
+          ))}
+        </div>
+        <Tooltip title="Twitterで共有" arrow>
           <IconButton
-            key={i}
-            onClick={(e) => {
-              handlePageChange(e, i + 1);
+            size="large"
+            onClick={() => {
+              const url = new URL("/pages/quiz-page", location.href);
+              url.searchParams.append("difficulty", "specific");
+              url.searchParams.append(
+                "ids",
+                questions.map((i) => i._id).join(",")
+              );
+              const result = questions
+                .map((q) => (q.isCorrect ? "○" : "×"))
+                .join("");
+              const correctCnt = questions.filter((q) => q.isCorrect).length;
+              shareOnTwitter(
+                `結果は${correctCnt}/${questions.length}でした！\r\n${result}だったよ！`,
+                url.toString()
+              );
             }}
           >
-            {q.isCorrect ? (
-              <PanoramaFishEye
-                sx={{ fontSize: "var(--font-size-xxxl)" }}
-                color="red"
-              />
-            ) : (
-              <Close
-                key={i}
-                sx={{ fontSize: "var(--font-size-xxxl)" }}
-                color="blue"
-              />
-            )}
+            <Twitter />
           </IconButton>
-        ))}
-      </div>
+        </Tooltip>
+      </span>
       <div className={styles.questionContainer}>
         <div
           className={

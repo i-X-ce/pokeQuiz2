@@ -90,6 +90,12 @@
   margin: 10px 0;
 }
 
+.iconHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* .container {
   padding: 50px;
 }
