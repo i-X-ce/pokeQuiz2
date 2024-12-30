@@ -3,7 +3,7 @@ import User from "@/app/lib/models/userModel";
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
-const handler = NextAuth({
+const authOptions = {
   providers: [
     Google({
       clientId: process.env.GOOGLE_ID || "",
@@ -30,8 +30,10 @@ const handler = NextAuth({
     },
   },
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as "jwt",
   },
-});
+};
 
-export { handler as GET, handler as POST };
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST, authOptions };
