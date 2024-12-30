@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler } from "react";
 
 export function NickNameInput({
   open,
@@ -20,17 +20,19 @@ export function NickNameInput({
   onEnter,
 }: {
   open: boolean;
-  onClose: any;
+  onClose: () => void;
   nickname: string;
   onChange:
     | ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     | undefined;
-  onEnter?: any;
+  onEnter?: (nickname: string) => void;
 }) {
   // const [nickname, setNickname] = useState("");
 
   const handleNicknameSubmit = async () => {
-    onEnter(nickname);
+    if (onEnter) {
+      onEnter(nickname);
+    }
     await axios.post("/api/user/set", {
       nickname,
     });
@@ -73,7 +75,7 @@ export function NickNameInput({
           <Button
             variant="contained"
             color="blue"
-            onClick={(e) => {
+            onClick={() => {
               if (isError()) return;
               handleNicknameSubmit();
               onClose();

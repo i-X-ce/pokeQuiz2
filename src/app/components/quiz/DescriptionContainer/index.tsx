@@ -1,11 +1,19 @@
-export default function DescriptionContainer(props: any) {
+export default function DescriptionContainer({
+  isCorrect,
+  answer,
+  description,
+}: {
+  isCorrect: boolean;
+  answer: string;
+  description: string;
+}) {
   fetch;
   return (
     <div>
-      <div>{props.isCorrect ? "正解" : "不正解"}</div>
+      <div>{isCorrect ? "正解" : "不正解"}</div>
       <div>
-        <div>{props.answer}</div>
-        <div>{props.description}</div>
+        <div>{answer}</div>
+        <div>{description}</div>
       </div>
     </div>
   );

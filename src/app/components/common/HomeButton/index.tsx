@@ -1,13 +1,6 @@
-import {
-  Collapse,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Divider,
-} from "@mui/material";
+import { Dialog, DialogTitle, Divider } from "@mui/material";
 import { ReactNode, useState } from "react";
 import styles from "./style.module.css";
-import { ArrowDropDownCircle, KeyboardArrowRight } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
 export function HomeButton({

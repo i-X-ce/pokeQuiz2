@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
       sortField = "solvedCnt";
   }
 
-  let users = await User.aggregate([
+  const users = await User.aggregate([
     {
       $addFields: {
         correctRate: { $divide: ["$correctCnt", "$answerCnt"] },

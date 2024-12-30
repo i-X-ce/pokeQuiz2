@@ -20,7 +20,7 @@ const connectToDatabase = async () => {
   // MongoDBに接続
   await mongoose
     .connect(MONGODB_URI)
-    .then((_) => console.log("Successfully connected to mongoDB!"));
+    .then(() => console.log("Successfully connected to mongoDB!"));
   isConnected = true;
 };
 

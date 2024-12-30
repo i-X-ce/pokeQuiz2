@@ -16,14 +16,16 @@ export function ChoicesCreateContainer({
 }: {
   choices: Choice[];
   updateChoices: (choices: Choice[]) => void;
-  validation: any;
+  validation: {
+    error: (value: string) => boolean;
+    label: (value: string) => string;
+    helperText: (value: string) => string;
+  };
 }) {
   const addChoice = () => {
     if (choices.length >= MAX_CHOICES_NUM) return;
-    updateChoices((prev: Choice[]) => {
-      console.log(prev);
-      return [...prev, { choiced: false, value: "" }];
-    });
+    const newChoices = [...choices, { choiced: false, value: "" }];
+    updateChoices(newChoices);
   };
 
   const deleteChoice = (key: number) => {

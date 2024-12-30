@@ -1,12 +1,8 @@
-import { useSession } from "next-auth/react";
 import styles from "./style.module.css";
 import LoginChip from "../LoginChip";
-import { Paper, Popper } from "@mui/material";
 import { RogoIcon } from "../RogoIcon";
 
 export function HomeTitle() {
-  const session = useSession();
-
   return (
     <div className={styles.allWrapper}>
       <div className={styles.topWrapper}>

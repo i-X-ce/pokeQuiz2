@@ -51,7 +51,9 @@ export async function GET(req: NextRequest) {
       break;
   }
 
-  let match: any = { $match: { userId: { $ne: null } } };
+  let match: { $match: { userId: { $ne: null }; $and?: {} } } = {
+    $match: { userId: { $ne: null } },
+  };
   const email = (await getServerSession())?.user?.email;
   const userId = (await User.findOne({ email }))?._id;
 

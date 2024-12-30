@@ -1,9 +1,9 @@
 "use client";
 import { Edit, Logout, Quiz } from "@mui/icons-material";
 import styles from "./style.module.css";
-import { Avatar, Button, Fade, Popover, Popper } from "@mui/material";
+import { Avatar, Button, Popover } from "@mui/material";
 import axios from "axios";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { NickNameInput } from "../NickNameInput";
 import LoginDialog from "../LoginDialog";

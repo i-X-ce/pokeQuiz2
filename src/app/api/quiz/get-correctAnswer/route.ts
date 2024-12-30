@@ -16,12 +16,15 @@ export async function GET(req: NextRequest) {
     const isCorrect = question.correctAnswer === answerIndex;
     const description = question.description;
     const correctAnswer = question.correctAnswer;
-    return NextResponse.json({ isCorrect, description, correctAnswer }, { status: 200 });
-  } catch (error: any) {
+    return NextResponse.json(
+      { isCorrect, description, correctAnswer },
+      { status: 200 }
+    );
+  } catch (error) {
     return NextResponse.json(
       {
         message: "Internal server error",
-        error: error.message,
+        error: (error as Error).message,
       },
       { status: 500 }
     );

@@ -1,7 +1,6 @@
 "use client";
 import { Title } from "@/app/components/common/Title";
 import {
-  Avatar,
   FormControl,
   InputLabel,
   MenuItem,

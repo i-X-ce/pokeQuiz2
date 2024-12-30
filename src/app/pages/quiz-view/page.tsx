@@ -41,13 +41,13 @@ interface Question {
   _id: string;
   question: string;
   choices: string[];
-  correctAnswer: Number;
-  img?: String;
-  answerCnt: Number;
-  correctCnt: Number;
-  description: String;
-  userName?: String;
-  title: String;
+  correctAnswer: number;
+  img?: string;
+  answerCnt: number;
+  correctCnt: number;
+  description: string;
+  userName?: string;
+  title: string;
   isCorrect: boolean;
   choiceAnswer: number;
   userId: string;
@@ -73,11 +73,17 @@ export default function Home() {
   const allSize = useRef(0);
   const [selectedQs, setSelectedQs] = useState<Selected[]>([]);
 
-  const loadingQuestions = (index: number, size: number, sortType: String) => {
+  const loadingQuestions = (index: number, size: number, sortType: string) => {
     const range = searchParams.get("range");
     setPageRange(range || "all");
 
-    const params: any = { index, size, sortType, range: range || "all" };
+    const params: {
+      index: number;
+      size: number;
+      sortType: string;
+      range: string;
+      searchQuery?: string;
+    } = { index, size, sortType, range: range || "all" };
     if (searchQuery) params.searchQuery = searchQuery;
     axios
       .get("/api/quiz/get-view", {
@@ -163,7 +169,7 @@ export default function Home() {
         value={pageRange}
         exclusive
         color="blue"
-        onChange={(e, v) => {
+        onChange={(v) => {
           setPageRange(v);
           router.push("/pages/quiz-view?range=" + v);
         }}
@@ -255,7 +261,7 @@ export default function Home() {
               <Pagination
                 count={totalPages}
                 page={page}
-                onChange={(e, n: number) => {
+                onChange={(n: number) => {
                   handlePageChange(n, sortType);
                 }}
                 color="blue"
@@ -281,7 +287,7 @@ export default function Home() {
               <Pagination
                 count={totalPages}
                 page={page}
-                onChange={(e, n: number) => {
+                onChange={(n: number) => {
                   handlePageChange(n, sortType);
                 }}
                 color="blue"

@@ -11,15 +11,7 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async signIn({
-      user,
-      account,
-      profile,
-    }: {
-      user: any;
-      account: any;
-      profile: any;
-    }) {
+    async signIn({ user }: { user: any }) {
       await connectToDatabase();
       const existingUser = await User.findOne({ email: user.email });
 

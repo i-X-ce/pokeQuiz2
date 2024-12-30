@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Button, Dialog } from "@mui/material";
 import styles from "./style.module.css";
 import { signIn } from "next-auth/react";
 import Link from "next/link";

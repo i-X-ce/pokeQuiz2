@@ -13,9 +13,6 @@ export async function DELETE() {
     await Question.deleteMany({});
     return Response.json({ messaga: "すべてのデータを削除しました" });
   } catch (error) {
-    return Response.json(
-      { error: "データの削除に失敗しました" },
-      { status: 500 }
-    );
+    return Response.json({ error: (error as Error).message }, { status: 500 });
   }
 }

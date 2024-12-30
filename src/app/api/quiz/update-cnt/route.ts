@@ -9,21 +9,23 @@ export async function PUT(req: NextRequest) {
   const questions = await req.json();
 
   try {
-    questions.forEach(async (q: any) => {
-      await Question.findByIdAndUpdate(q._id, {
-        $inc: { correctCnt: q.isCorrect ? 1 : 0, answerCnt: 1 },
-      });
-      await User.findByIdAndUpdate(q.userId, { $inc: { solvedCnt: 1 } });
-    });
+    questions.forEach(
+      async (q: { _id: string; isCorrect: boolean; userId: string }) => {
+        await Question.findByIdAndUpdate(q._id, {
+          $inc: { correctCnt: q.isCorrect ? 1 : 0, answerCnt: 1 },
+        });
+        await User.findByIdAndUpdate(q.userId, { $inc: { solvedCnt: 1 } });
+      }
+    );
     return NextResponse.json(
       { message: "Updated quiz data scores" },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json(
       {
         message: "Internal server error",
-        error: error.message,
+        error: (error as Error).message,
       },
       { status: 500 }
     );

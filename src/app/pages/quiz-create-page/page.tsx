@@ -26,7 +26,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import styles from "./style.module.css";
 import { AvatarChip } from "@/app/components/create/AvatarChip";
 import { useRouter, useSearchParams } from "next/navigation";

@@ -1,6 +1,6 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
-import { NextResponse, userAgent } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectToDatabase();

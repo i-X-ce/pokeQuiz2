@@ -21,7 +21,9 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let matches: any = { $match: { userId: { $ne: null } } };
+    let matches: {
+      $match: { userId: { $ne: null }; _id?: { $in: ObjectId[] } };
+    } = { $match: { userId: { $ne: null } } };
     if (difficulty === "specific") {
       const ids = req.nextUrl.searchParams
         .get("ids")
@@ -61,9 +63,7 @@ export async function GET(req: NextRequest) {
 
     // 新しい問題
     if (difficulty === "newest") {
-      const newQuestions = questions.filter(
-        (q: any) => (q.answerCnt || 0) < 10
-      );
+      const newQuestions = questions.filter((q) => (q.answerCnt || 0) < 10);
       newQuestions.sort(() => Math.random() - 0.5);
       resQuestions = newQuestions.slice(0, questionCount);
     } else if (difficulty === "specific") {
@@ -88,7 +88,7 @@ export async function GET(req: NextRequest) {
         default:
           startIndex = 0;
       }
-      filteredQuestions = filteredQuestions.filter((q: any, index: number) => {
+      filteredQuestions = filteredQuestions.filter((index: number) => {
         return index >= startIndex && index < startIndex + collectionSize / 3;
       });
       filteredQuestions.sort(() => Math.random() - 0.5);
@@ -147,12 +147,12 @@ export async function GET(req: NextRequest) {
     // }
 
     // return NextResponse.json(resQuestions, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     return NextResponse.json(
       {
         message: "Internal server error",
-        error: error.message,
+        error: (error as Error).message,
       },
       { status: 500 }
     );

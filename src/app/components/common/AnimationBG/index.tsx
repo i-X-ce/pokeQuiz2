@@ -4,8 +4,6 @@ import styles from "./style.module.css";
 
 // 消去時と出現時のアニメーションの定数時間
 const APPEARING_TIME = 30;
-const XNUM_OF_RECTANGLES = 5;
-const YNUM_OF_RECTANGLES = 5;
 
 const occupiedCells = new Set<string>();
 

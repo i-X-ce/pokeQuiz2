@@ -1,8 +1,5 @@
 "use client";
 import styles from "./style.module.css";
-import { Button } from "@mui/material";
-import axios from "axios";
-import { HomeTitle } from "./components/common/HomeTitle";
 import { HomeButton } from "./components/common/HomeButton";
 import {
   AddBox,
@@ -19,8 +16,6 @@ import {
 import { ChildButton } from "./components/common/ChildButton";
 import { useSession } from "next-auth/react";
 import { RogoIcon } from "./components/common/RogoIcon";
-import LoginChip from "./components/common/LoginChip";
-import { AnimationBG } from "./components/common/AnimationBG";
 
 export default function Home() {
   const session = useSession();
@@ -28,9 +23,7 @@ export default function Home() {
   return (
     <>
       {/* <HomeTitle /> */}
-      <span className={styles.topTag}>
-        {/* <LoginChip /> */}
-      </span>
+      <span className={styles.topTag}>{/* <LoginChip /> */}</span>
       <div className={styles.topContainer}>
         {/* <div className={styles.rogoContainer}>
           <div className={styles.sloganWrapper}>

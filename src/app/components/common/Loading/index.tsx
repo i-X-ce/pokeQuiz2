@@ -1,4 +1,4 @@
-import { Backdrop, CircularProgress, LinearProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import styles from "./style.module.css";
 
 export function Loading() {

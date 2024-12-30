@@ -1,6 +1,4 @@
-import Link from "next/link";
 import styles from "./style.module.css";
-import { KeyboardArrowLeft } from "@mui/icons-material";
 import { RogoIcon } from "../RogoIcon";
 
 export function Title({

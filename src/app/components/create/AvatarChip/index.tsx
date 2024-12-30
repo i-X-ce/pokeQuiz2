@@ -1,4 +1,4 @@
-import { Avatar, Divider } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { useSession } from "next-auth/react";
 import styles from "./style.module.css";
 

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { RogoIcon } from "../RogoIcon";
 import styles from "./style.module.css";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import LoginDialog from "../LoginDialog";
 

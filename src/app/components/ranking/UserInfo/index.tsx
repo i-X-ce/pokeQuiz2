@@ -2,11 +2,23 @@ import { Avatar } from "@mui/material";
 import styles from "./style.module.css";
 import { WorkspacePremium } from "@mui/icons-material";
 
-export function UserInfo(props: any) {
-  const user = props.user;
-  const dummy = props.dummy;
-  const rank = props.rank;
-
+export function UserInfo({
+  user,
+  dummy,
+  rank,
+}: {
+  user: {
+    image: string;
+    nickname: string;
+    createCnt?: number;
+    correctCnt: number;
+    answerCnt: number;
+    correctRate: number;
+    solvedCnt?: number;
+  };
+  dummy: boolean;
+  rank: number;
+}) {
   return (
     <div className={`${styles.user} ${dummy ? styles.dummy : ""}`}>
       <div className={styles.avatarChip}>

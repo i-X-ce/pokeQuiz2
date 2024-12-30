@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import { getServerSession } from "next-auth";
 import { DeleteObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
-import path from "path";
 import { s3Client } from "@/app/lib/s3";
 import sharp from "sharp";
 import * as Jimp from "jimp";
@@ -54,7 +53,7 @@ async function compressFileImage(buffer: Buffer) {
   }
 }
 
-export async function PUT(req: Request, res: any) {
+export async function PUT(req: Request) {
   try {
     const session = await getServerSession();
     await connectToDatabase();
@@ -114,12 +113,12 @@ export async function PUT(req: Request, res: any) {
       await Question.findByIdAndUpdate(id, data);
       return NextResponse.json({ message: "Updated quiz!" }, { status: 200 });
     }
-  } catch (error: any) {
+  } catch (error) {
     console.log(error);
     return NextResponse.json(
       {
         message: "Internal server error",
-        error: error.message,
+        error: (error as Error).message,
       },
       { status: 500 }
     );

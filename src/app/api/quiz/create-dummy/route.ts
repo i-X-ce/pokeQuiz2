@@ -2,12 +2,12 @@ import connectToDatabase from "@/app/lib/conectMongoDB";
 import Question from "@/app/lib/models/quizModel";
 import User from "@/app/lib/models/userModel";
 import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 const L = 100; // 作成するダミーデータの数
 
 // ダミーのクイズデータを作る
-export async function POST(req: NextRequest) {
+export async function POST() {
   const session = await getServerSession();
   if (session?.user?.email != process.env.MY_EMAIL) {
     return NextResponse.json({ message: "権限がありません" }, { status: 401 });

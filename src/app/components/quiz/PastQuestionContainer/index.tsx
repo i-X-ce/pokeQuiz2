@@ -6,7 +6,7 @@ import {
 } from "@mui/icons-material";
 import { IconButton, Pagination, Tooltip } from "@mui/material";
 import styles from "./style.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
 import shareOnTwitter from "@/app/lib/shareOnTwitter";
 
@@ -35,7 +35,7 @@ export default function PastQuestionContainer(props: any) {
     setQuestion(questions[0]);
   }, []);
 
-  const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (page: number) => {
     setPage(page - 1);
     setQuestion(questions[page - 1]);
   };
@@ -49,8 +49,8 @@ export default function PastQuestionContainer(props: any) {
           {questions.map((q: any, i: number) => (
             <Tooltip key={i} title={`Q${i + 1}.${questions[i].title}`} arrow>
               <IconButton
-                onClick={(e) => {
-                  handlePageChange(e, i + 1);
+                onClick={() => {
+                  handlePageChange(i + 1);
                 }}
               >
                 {q.isCorrect ? (

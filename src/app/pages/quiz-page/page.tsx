@@ -23,10 +23,10 @@ interface Question {
   _id: string;
   question: string;
   choices: string[];
-  correctAnswer: Number;
+  correctAnswer: number;
   img?: string;
-  answerCnt: Number;
-  correctCnt: Number;
+  answerCnt: number;
+  correctCnt: number;
   description: string;
   userName?: string;
   title: string;
