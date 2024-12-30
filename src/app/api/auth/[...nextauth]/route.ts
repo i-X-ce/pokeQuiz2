@@ -4,7 +4,7 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const authOptions = {
+export const authOptions = {
   providers: [
     Google({
       clientId: process.env.GOOGLE_ID || "",
@@ -35,8 +35,5 @@ const authOptions = {
   },
 };
 
-// const handler = NextAuth(authOptions);
-
-// export { handler as GET, handler as POST, authOptions };
-export default (req: NextApiRequest, res: NextApiResponse) =>
-  NextAuth(req, res, authOptions);
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
