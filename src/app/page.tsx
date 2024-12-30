@@ -29,7 +29,7 @@ export default function Home() {
     <>
       {/* <HomeTitle /> */}
       <span className={styles.topTag}>
-        <LoginChip />
+        {/* <LoginChip /> */}
       </span>
       <div className={styles.topContainer}>
         {/* <div className={styles.rogoContainer}>
