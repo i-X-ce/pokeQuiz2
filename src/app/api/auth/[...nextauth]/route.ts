@@ -30,7 +30,7 @@ const authOptions = {
     },
   },
   session: {
-    strategy: "jwt" as "jwt",
+    strategy: "jwt" as const,
   },
 };
 
