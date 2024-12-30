@@ -22,7 +22,6 @@ const handler = NextAuth({
           email: user.email,
           image: user.image,
         });
-        user.isFirstLogin = true;
       } else {
         await User.updateOne({ email: user.email }, { image: user.image });
         user.isFirstLogin = false;
@@ -30,16 +29,9 @@ const handler = NextAuth({
       return true;
     },
   },
-  // async session({ session, token }) {
-  //   session.user.isFirstLogin = token.isFirstLogin || false;
-  //   return session;
-  // },
-  // session: {
-  //   jwt: true,
-  // },
-  // session: {
-  //   strategy: "jwt" as SessionStrategy,
-  // },
+  session: {
+    strategy: "jwt",
+  },
 });
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, handler as authOptions };
