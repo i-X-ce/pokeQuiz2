@@ -1,9 +1,10 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import User from "@/app/lib/models/userModel";
-import NextAuth from "next-auth";
+import { AuthOptions } from "next-auth";
+import NextAuth from "next-auth/next";
 import Google from "next-auth/providers/google";
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     Google({
       clientId: process.env.GOOGLE_ID || "",
