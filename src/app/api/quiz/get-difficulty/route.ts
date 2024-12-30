@@ -85,9 +85,10 @@ export async function GET(req: NextRequest) {
         default:
           startIndex = 0;
       }
-      filteredQuestions = filteredQuestions.filter((index: number) => {
-        return index >= startIndex && index < startIndex + collectionSize / 3;
-      });
+      filteredQuestions = filteredQuestions.slice(
+        startIndex,
+        startIndex + Math.floor(collectionSize / 3)
+      );
       filteredQuestions.sort(() => Math.random() - 0.5);
       resQuestions = filteredQuestions.slice(0, questionCount);
     }
