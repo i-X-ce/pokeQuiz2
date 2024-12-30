@@ -21,9 +21,8 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let matches: {
-      $match: { userId: { $ne: null }; _id?: { $in: ObjectId[] } };
-    } = { $match: { userId: { $ne: null } } };
+    // eslint-disable-next-line
+    let matches: any = { $match: { userId: { $ne: null } } };
     if (difficulty === "specific") {
       const ids = req.nextUrl.searchParams
         .get("ids")
@@ -70,10 +69,8 @@ export async function GET(req: NextRequest) {
       resQuestions = questions;
     } else {
       // 難易度別問題
-      let filteredQuestions = questions.filter(
-        (q: any) => (q.answerCnt || 0) >= 10
-      );
-      const collectionSize = filteredQuestions.length;
+      let filteredQuestions = questions.filter((q) => (q.answerCnt || 0) >= 10);
+      const collectionSize: number = filteredQuestions.length;
       let startIndex;
       switch (difficulty) {
         case "hard":
@@ -96,7 +93,8 @@ export async function GET(req: NextRequest) {
     }
 
     for (let i = 0; i < resQuestions.length; i++) {
-      let q = resQuestions[i];
+      // eslint-disable-next-line
+      let q: any = resQuestions[i];
       q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
       delete q.userInfo;
       delete q.correctAnswer;

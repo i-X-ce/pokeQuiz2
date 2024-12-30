@@ -13,20 +13,34 @@ import {
   Tooltip,
 } from "@mui/material";
 import styles from "./style.module.css";
-import { Delete, Edit, MoreVert, Twitter } from "@mui/icons-material";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
 
 export default function QuizInfo({
   question,
-  handleSelectedQs: handleSelectedIds,
   handleLoading,
   handleAlert,
   selected,
 }: {
-  question: any;
-  handleSelectedQs: (selectedQuestion: any) => boolean;
+  question: {
+    _id: string;
+    title: string;
+    isMe: boolean;
+    userName?: string;
+    answerCnt?: number;
+    correctRate: number;
+    img?: string;
+    question: string;
+    choices: string[];
+    correctAnswer: number;
+    description: string;
+  };
+  handleSelectedQs: (selectedQuestion: {
+    id: string;
+    title: string;
+  }) => boolean;
   handleLoading: () => void;
   handleAlert: () => void;
   selected: boolean;
@@ -49,11 +63,11 @@ export default function QuizInfo({
     <>
       <div
         className={styles.card + (selected ? " " + styles.selectedCard : "")}
-        onClick={(e) => {
-          const ok: boolean = handleSelectedIds({
-            id: question._id,
-            title: question.title,
-          });
+        onClick={() => {
+          // const ok: boolean = handleSelectedIds({
+          //   id: question._id,
+          //   title: question.title,
+          // });
           // setSelected(ok);
         }}
       >
@@ -113,7 +127,7 @@ export default function QuizInfo({
         <p className={styles.question}>{question.question}</p>
 
         <div className={styles.choicesContainer}>
-          {question.choices.map((c: any, i: number) => (
+          {question.choices.map((c: string, i: number) => (
             <div
               className={`${styles.choice} ${
                 i === question.correctAnswer && openAnswer

@@ -13,7 +13,6 @@ export default function HeadContainer({
   percentage: string;
   score: string;
 }) {
-  fetch;
   return (
     <div className={styles.headContainer}>
       <Title title={title} color="red" />

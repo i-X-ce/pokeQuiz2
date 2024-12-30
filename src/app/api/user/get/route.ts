@@ -1,7 +1,7 @@
 import connectToDatabase from "@/app/lib/conectMongoDB";
 import User from "@/app/lib/models/userModel";
 import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectToDatabase();

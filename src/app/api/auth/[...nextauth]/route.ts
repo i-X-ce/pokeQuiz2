@@ -11,6 +11,7 @@ export const authOptions = {
     }),
   ],
   callbacks: {
+    // eslint-disable-next-line
     async signIn({ user }: { user: any }) {
       await connectToDatabase();
       const existingUser = await User.findOne({ email: user.email });

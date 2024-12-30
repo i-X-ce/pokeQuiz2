@@ -37,9 +37,9 @@ import DescriptionWrapper from "@/app/components/common/DescriptionWrapper";
 interface Question {
   question: string;
   choices: string[];
-  correctAnswer: Number;
-  description: String;
-  title: String;
+  correctAnswer: number;
+  description: string;
+  title: string;
   userId: string;
   anonymity: boolean;
   _id: string | null;
@@ -79,7 +79,7 @@ export default function Home() {
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
 
   const [openValidationAlert, setOpenValidationAlert] = useState(false);
-  const [alertList, setAlertList] = useState<String[]>([]);
+  const [alertList, setAlertList] = useState<string[]>([]);
 
   const titleValidation = useValidation("タイトル", 30);
   const questionValidation = useValidation("問題文", 300);
@@ -104,7 +104,7 @@ export default function Home() {
     loadingQuestion();
 
     // ページの移動があると警告を出す
-    const handleBeforeUnload = (event: any) => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       if (isAllowToanvigate) return;
       event.preventDefault();
       event.returnValue = "";
@@ -116,7 +116,7 @@ export default function Home() {
   }, [isAllowToanvigate]);
 
   // submit時の処理
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = () => {
     const correctAnswer = choices.findIndex((c) => c.choiced === true);
     const ok = validationCheckAll();
     setOpenValidationAlert(ok);
@@ -154,8 +154,9 @@ export default function Home() {
   // すべてのバリデーションをチェックする
   const validationCheckAll = () => {
     interface ValidationGroup {
+      // eslint-disable-next-line
       validation: any;
-      value: String;
+      value: string;
     }
     const validations: ValidationGroup[] = [
       { validation: titleValidation, value: title },
@@ -163,7 +164,7 @@ export default function Home() {
       { validation: descriptionValidation, value: description },
     ];
     let newAlertlist: string[] = [];
-    validations.forEach((v, i) => {
+    validations.forEach((v) => {
       if (v.validation.error(v.value))
         newAlertlist = [...newAlertlist, v.validation.helperText(v.value)];
       else if (v.value.length <= 0)
@@ -174,7 +175,7 @@ export default function Home() {
     });
     let choiceValidationErrorF = false,
       choiceNullErrorF = false; // バリデーションFと入力してくださいF
-    choices.forEach((c: Choice, i: number) => {
+    choices.forEach((c: Choice) => {
       if (choicesValidation.error(c.value) && !choiceValidationErrorF) {
         newAlertlist = [
           ...newAlertlist,
@@ -211,7 +212,7 @@ export default function Home() {
         setQuestion(quiz.question);
         setDescription(quiz.description);
         setAnonymity(quiz.anonymity);
-        const newChoices = quiz.choices.map((c: any, i: number) => ({
+        const newChoices = quiz.choices.map((c: string, i: number) => ({
           choiced: i === quiz.correctAnswer,
           value: c,
         }));
@@ -526,7 +527,7 @@ export default function Home() {
         onClose={() => setOpenValidationAlert(false)}
       >
         <Alert severity="error">
-          {alertList.map((a: String, i: number) => (
+          {alertList.map((a: string, i: number) => (
             <p key={i}>{a}</p>
           ))}
         </Alert>

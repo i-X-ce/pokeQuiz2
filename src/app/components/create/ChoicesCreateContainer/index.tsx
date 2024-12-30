@@ -30,7 +30,7 @@ export function ChoicesCreateContainer({
 
   const deleteChoice = (key: number) => {
     if (choices.length <= 2) return;
-    let newChoices: Choice[] = choices.filter(
+    const newChoices: Choice[] = choices.filter(
       (_: Choice, i: number) => i !== key
     );
     updateChoices(newChoices);

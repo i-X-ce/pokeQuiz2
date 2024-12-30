@@ -26,10 +26,13 @@ interface Question {
   userId: string;
 }
 
-export default function PastQuestionContainer(props: any) {
+export default function PastQuestionContainer({
+  questions,
+}: {
+  questions: Question[];
+}) {
   const [page, setPage] = useState(0);
   const [question, setQuestion] = useState<Question>();
-  const questions: Question[] = props.questions;
 
   useEffect(() => {
     setQuestion(questions[0]);
@@ -46,7 +49,7 @@ export default function PastQuestionContainer(props: any) {
     <div className={styles.container}>
       <span className={styles.iconHeader}>
         <div className={styles.correctIcons}>
-          {questions.map((q: any, i: number) => (
+          {questions.map((q: Question, i: number) => (
             <Tooltip key={i} title={`Q${i + 1}.${questions[i].title}`} arrow>
               <IconButton
                 onClick={() => {
@@ -115,7 +118,7 @@ export default function PastQuestionContainer(props: any) {
             <div className={styles.questionText}>{question?.question}</div>
           </div>
           <div className={styles.choices}>
-            {question?.choices.map((c: any, i: number) => (
+            {question?.choices.map((c: string, i: number) => (
               <div
                 key={i}
                 className={styles.choice}

@@ -7,7 +7,6 @@ export default function DescriptionContainer({
   answer: string;
   description: string;
 }) {
-  fetch;
   return (
     <div>
       <div>{isCorrect ? "正解" : "不正解"}</div>

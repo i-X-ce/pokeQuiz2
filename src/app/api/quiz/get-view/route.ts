@@ -51,7 +51,8 @@ export async function GET(req: NextRequest) {
       break;
   }
 
-  let match: { $match: { userId: { $ne: null }; $and?: {} } } = {
+  // eslint-disable-next-line
+  let match: any = {
     $match: { userId: { $ne: null } },
   };
   const email = (await getServerSession())?.user?.email;

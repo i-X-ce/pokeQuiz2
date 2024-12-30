@@ -144,7 +144,7 @@ export default function Home() {
     } else {
       // 終わり
       setIsFinished(true);
-      let correctCnt = 0;
+      // let correctCnt = 0;
       // questions.forEach(async (q) => {
       //   const updateData = {
       //     ...q,

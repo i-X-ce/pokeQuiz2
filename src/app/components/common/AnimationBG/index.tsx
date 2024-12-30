@@ -17,7 +17,7 @@ export function AnimationBG() {
     const context = canvas.getContext("2d");
 
     // デバイスのピクセル比を取得
-    const dpi = window.devicePixelRatio || 1;
+    // const dpi = window.devicePixelRatio || 1;
 
     // キャンバスのスタイルサイズを設定
     // canvas.style.width = `${window.innerWidth}px`;
@@ -58,7 +58,7 @@ export function AnimationBG() {
       // キャンバスをクリア
       context.clearRect(0, 0, canvas.width, canvas.height);
 
-      let deadList: number[] = [];
+      const deadList: number[] = [];
 
       // 四角形の描画処理
       rectanglesRef.current.forEach((rectangle, index) => {

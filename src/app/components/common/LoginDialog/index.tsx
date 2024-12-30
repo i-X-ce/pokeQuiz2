@@ -8,7 +8,7 @@ export default function LoginDialog({
   onClose,
 }: {
   open: boolean;
-  onClose?: (event: {}, reason: "backdropClick" | "escapeKeyDown") => void;
+  onClose?: () => void;
 }) {
   return (
     <Dialog open={open} onClose={onClose}>
