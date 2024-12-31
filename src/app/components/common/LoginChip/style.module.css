@@ -1,0 +1,53 @@
+.chip {
+  background-color: var(--bc-white);
+  display: flex;
+  align-items: center;
+  padding: var(--space-sm);
+  border-radius: 500px;
+  cursor: default;
+  user-select: none;
+  transition: 0.3s;
+  box-shadow: 3px 3px 10px 5px var(--bc-shadow);
+}
+
+.chip:hover {
+  background-color: var(--bc-gray);
+}
+
+.nickname {
+  font-size: var(--font-size-lg);
+  margin: 0 10px;
+}
+
+.popperContent {
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}
+
+.grid4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+  margin: 10px;
+}
+
+.columName {
+  border-bottom: 1px solid var(--bc-shadow);
+  font-size: var(--font-size-lg);
+}
+
+.columValue {
+  font-size: var(--font-size-xxl);
+  margin: 0 5px;
+}
+
+.redValue {
+  color: var(--bc-red);
+}
+
+.blueValue {
+  color: var(--bc-blue);
+}
