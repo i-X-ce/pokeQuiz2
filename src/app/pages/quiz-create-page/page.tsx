@@ -33,6 +33,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
 import LoginDialog from "@/app/components/common/LoginDialog";
 import DescriptionWrapper from "@/app/components/common/DescriptionWrapper";
+import { useValidation } from "@/hooks/useValidation";
 
 interface Question {
   question: string;
@@ -574,35 +575,6 @@ export default function Home() {
     </>
   );
 }
-
-export const useValidation = (title: string, maxLength: number) => {
-  //表示上エラーになっている
-  const isError = (value: string) => {
-    return value.length > maxLength;
-  };
-
-  const getHelperText = (value: string) => {
-    if (!isError(value)) return null;
-    return isError(value)
-      ? `${title}は${maxLength}字以内で入力してください。`
-      : null;
-  };
-
-  const getLabel = (value: string) => {
-    return `${title} (${value.length}/${maxLength})`;
-  };
-
-  const getTitle = () => {
-    return title;
-  };
-
-  return {
-    error: isError,
-    helperText: getHelperText,
-    label: getLabel,
-    title: getTitle,
-  };
-};
 
 function TitleTag({ title, children }: { title: string; children: ReactNode }) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
