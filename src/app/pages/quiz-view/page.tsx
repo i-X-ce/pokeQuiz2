@@ -51,6 +51,8 @@ interface Question {
   isCorrect: boolean;
   choiceAnswer: number;
   userId: string;
+  isMe: boolean;
+  correctRate: number;
 }
 
 type Selected = { id: string; title: string };
@@ -116,6 +118,7 @@ export default function Home() {
   };
 
   const handleSelectedQs = (selectedQuestion: Selected) => {
+    console.log("selectedQuestion");
     if (selectedQs?.some((i) => i.id === selectedQuestion.id)) {
       setSelectedQs(selectedQs.filter((i) => i.id !== selectedQuestion.id));
       return false;

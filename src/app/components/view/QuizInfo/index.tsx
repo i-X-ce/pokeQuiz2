@@ -20,6 +20,7 @@ import DescriptionWrapper from "../../common/DescriptionWrapper";
 
 export default function QuizInfo({
   question,
+  handleSelectedQs,
   handleLoading,
   handleAlert,
   selected,
@@ -64,11 +65,10 @@ export default function QuizInfo({
       <div
         className={styles.card + (selected ? " " + styles.selectedCard : "")}
         onClick={() => {
-          // const ok: boolean = handleSelectedIds({
-          //   id: question._id,
-          //   title: question.title,
-          // });
-          // setSelected(ok);
+          handleSelectedQs({
+            id: question._id,
+            title: question.title,
+          });
         }}
       >
         <span className={styles.titleContainer}>
