@@ -393,7 +393,11 @@ export default function Home() {
           <ChoicesCreateContainer
             choices={choices}
             updateChoices={setChoices}
-            validation={choicesValidation}
+            validation={{
+              ...choicesValidation,
+              helperText: (value: string) =>
+                choicesValidation.helperText(value) ?? "",
+            }}
           />
           <TitleTag title="解説">
             <p>答え合わせした後に表示される解説を書いてください！</p>
@@ -486,8 +490,8 @@ export default function Home() {
             variant="contained"
             color="green"
             sx={{ color: "var(--bc-white)" }}
-            onClick={(e) => {
-              handleSubmit(e);
+            onClick={() => {
+              handleSubmit();
             }}
           >
             投稿

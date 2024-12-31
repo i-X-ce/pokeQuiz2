@@ -1,34 +1,167 @@
 "use client";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, PaletteColor, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 
-// const theme = extendTheme({
-//   // フォント
-//   fontFamily: {
-//     display: '"Kiwi Maru"',
-//     body: '"Kiwi Maru"',
-//   },
-// 色
-//   colorSchemes: {
-//     light: {
-//       palette: {
-//         primary: {
-//           mainChannel: "var(--bc-blue)",
-//         },
-//         success: {
-//           mainChannel: "var(--bc-green)",
-//         },
-//         danger: {
-//           mainChannel: "var(--bc-red)",
-//         },
-//         warning: {
-//           mainChannel: "var(--bc-yellow)",
-//         },
-//       },
-//     },
-//   },
-// });
+declare module "@mui/material/styles" {
+  interface Theme {
+    palette: {
+      white: PaletteColor;
+      gray: PaletteColor;
+      black: PaletteColor;
+      red: PaletteColor;
+      green: PaletteColor;
+      blue: PaletteColor;
+      yellow: PaletteColor;
+    };
+  }
+
+  interface PaletteOptions {
+    white?: PaletteColor;
+    gray?: PaletteColor;
+    black?: PaletteColor;
+    red?: PaletteColor;
+    green?: PaletteColor;
+    blue?: PaletteColor;
+    yellow?: PaletteColor;
+  }
+
+  interface ThemeOptions {
+    palette?: PaletteOptions;
+  }
+}
+
+declare module "@mui/material/CircularProgress" {
+  interface CircularProgressPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/TextField" {
+  interface TextFieldPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/Pagination" {
+  interface PaginationPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/IconButton" {
+  interface IconButtonPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/Radio" {
+  interface RadioPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/SvgIcon" {
+  interface SvgIconPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/Switch" {
+  interface SwitchPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/ToggleButtonGroup" {
+  interface ToggleButtonGroupPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/InputLabel" {
+  interface InputLabelPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
+declare module "@mui/material/Select" {
+  interface InputBasePropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
 
 export function ThemeProviderWrapper({
   children,
@@ -54,27 +187,48 @@ export function ThemeProviderWrapper({
             fontFamily: ['"Kiwi Maru"'].join(","),
           },
           palette: {
-            white: theme.palette.augmentColor({
-              color: { main: whiteMain, contrastText: blackMain },
-            }),
-            gray: theme.palette.augmentColor({
-              color: { main: grayMain, contrastText: whiteMain },
-            }),
-            black: theme.palette.augmentColor({
-              color: { main: blackMain, contrastText: whiteMain },
-            }),
-            red: theme.palette.augmentColor({
-              color: { main: redMain, contrastText: whiteMain },
-            }),
-            green: theme.palette.augmentColor({
-              color: { main: greenMain, contrastText: whiteMain },
-            }),
-            blue: theme.palette.augmentColor({
-              color: { main: blueMain, contrastText: whiteMain },
-            }),
-            yellow: theme.palette.augmentColor({
-              color: { main: yellowMain, contrastText: whiteMain },
-            }),
+            white: {
+              main: whiteMain,
+              contrastText: blackMain,
+              light: "",
+              dark: "",
+            },
+            gray: {
+              main: grayMain,
+              contrastText: blackMain,
+              light: "",
+              dark: "",
+            },
+            black: {
+              main: blackMain,
+              contrastText: whiteMain,
+              light: "",
+              dark: "",
+            },
+            red: {
+              main: redMain,
+              contrastText: whiteMain,
+              light: "",
+              dark: "",
+            },
+            green: {
+              main: greenMain,
+              contrastText: whiteMain,
+              light: "",
+              dark: "",
+            },
+            blue: {
+              main: blueMain,
+              contrastText: whiteMain,
+              light: "",
+              dark: "",
+            },
+            yellow: {
+              main: yellowMain,
+              contrastText: blackMain,
+              light: "",
+              dark: "",
+            },
           },
         })
       );

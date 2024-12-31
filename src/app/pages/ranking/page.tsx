@@ -55,11 +55,11 @@ export default function Home() {
       <Title color="yellow" title="ランキング" />
       <span className={styles.center}>
         <FormControl>
-          <InputLabel color="yellow">ランキング</InputLabel>
+          <InputLabel color="primary">ランキング</InputLabel>
           <Select
             defaultValue="correct"
             label="ランキング"
-            color="yellow"
+            color="primary"
             onChange={handleSelector}
           >
             <MenuItem value="correct">正答数ランキング</MenuItem>
@@ -75,7 +75,7 @@ export default function Home() {
         )}
       </div>
       <div className={styles.users}>
-        <UserInfo dummy />
+        <UserInfo rank={0} />
         {users.map((u, i) => (
           <UserInfo key={i} user={u} rank={i + 1} />
         ))}

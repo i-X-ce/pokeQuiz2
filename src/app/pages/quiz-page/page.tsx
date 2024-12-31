@@ -256,7 +256,7 @@ export default function Home() {
     <>
       <HeadContainer
         title={question.current!.title}
-        user={question.current!.userName}
+        user={question.current!.userName ?? "けつばん"}
         percentage={
           (question.current?.answerCnt as number) > 0
             ? (

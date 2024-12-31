@@ -11,7 +11,7 @@ export default function HeadContainer({
   title: string;
   user: string;
   percentage: string;
-  score: string;
+  score: number;
 }) {
   return (
     <div className={styles.headContainer}>
@@ -19,7 +19,7 @@ export default function HeadContainer({
       <span className={styles.chips}>
         <HeadChip state={user} role="投稿者" color="green" />
         <HeadChip state={percentage + "%"} role="正答率" color="blue" />
-        <HeadChip state={score} role="スコア" color="yellow" />
+        <HeadChip state={score.toString()} role="スコア" color="yellow" />
       </span>
     </div>
   );

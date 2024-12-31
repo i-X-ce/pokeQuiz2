@@ -38,7 +38,7 @@ export default function PastQuestionContainer({
     setQuestion(questions[0]);
   }, []);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (_e: React.ChangeEvent<unknown>, page: number) => {
     setPage(page - 1);
     setQuestion(questions[page - 1]);
   };
@@ -52,8 +52,8 @@ export default function PastQuestionContainer({
           {questions.map((q: Question, i: number) => (
             <Tooltip key={i} title={`Q${i + 1}.${questions[i].title}`} arrow>
               <IconButton
-                onClick={() => {
-                  handlePageChange(i + 1);
+                onClick={(e) => {
+                  handlePageChange(e, i + 1);
                 }}
               >
                 {q.isCorrect ? (

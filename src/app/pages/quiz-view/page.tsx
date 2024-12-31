@@ -172,9 +172,9 @@ export default function Home() {
         value={pageRange}
         exclusive
         color="blue"
-        onChange={(v) => {
-          setPageRange(v);
-          router.push("/pages/quiz-view?range=" + v);
+        onChange={(_event, newValue) => {
+          setPageRange(newValue);
+          router.push("/pages/quiz-view?range=" + newValue);
         }}
       >
         <Tooltip title="みんなの">
@@ -264,7 +264,7 @@ export default function Home() {
               <Pagination
                 count={totalPages}
                 page={page}
-                onChange={(n: number) => {
+                onChange={(_e, n: number) => {
                   handlePageChange(n, sortType);
                 }}
                 color="blue"
@@ -290,7 +290,7 @@ export default function Home() {
               <Pagination
                 count={totalPages}
                 page={page}
-                onChange={(n: number) => {
+                onChange={(_e, n: number) => {
                   handlePageChange(n, sortType);
                 }}
                 color="blue"

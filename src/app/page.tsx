@@ -16,6 +16,7 @@ import {
 import { ChildButton } from "./components/common/ChildButton";
 import { useSession } from "next-auth/react";
 import { RogoIcon } from "./components/common/RogoIcon";
+import LoginChip from "./components/common/LoginChip";
 
 export default function Home() {
   const session = useSession();
@@ -23,7 +24,9 @@ export default function Home() {
   return (
     <>
       {/* <HomeTitle /> */}
-      <span className={styles.topTag}>{/* <LoginChip /> */}</span>
+      <span className={styles.topTag}>
+        <LoginChip />
+      </span>
       <div className={styles.topContainer}>
         {/* <div className={styles.rogoContainer}>
           <div className={styles.sloganWrapper}>
