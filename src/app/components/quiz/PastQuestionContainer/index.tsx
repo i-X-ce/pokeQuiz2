@@ -135,21 +135,8 @@ export default function PastQuestionContainer({
               >
                 {question.correctAnswer === i && <AutoAwesome />}
                 {c}
-                {/* {c + (question.correctAnswer === i ? "(正解)" : "")} */}
               </div>
             ))}
-            {/* <span className={styles.choiceSet}>
-              <div>あなた</div>
-              <div className={styles.choice + " " + styles.redBg}>
-                {question?.choices[question.choiceAnswer]}
-              </div>
-            </span>
-            <span className={styles.choiceSet}>
-              <div>答え</div>
-              <div className={styles.choice + " " + styles.greenBg}>
-                {question?.choices[question.correctAnswer]}
-              </div>
-            </span> */}
           </div>
           <DescriptionWrapper
             className={styles.descriptionWrapper}
@@ -166,40 +153,6 @@ export default function PastQuestionContainer({
           />
         </div>
       </div>
-      {/* {questions.map((q: any, i: number) => (
-        <Accordion key={i}>
-          <AccordionSummary expandIcon={<ExpandMore />}>
-            <span className={styles.titleContainer}>
-              <div className={styles.title}>
-                <span className={styles.qNumber}>Q.{i} </span>
-                <span>{q.title}</span>
-              </div>
-              {q.isCorrect ? (
-                <PanoramaFishEye sx={{ fontSize: "2.3rem" }} color="red" />
-              ) : (
-                <Close sx={{ fontSize: "2.3rem" }} color="blue" />
-              )}
-            </span>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div className={styles.answerContainer}>
-              <div className={styles.columnWrapper}>
-                <p>あなたの回答</p>
-                <div className={`${styles.pastAnswer} ${styles.yourAnswer}`}>
-                  {q.choices[q.choiceAnswer]}
-                </div>
-              </div>
-              <div className={styles.columnWrapper}>
-                <p>答え</p>
-                <div className={`${styles.pastAnswer} ${styles.correctAnswer}`}>
-                  {q.choices[q.correctAnswer]}
-                </div>
-              </div>
-              <div>{q.description}</div>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-      ))} */}
     </div>
   );
 }
