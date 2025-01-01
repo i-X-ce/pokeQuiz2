@@ -19,6 +19,14 @@
   margin: 0 10px;
 }
 
+.buttonContainer {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
 .popperContent {
   margin: 10px;
   padding: 10px;
@@ -29,33 +37,26 @@
 
 .grid4 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   column-gap: 10px;
   margin: 10px;
 }
 
-.columName {
-  border-bottom: 1px solid var(--bc-shadow);
-  font-size: var(--font-size-lg);
+.valueCell {
+  margin: var(--space-sm) 0;
 }
 
-.columValue {
-  font-size: var(--font-size-xxl);
-  margin: 0 5px;
+.valueCellTitle {
+  font-size: large;
+  /* border-bottom: 1px solid var(--bc-gray); */
 }
 
-.redValue {
-  color: var(--bc-red);
+.valueCellValue {
+  font-size: x-large;
 }
 
-.greenValue {
-  color: var(--bc-green);
-}
-
-.blueValue {
-  color: var(--bc-blue);
-}
-
-.yellowValue {
-  color: var(--bc-yellow);
+@media screen and (max-width: 700px) {
+  .grid4 {
+    grid-template-columns: 1fr;
+  }
 }

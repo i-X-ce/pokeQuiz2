@@ -1,7 +1,7 @@
 "use client";
 import { Edit, Logout, Quiz } from "@mui/icons-material";
 import styles from "./style.module.css";
-import { Avatar, Button, Popover } from "@mui/material";
+import { Avatar, Divider, IconButton, Popover, Tooltip } from "@mui/material";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
@@ -74,57 +74,57 @@ export default function LoginChip() {
           transformOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <div className={styles.popperContent}>
-            <Button
-              startIcon={<Edit />}
-              color="gray"
-              onClick={() => {
-                setOpenNickname(!openNickname);
-              }}
-            >
-              ニックネーム
-            </Button>
-            <Button
-              startIcon={<Quiz />}
-              color="gray"
-              component="a"
-              href="/pages/quiz-view?range=mine"
-            >
-              作ったクイズ
-            </Button>
-            <div className={styles.grid4}>
-              <div className={styles.columName}>正答率</div>
-              <div className={styles.columName}>回答数</div>
-              <div className={styles.columValue + " " + styles.redValue}>
-                {(
-                  (100 * (userData?.correctCnt || 0)) /
-                  (userData?.answerCnt || 1)
-                ).toFixed(1)}
-                %
-              </div>
-              <div className={styles.columValue + " " + styles.greenValue}>
-                {userData?.answerCnt}
-              </div>
+            <div className={styles.buttonContainer}>
+              <Tooltip title="ニックネーム" arrow>
+                <IconButton
+                  onClick={() => {
+                    setOpenNickname(!openNickname);
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="作ったクイズ" arrow>
+                <IconButton component="a" href="/pages/quiz-view?range=mine">
+                  <Quiz />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="ログアウト" arrow>
+                <IconButton color="red" onClick={() => signOut()}>
+                  <Logout />
+                </IconButton>
+              </Tooltip>
             </div>
+            <Divider />
             <div className={styles.grid4}>
-              <div className={styles.columName}>作成数</div>
-              <div className={styles.columName}>解かれた数</div>
-              <div className={styles.columValue + " " + styles.blueValue}>
-                {userData?.createCnt}
-              </div>
-              <div className={styles.columValue + " " + styles.yellowValue}>
-                {userData?.solvedCnt}
-              </div>
+              <ValueCell
+                title="正答率"
+                value={
+                  (userData?.createCnt &&
+                    (
+                      (100 * (userData?.correctCnt || 0)) /
+                      (userData?.answerCnt || 1)
+                    ).toFixed(1) + "%") ||
+                  "?"
+                }
+                color="red"
+              />
+              <ValueCell
+                title="正解数"
+                value={userData?.correctCnt || "?"}
+                color="green"
+              />
+              <ValueCell
+                title="作成数"
+                value={userData?.createCnt || "?"}
+                color="blue"
+              />
+              <ValueCell
+                title="解かれた数"
+                value={userData?.solvedCnt || "?"}
+                color="yellow"
+              />
             </div>
-
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={() => signOut()}
-              color="red"
-              startIcon={<Logout />}
-            >
-              ログアウト
-            </Button>
           </div>
         </Popover>
       </div>
@@ -148,5 +148,27 @@ export default function LoginChip() {
         }}
       />
     </>
+  );
+}
+
+function ValueCell({
+  title,
+  value,
+  color,
+}: {
+  title: string;
+  value: string | number;
+  color: "red" | "green" | "blue" | "yellow";
+}) {
+  return (
+    <div className={styles.valueCell}>
+      <div className={styles.valueCellTitle}>{title}</div>
+      <div
+        style={{ color: `var(--bc-${color})` }}
+        className={styles.valueCellValue}
+      >
+        {value}
+      </div>
+    </div>
   );
 }
