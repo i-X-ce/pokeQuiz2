@@ -234,7 +234,7 @@ export default function Home() {
             sx={{
               fontSize: "var(--font-size-xxl)",
               padding:
-                "var(--space-md) calc(var(--space-md) * 4) var(--space-md) var(--space-md)",
+                "var(--space-md) calc(var(--space-md) * 4) var(--space-md) var(--space-lg)",
               borderRadius: "20px 0 0 20px",
               color: "var(--bc-white)",
             }}
@@ -256,7 +256,7 @@ export default function Home() {
             sx={{
               fontSize: "var(--font-size-xxl)",
               padding:
-                "var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) * 4) ",
+                "var(--space-md) var(--space-lg) var(--space-md) calc(var(--space-md) * 4) ",
               borderRadius: "0 20px 20px 0",
               color: "var(--bc-white)",
             }}
