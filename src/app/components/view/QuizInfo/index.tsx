@@ -213,9 +213,9 @@ export default function QuizInfo({
                   .then(() => {
                     handleLoading();
                     handleAlert();
+                    setOpenDelete(false);
+                    setMoreAnchorEl(null);
                   });
-                setOpenDelete(false);
-                setMoreAnchorEl(null);
               }}
             >
               削除
