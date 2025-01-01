@@ -456,11 +456,9 @@ export default function Home() {
       {/* 確認ダイアログ */}
       <Dialog open={openCheckLog} onClose={() => setOpenCheckLog(false)}>
         <DialogTitle>問題の確認</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            以下の内容で投稿します。よろしいですか？
-          </DialogContentText>
-        </DialogContent>
+        <DialogContentText sx={{ padding: "10px 20px" }}>
+          以下の内容で投稿します。よろしいですか？
+        </DialogContentText>
         <Divider />
         <div className={styles.checkContainer}>
           <div className={styles.checkUser}>
