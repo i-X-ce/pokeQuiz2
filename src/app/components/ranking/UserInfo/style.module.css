@@ -20,10 +20,14 @@
 .cell {
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: var(--font-size-md);
 }
 
 .dummy {
+  position: sticky;
+  top: var(--space-md);
+  z-index: 2;
   background-color: var(--bc-yellow);
   color: var(--bc-white);
 }
@@ -31,6 +35,13 @@
 .rank {
   text-align: center;
   width: 1.2em;
+  aspect-ratio: 1;
+}
+
+.rankNumber {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .first {
@@ -50,6 +61,7 @@
     /* grid-template-columns: 1fr; */
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: auto;
+    gap: var(--space-sm);
   }
 
   .avatarChip {
