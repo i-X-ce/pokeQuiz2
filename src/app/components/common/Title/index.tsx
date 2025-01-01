@@ -11,15 +11,6 @@ export function Title({
   const styleColor = `background-${color}`;
   return (
     <div className={`${styles.wrapper} ${styleColor}`}>
-      {/* <Link href="/">
-        <KeyboardArrowLeft
-          sx={{
-            fontSize: "3rem",
-            color: "var(--bc-white)",
-            marginLeft: "20px",
-          }}
-        />
-      </Link> */}
       <RogoIcon className={styles.rogo} />
       <div className={styles.title}>{title}</div>
     </div>
