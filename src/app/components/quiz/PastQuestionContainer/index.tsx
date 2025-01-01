@@ -28,8 +28,10 @@ interface Question {
 
 export default function PastQuestionContainer({
   questions,
+  evalutionText,
 }: {
   questions: Question[];
+  evalutionText: string;
 }) {
   const [page, setPage] = useState(0);
   const [question, setQuestion] = useState<Question>();
@@ -82,12 +84,12 @@ export default function PastQuestionContainer({
                 "ids",
                 questions.map((i) => i._id).join(",")
               );
-              const result = questions
-                .map((q) => (q.isCorrect ? "○" : "×"))
-                .join("");
+              // const result = questions
+              //   .map((q) => (q.isCorrect ? "○" : "×"))
+              //   .join("");
               const correctCnt = questions.filter((q) => q.isCorrect).length;
               shareOnTwitter(
-                `結果は${correctCnt}/${questions.length}でした！\r\n${result}だったよ！`,
+                `結果は${correctCnt}/${questions.length}でした！\r\n${evalutionText}\r\n`,
                 url.toString()
               );
             }}

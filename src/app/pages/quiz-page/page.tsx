@@ -44,6 +44,38 @@ const choiceColors = [
   styles.choiceYellow,
 ];
 
+const resultEvaluationText: string[] = [
+  "まだまだ……　これからだ\nあちこちで　バグちしきを　つけて　でなおして　くるのじゃ！",
+  "ふむ……　がんばっているな！\nまだまだ　クイズは　たくさんあるぞ！　といてみて　くれい！",
+  "バグプレイヤーに　しては　まだ　ちしきが　たりん！\nいろいろな　しゅるいの　バグを　しることじゃ！",
+  "ぜっこうちょう！\nふるくからの　サイトをさがせば　もっとスコアがあがりそうじゃ！",
+  "バグプレイヤーとしての　しんかを　とげてきとる……\nすばらしい",
+  "ついに　パーフェクトな　バグはかせの　たんじょうじゃ！\n…おめでとう！",
+];
+
+const resultEvaluation = (value: number) => {
+  return resultEvaluationText[
+    Math.max(
+      Math.min(
+        Math.floor(value * resultEvaluationText.length),
+        resultEvaluationText.length - 1
+      ),
+      0
+    )
+  ];
+};
+
+const stringToNode = (str: string) => {
+  const strs = str.split("\n");
+  return (
+    <>
+      {strs.map((s: string, i: number) => (
+        <p key={i}>{s}</p>
+      ))}
+    </>
+  );
+};
+
 export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const question = useRef<Question>();
@@ -61,14 +93,6 @@ export default function Home() {
   const [openErrorDialog, setOpenErrorDialog] = useState(false);
 
   useEffect(() => {
-    // fetch("/api/quiz/get-all")
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     setQuestions(data);
-    //     question.current = data[0];
-    //     console.log(data);
-    //   })
-    //   .catch((err) => console.error("Error fetching quiz data:", err));
     const difficulty = searchparams.get("difficulty");
     const params =
       difficulty === "specific"
@@ -109,7 +133,6 @@ export default function Home() {
       })
       .then((correctData) => {
         setOpenLoadingLight(false);
-        console.log(correctData.status);
         if (correctData.status !== 200) {
         }
         const { isCorrect, description, correctAnswer } = correctData.data;
@@ -121,7 +144,6 @@ export default function Home() {
           description,
           correctAnswer,
         } as Question;
-        console.log(isCorrect, description);
 
         setIsAnswer(true);
         setQuestions((prevQuestions) =>
@@ -212,9 +234,17 @@ export default function Home() {
       <div className={styles.resultContainer}>
         <span className={styles.resultTopContainer}>
           <div className={styles.score}>
-            {score}/{questions.length}
+            <p className={styles.scoreText}>
+              {score}/{questions.length}
+            </p>
+            <div className={styles.evalutionText}>
+              {stringToNode(resultEvaluation(score / questions.length))}
+            </div>
           </div>
-          <PastQuestionContainer questions={questions} />
+          <PastQuestionContainer
+            questions={questions}
+            evalutionText={resultEvaluation(score / questions.length)}
+          />
         </span>
         <span
           style={{
