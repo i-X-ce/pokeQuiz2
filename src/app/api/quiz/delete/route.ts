@@ -34,7 +34,7 @@ export async function DELETE(req: NextRequest) {
       { message: "クイズを削除しました" },
       { status: 200 }
     );
-  } catch (e) {
+  } catch {
     return NextResponse.json(
       { message: "クイズの削除に失敗しました" },
       { status: 500 }
