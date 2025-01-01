@@ -4,6 +4,17 @@ import styles from "./style.module.css";
 
 const MAX_CHOICES_NUM = 8;
 
+const PLACEHOLDERS: string[] = [
+  "サファリボールの個数",
+  "手持ちポケモンの数",
+  "ボックスポケモンの数",
+  "どうぐ",
+  "ボックスポケモンのニックネーム",
+  "手持ちポケモンのニックネーム",
+  "そだてやのフラグ",
+  "エンカウントテーブル",
+];
+
 export interface Choice {
   choiced: boolean;
   value: string;
@@ -76,7 +87,7 @@ export function ChoicesCreateContainer({
             label={validation.label(c.value)}
             helperText={validation.helperText(c.value)}
             // label={"選択肢" + (i + 1)}
-            placeholder="例) サファリボールの個数"
+            placeholder={`例）${PLACEHOLDERS[i]}`}
             value={c.value}
             onChange={(e) => updateChoice(i, e.target.value)}
             color="green"
