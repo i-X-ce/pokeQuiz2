@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./style.module.css";
 import { Title } from "@/app/components/common/Title";
 import {
+  Alert,
   Button,
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { LoadingLight } from "@/app/components/common/LoadingLight";
 
 interface Question {
   _id: string;
@@ -55,6 +57,8 @@ export default function Home() {
   const [imgLoading, setImgLoading] = useState(true);
   const [openFaild, setOpenFaild] = useState(false);
   const router = useRouter();
+  const [openLoadingLight, setOpenLoadingLight] = useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
 
   useEffect(() => {
     // fetch("/api/quiz/get-all")
@@ -98,37 +102,49 @@ export default function Home() {
   const handleAnswer = async (answerIndex: number) => {
     setOpenDescription(true);
     if (isAnswer) return;
-    const correctData = await axios.get("/api/quiz/get-correctAnswer", {
-      params: { id: question.current?._id, answerIndex },
-    });
-    const { isCorrect, description, correctAnswer } = correctData.data;
-    // const isCorrect =
-    //   (question.current!.correctAnswer as number) === answerIndex;
-    question.current = {
-      ...question.current,
-      isCorrect,
-      description,
-      correctAnswer,
-    } as Question;
-    console.log(isCorrect, description);
+    setOpenLoadingLight(true);
+    axios
+      .get("/api/quiz/get-correctAnswer", {
+        params: { id: question.current?._id, answerIndex },
+      })
+      .then((correctData) => {
+        setOpenLoadingLight(false);
+        console.log(correctData.status);
+        if (correctData.status !== 200) {
+        }
+        const { isCorrect, description, correctAnswer } = correctData.data;
+        // const isCorrect =
+        //   (question.current!.correctAnswer as number) === answerIndex;
+        question.current = {
+          ...question.current,
+          isCorrect,
+          description,
+          correctAnswer,
+        } as Question;
+        console.log(isCorrect, description);
 
-    setIsAnswer(true);
-    setQuestions((prevQuestions) =>
-      prevQuestions.map((q, index) =>
-        index === currentQuestionIndex
-          ? {
-              ...q,
-              isCorrect: isCorrect,
-              choiceAnswer: answerIndex,
-              correctAnswer,
-              description,
-            }
-          : q
-      )
-    );
-    if (isCorrect) {
-      setScore(score + 1);
-    }
+        setIsAnswer(true);
+        setQuestions((prevQuestions) =>
+          prevQuestions.map((q, index) =>
+            index === currentQuestionIndex
+              ? {
+                  ...q,
+                  isCorrect: isCorrect,
+                  choiceAnswer: answerIndex,
+                  correctAnswer,
+                  description,
+                }
+              : q
+          )
+        );
+        if (isCorrect) {
+          setScore(score + 1);
+        }
+      })
+      .catch(() => {
+        setOpenLoadingLight(false);
+        setOpenErrorDialog(true);
+      });
   };
 
   const handleNext = () => {
@@ -354,6 +370,14 @@ export default function Home() {
           </Button>
         ) : null}
       </div>
+
+      <Dialog open={openErrorDialog} onClose={() => setOpenErrorDialog(false)}>
+        <Alert severity="error">
+          ごめんなさい！答えを取得できませんでした。
+        </Alert>
+      </Dialog>
+
+      <LoadingLight open={openLoadingLight} />
     </>
   );
 }
