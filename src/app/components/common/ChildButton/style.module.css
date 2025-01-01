@@ -1,5 +1,5 @@
 .button {
-  font-size: var(--font-size-lg);
+  font-size: large;
   display: flex;
   justify-content: space-between;
   align-items: center;

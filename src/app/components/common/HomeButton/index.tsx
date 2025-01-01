@@ -52,25 +52,6 @@ export function HomeButton({
       >
         {startIcon}
         {title}
-        {/* <div
-        className={styles.titleButton + " " + titleColor}
-        onClick={handleClick}
-      >
-        <span className={styles.buttonContent}>
-          <span>
-            {startIcon}
-            {title}
-          </span>
-          {link ? (
-            <KeyboardArrowRight />
-          ) : (
-            <ArrowDropDownCircle
-              className={open ? styles.onIcon : styles.offIcon}
-            />
-          )}
-        </span>
-      </div>
-      <Collapse in={open}>{children}</Collapse> */}
       </div>
 
       <Dialog open={open} maxWidth={false}>
