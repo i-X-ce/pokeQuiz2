@@ -48,6 +48,14 @@
   color: var(--bc-red);
 }
 
+.greenValue {
+  color: var(--bc-green);
+}
+
 .blueValue {
   color: var(--bc-blue);
+}
+
+.yellowValue {
+  color: var(--bc-yellow);
 }

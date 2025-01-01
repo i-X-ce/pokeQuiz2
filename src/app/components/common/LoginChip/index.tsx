@@ -76,7 +76,7 @@ export default function LoginChip() {
           <div className={styles.popperContent}>
             <Button
               startIcon={<Edit />}
-              color="blue"
+              color="gray"
               onClick={() => {
                 setOpenNickname(!openNickname);
               }}
@@ -85,7 +85,7 @@ export default function LoginChip() {
             </Button>
             <Button
               startIcon={<Quiz />}
-              color="blue"
+              color="gray"
               component="a"
               href="/pages/quiz-view?range=mine"
             >
@@ -94,14 +94,14 @@ export default function LoginChip() {
             <div className={styles.grid4}>
               <div className={styles.columName}>正答率</div>
               <div className={styles.columName}>回答数</div>
-              <div className={styles.columValue + " " + styles.blueValue}>
+              <div className={styles.columValue + " " + styles.redValue}>
                 {(
                   (100 * (userData?.correctCnt || 0)) /
                   (userData?.answerCnt || 1)
                 ).toFixed(1)}
                 %
               </div>
-              <div className={styles.columValue + " " + styles.blueValue}>
+              <div className={styles.columValue + " " + styles.greenValue}>
                 {userData?.answerCnt}
               </div>
             </div>
@@ -111,7 +111,7 @@ export default function LoginChip() {
               <div className={styles.columValue + " " + styles.blueValue}>
                 {userData?.createCnt}
               </div>
-              <div className={styles.columValue + " " + styles.blueValue}>
+              <div className={styles.columValue + " " + styles.yellowValue}>
                 {userData?.solvedCnt}
               </div>
             </div>

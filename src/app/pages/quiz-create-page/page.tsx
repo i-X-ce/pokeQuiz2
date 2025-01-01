@@ -34,6 +34,7 @@ import { AddPhotoAlternate, Delete, QuestionMark } from "@mui/icons-material";
 import LoginDialog from "@/app/components/common/LoginDialog";
 import DescriptionWrapper from "@/app/components/common/DescriptionWrapper";
 import { useValidation } from "@/hooks/useValidation";
+import { LoadingLight } from "@/app/components/common/LoadingLight";
 
 interface Question {
   question: string;
@@ -78,6 +79,8 @@ export default function Home() {
   const [openUploadSuccess, setOpenUploadSuccess] = useState(false);
   const [openUploadFailed, setOpenUploadFailed] = useState(false);
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
+  const [openLoadingLight, setOpenLoadingLight] = useState(false);
 
   const [openValidationAlert, setOpenValidationAlert] = useState(false);
   const [alertList, setAlertList] = useState<string[]>([]);
@@ -137,12 +140,16 @@ export default function Home() {
     };
     formData.append("image", imgFile as File);
     formData.append("json", JSON.stringify(newquestion));
+    setOpenLoadingLight(true);
+    setOpenCheckLog(false);
     axios
       .put("/api/quiz/update", formData)
       .then(() => {
+        setOpenLoadingLight(false);
         setOpenUploadSuccess(true);
       })
       .catch(() => {
+        setOpenLoadingLight(false);
         setOpenUploadFailed(true);
       });
   };
@@ -204,10 +211,12 @@ export default function Home() {
   const loadingQuestion = () => {
     const quizId = searchParams.get("id");
     if (quizId === "new") return;
+    setOpenLoadingLight(true);
     axios
       .get("/api/quiz/get", { params: { id: quizId } })
       .then((res) => res.data)
       .then(async (data) => {
+        setOpenLoadingLight(false);
         const quiz = data.quiz;
         setTitle(quiz.title);
         setQuestion(quiz.question);
@@ -221,6 +230,8 @@ export default function Home() {
         setImgSrc(quiz.img);
       })
       .catch((error) => {
+        setOpenLoadingLight(false);
+        setOpenErrorDialog(true);
         console.error("クイズデータが取得できません", error);
       });
   };
@@ -576,6 +587,19 @@ export default function Home() {
           症状が治らなければア▶イスにご連絡ください。
         </DialogContent>
       </Dialog>
+
+      <Dialog
+        open={openErrorDialog}
+        onClose={() => {
+          router.push("/");
+          setOpenErrorDialog(false);
+        }}
+      >
+        <Alert severity="error">
+          クイズデータを取得できませんでした。もう一度お試しください。
+        </Alert>
+      </Dialog>
+      <LoadingLight open={openLoadingLight} />
     </>
   );
 }
