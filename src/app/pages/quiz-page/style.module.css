@@ -40,7 +40,7 @@
   left: 0;
   margin: var(--space-xs);
   padding: var(--space-sm) var(--space-md);
-  border-radius: 100px;
+  border-radius: var(--font-size-xxxl);
   font-size: var(--font-size-lg);
   box-shadow: 3px 3px 3px var(--bc-shadow);
   border: 5px solid;
@@ -109,7 +109,7 @@
 }
 
 .isCorrect {
-  font-size: var(--font-size-xxl);
+  font-size: x-large;
 }
 
 .resultTopContainer {
@@ -159,5 +159,9 @@
   }
   .questionContainer {
     min-height: 7rem;
+  }
+
+  .choice {
+    border: 3px solid;
   }
 }
