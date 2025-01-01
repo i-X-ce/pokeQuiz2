@@ -104,31 +104,16 @@ export async function GET(req: NextRequest) {
       },
     },
     { $sort: { [sortField]: sortOrder } },
-    // { $skip: index },
-    // { $limit: size },
   ]);
 
-  // questions.forEach(async (q) => {
-  //   q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
-  //   delete q.userInfo;
-  //   delete q.userId;
-
-  //   if (q.img) {
-  //     const command = new GetObjectCommand({
-  //       Bucket: process.env.AWS_S3_BUCKET_NAME,
-  //       Key: "uploads/" + q._id + q.img,
-  //     });
-  //     q.img = await getSignedUrl(s3Client, command, {
-  //       expiresIn: 1800,
-  //     });
-  //   }
-  // });
   const allSize = questions.length;
   questions = questions.slice(index, index + size);
   for (const q of questions) {
     q.userName = !q.anonymity ? q.userInfo.nickname : "けつばん";
     delete q.userInfo;
     delete q.userId;
+    delete q.correctAnswer;
+    delete q.description;
 
     if (q.img) {
       const command = new GetObjectCommand({
