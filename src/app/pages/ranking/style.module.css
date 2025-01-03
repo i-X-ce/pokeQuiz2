@@ -51,7 +51,7 @@
   display: flex;
   color: var(--bc-white);
   align-items: center;
-  padding: 20px;
+  padding: var(--space-md) var(--space-lg);
 }
 
 .championCardImg {
@@ -61,7 +61,8 @@
 }
 
 .championCardName {
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-xl);
+  margin: 0 var(--space-md);
 }
 
 .championCardDetails {

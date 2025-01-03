@@ -1,6 +1,7 @@
 "use client";
 import { Title } from "@/app/components/common/Title";
 import {
+  Avatar,
   FormControl,
   InputLabel,
   MenuItem,
@@ -59,7 +60,7 @@ export default function Home() {
           <Select
             defaultValue="correct"
             label="ランキング"
-            color="primary"
+            color="warning"
             onChange={handleSelector}
           >
             <MenuItem value="correct">正答数ランキング</MenuItem>
@@ -114,11 +115,7 @@ function ChampionCard({ user, rank }: { user: User; rank: number }) {
           className={styles.championCardNamePlate}
           style={{ backgroundColor: styleColor }}
         >
-          <img
-            className={styles.championCardImg}
-            src={user.image}
-            alt={user.nickname}
-          />
+          <Avatar src={user.image} alt={user.nickname} />
           <div className={styles.championCardName}>{user.nickname}</div>
         </div>
         <div className={styles.championCardDetails}>

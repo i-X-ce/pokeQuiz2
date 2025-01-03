@@ -49,12 +49,12 @@ export function UserInfo({
       </Tooltip>
       <Tooltip title="正解数">
         <div className={styles.cell}>
-          <p>{user?.correctCnt || "正解数"}</p>
+          <p>{user ? user?.correctCnt || 0 : "正解数"}</p>
         </div>
       </Tooltip>
       <Tooltip title="回答数">
         <div className={styles.cell}>
-          <p>{user?.answerCnt || "回答数"}</p>
+          <p>{user ? user?.answerCnt || 0 : "回答数"}</p>
         </div>
       </Tooltip>
       <Tooltip title="正答率">

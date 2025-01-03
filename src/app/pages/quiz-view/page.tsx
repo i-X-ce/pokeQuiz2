@@ -164,7 +164,6 @@ export default function Home() {
   if (!questions)
     return (
       <>
-        <LoadingLight open={openLoadingLight} />
         <Loading />
         <LoginDialog
           open={openLoginDialog}
@@ -183,6 +182,7 @@ export default function Home() {
 
   return (
     <>
+      <LoadingLight open={openLoadingLight} />
       <Title
         color="blue"
         title={
