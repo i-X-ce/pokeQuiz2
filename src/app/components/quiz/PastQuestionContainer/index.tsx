@@ -84,9 +84,12 @@ export default function PastQuestionContainer({
                 "ids",
                 questions.map((i) => i._id).join(",")
               );
-              // const result = questions
-              //   .map((q) => (q.isCorrect ? "○" : "×"))
-              //   .join("");
+              const result =
+                questions.length.toString() +
+                questions.reduce((acc, q, i) => {
+                  return acc + ((q.isCorrect ? 1 : 0) << i);
+                }, 0);
+              url.searchParams.append("result", result);
               const correctCnt = questions.filter((q) => q.isCorrect).length;
               shareOnTwitter(
                 `結果は${correctCnt}/${questions.length}でした！\r\n${evalutionText}\r\n`,

@@ -20,6 +20,7 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LoadingLight } from "@/app/components/common/LoadingLight";
+import Head from "next/head";
 
 interface Question {
   _id: string;
@@ -47,8 +48,8 @@ const choiceColors = [
 const resultEvaluationText: string[] = [
   "まだまだ……　これからだ\nあちこちで　バグちしきを　つけて　でなおして　くるのじゃ！",
   "ふむ……　がんばっているな！\nまだまだ　クイズは　たくさんあるぞ！　といてみて　くれい！",
-  "バグプレイヤーに　しては　まだ　ちしきが　たりん！\nいろいろな　しゅるいの　バグを　しることじゃ！",
-  "ぜっこうちょう！\nふるくからの　サイトをさがせば　もっとスコアがあがりそうじゃ！",
+  "バグプレイヤーに　しては　まだ　ちしきが　たリん！\nいろいろな　しゅるいの　バグを　しることじゃ！",
+  "ぜっこうちょう！\nふるくからの　サイトをさがせば　もっとスコアがあがリそうじゃ！",
   "バグプレイヤーとしての　しんかを　とげてきとる……\nすばらしい",
   "ついに　パーフェクトな　バグはかせの　たんじょうじゃ！\n…おめでとう！",
 ];
@@ -76,7 +77,7 @@ const stringToNode = (str: string) => {
   );
 };
 
-export default function Home() {
+export default function Home({ host }: { host: string }) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const question = useRef<Question>();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -206,6 +207,22 @@ export default function Home() {
   if (questions.length === 0) {
     return (
       <>
+        <Head>
+          <meta property="og:title" content="BugPokeQuiz" />
+          <meta
+            property="og:description"
+            content="最高のバグクイズをお届け！"
+          />
+          <meta
+            property="og:image"
+            content={`/api/og?result=${searchparams.get("result")}`}
+          />
+          <meta property="og:url" content={`${host}/pages/quiz-page}`} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="BugPokeQuiz" />
+          <meta name="twitter:card" content="summary_large_image" />
+        </Head>
+
         <Loading />
         <Dialog
           open={openFaild}
