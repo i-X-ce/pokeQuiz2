@@ -36,6 +36,7 @@ import {
   Twitter,
 } from "@mui/icons-material";
 import shareOnTwitter from "@/app/lib/shareOnTwitter";
+import { LoadingLight } from "@/app/components/common/LoadingLight";
 
 interface Question {
   _id: string;
@@ -72,13 +73,24 @@ export default function Home() {
   const [pageRange, setPageRange] = useState("all");
   const [openFaild, setOpenFaild] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const decisionSearchQuery = useRef("");
   const allSize = useRef(0);
   const [selectedQs, setSelectedQs] = useState<Selected[]>([]);
+  const [openLoadingLight, setOpenLoadingLight] = useState(false);
 
-  const loadingQuestions = (index: number, size: number, sortType: string) => {
+  const loadingQuestions = (
+    index: number,
+    size: number,
+    sortType: string,
+    isChangePage: boolean = false
+  ) => {
     const range = searchParams.get("range");
     setPageRange(range || "all");
 
+    if (!isChangePage) {
+      index = 0;
+      setPage(1);
+    }
     const params: {
       index: number;
       size: number;
@@ -86,35 +98,44 @@ export default function Home() {
       range: string;
       searchQuery?: string;
     } = { index, size, sortType, range: range || "all" };
-    if (searchQuery) params.searchQuery = searchQuery;
+    if (decisionSearchQuery.current != "")
+      params.searchQuery = decisionSearchQuery.current;
+    setOpenLoadingLight(true);
     axios
       .get("/api/quiz/get-view", {
         params,
       })
       .then((res) => res.data)
       .then((data) => {
-        setTotalPages(
+        setOpenLoadingLight(false);
+        const totalPage =
           Math.floor(data.allSize / quizLimitPerPage) +
-            (data.allSize % quizLimitPerPage > 0 ? 1 : 0)
-        );
+          (data.allSize % quizLimitPerPage > 0 ? 1 : 0);
+        setTotalPages(totalPage);
         setQuestions([...data.questions]);
         allSize.current = data.allSize;
       })
       .catch((error) => {
+        setOpenLoadingLight(false);
         console.log(error);
         if (range === "mine" && error.status === 403) setOpenLoginDialog(true);
         else setOpenFaild(true);
       });
   };
 
-  const handlePageChange = (value: number, sortType: string) => {
-    setPage(value);
+  const handlePageChange = (newPage: number, sortType: string) => {
+    setPage(newPage);
     setSortType(sortType);
     loadingQuestions(
-      (value - 1) * quizLimitPerPage,
+      (newPage - 1) * quizLimitPerPage,
       quizLimitPerPage,
-      sortType
+      sortType,
+      true
     );
+  };
+
+  const reLoadQuestions = (sortType: string) => {
+    loadingQuestions(0, quizLimitPerPage, sortType, false);
   };
 
   const handleSelectedQs = (selectedQuestion: Selected) => {
@@ -143,6 +164,7 @@ export default function Home() {
   if (!questions)
     return (
       <>
+        <LoadingLight open={openLoadingLight} />
         <Loading />
         <LoginDialog
           open={openLoginDialog}
@@ -225,7 +247,13 @@ export default function Home() {
                 startAdornment: (
                   <Tooltip title="検索">
                     <IconButton
-                      onClick={() => handlePageChange(page, sortType)}
+                      onClick={() => {
+                        let q: string = "";
+                        setSearchQuery((s) => (q = s));
+                        console.log(searchQuery);
+                        decisionSearchQuery.current = q;
+                        reLoadQuestions(sortType);
+                      }}
                     >
                       <Search />
                     </IconButton>
@@ -234,7 +262,10 @@ export default function Home() {
                 endAdornment: (
                   <Tooltip title="クリア">
                     <IconButton
-                      onClick={() => setSearchQuery("")}
+                      onClick={() => {
+                        setSearchQuery("");
+                        decisionSearchQuery.current = "";
+                      }}
                       sx={{
                         color: searchQuery === "" ? "transparent" : "",
                         pointerEvents: searchQuery === "" ? "none" : "",
@@ -252,7 +283,8 @@ export default function Home() {
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handlePageChange(page, sortType);
+                decisionSearchQuery.current = searchQuery;
+                reLoadQuestions(sortType);
               }
             }}
             sx={{ margin: "0 var(--space-md)" }}
