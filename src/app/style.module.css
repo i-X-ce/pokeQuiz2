@@ -28,8 +28,7 @@
 .rogo {
   height: 150px;
   fill: var(--bc-black);
-  margin: 0px 20px;
-  margin-bottom: var(--space-md);
+  margin: var(--space-md) 20px;
   transition: 0.3s;
 }
 
@@ -66,7 +65,6 @@
   }
 
   .childButtonContainer {
-    /* flex-direction: column; */
     grid-template-columns: 1fr;
   }
 

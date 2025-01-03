@@ -15,7 +15,6 @@ export async function generateMetadata({
   searchParams: any;
 }) {
   const { result = "0" } = await searchParams;
-  console.log(result);
   const ogImageUrl = `/api/og?result=${encodeURIComponent(result)}`;
 
   return {

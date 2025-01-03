@@ -55,7 +55,7 @@
   font-size: x-large;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 300px) {
   .grid4 {
     grid-template-columns: 1fr;
   }

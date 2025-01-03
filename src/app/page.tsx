@@ -23,27 +23,10 @@ export default function Home() {
 
   return (
     <>
-      {/* <HomeTitle /> */}
       <span className={styles.topTag}>
         <LoginChip />
       </span>
       <div className={styles.topContainer}>
-        {/* <div className={styles.rogoContainer}>
-          <div className={styles.sloganWrapper}>
-            <RogoIcon className={styles.rogo} />
-            <div className={styles.slogan}>
-              <p>知らなかった</p>
-              <p>そんなの...</p>
-            </div>
-          </div>
-          <div className={styles.sloganDetails}>
-            <p>
-              初代ポケモンのバグに関するあんなクイズやこんなクイズ、たくさん集めました。
-            </p>
-            <p>きっとまだ見たことのない未知の問題にも出会えるはずです。</p>
-            <p>探してみませんか？あなたにとっての"けつばん"を...。</p>
-          </div>
-        </div> */}
         <RogoIcon className={styles.rogo} text shadow />
         <div className={styles.buttonContainer}>
           <HomeButton
@@ -157,12 +140,3 @@ export default function Home() {
     </>
   );
 }
-
-// export async function getServerSideProps(context) {
-//   const session = await getSession(context);
-//   return {
-//     props: {
-//       session,
-//     }
-//   }
-// }
