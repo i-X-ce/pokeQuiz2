@@ -4,7 +4,7 @@ const shareOnTwitter = (text: string, url: string) => {
     text
   )}&url=${tweetUrl}`;
   const twitterWebUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-    text
+    `${text}\n#BugPokeQuiz\n`
   )}&url=${tweetUrl}`;
 
   // ユーザーエージェントをチェックしてモバイルデバイスの場合のみアプリを開く

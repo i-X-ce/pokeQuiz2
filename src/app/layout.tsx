@@ -10,7 +10,8 @@ import { authOptions } from "./lib/auth";
 
 export const metadata: Metadata = {
   title: "BugPokeQuiz",
-  description: "最高のバグクイズをお届け！",
+  description:
+    "ポケモンのバグに関するクイズが集まっているよ！最高のバグクイズをあなたにお届け！",
 };
 
 const kiwiMaru = Kiwi_Maru({
