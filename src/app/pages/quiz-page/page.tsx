@@ -77,7 +77,7 @@ const stringToNode = (str: string) => {
   );
 };
 
-export default function Home({ host }: { host: string }) {
+export default function Home() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const question = useRef<Question>();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -215,9 +215,14 @@ export default function Home({ host }: { host: string }) {
           />
           <meta
             property="og:image"
-            content={`/api/og?result=${searchparams.get("result")}`}
+            content={`${process.env.BASE_URL}/api/og?result=${searchparams.get(
+              "result"
+            )}`}
           />
-          <meta property="og:url" content={`${host}/pages/quiz-page}`} />
+          <meta
+            property="og:url"
+            content={`${process.env.BASE_URL}/pages/quiz-page}`}
+          />
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="BugPokeQuiz" />
           <meta name="twitter:card" content="summary_large_image" />
