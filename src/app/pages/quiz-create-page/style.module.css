@@ -20,23 +20,6 @@
   right: 0;
 }
 
-/* .chkDl {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 10px;
-  row-gap: 10px;
-  justify-content: center;
-}
-
-.chkDt {
-  font-weight: bold;
-  text-align: end;
-}
-
-.chkDd {
-  text-align: start;
-} */
-
 .titleTag {
   display: flex;
   align-items: center;
@@ -49,8 +32,6 @@
   align-items: center;
   margin: var(--space-sm) 0px;
   padding: var(--space-sm) var(--space-md);
-  /* border-bottom: 1px solid var(--bc-green); */
-  /* border-radius: 500px; */
   user-select: none;
   transition: 0.3s;
 }

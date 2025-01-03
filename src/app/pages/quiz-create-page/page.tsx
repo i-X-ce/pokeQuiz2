@@ -314,8 +314,8 @@ export default function Home() {
                 setImgHover(false);
               }}
             >
-              {imgSrc ? <img className={styles.img} src={imgSrc}></img> : null}
-              {imgSrc ? null : (
+              {imgSrc && <img className={styles.img} src={imgSrc} />}
+              {!imgSrc && (
                 <IconButton component="label" size="large">
                   <Tooltip title="画像をアップロード">
                     <AddPhotoAlternate
@@ -368,6 +368,7 @@ export default function Home() {
               {imgHover && imgSrc && (
                 <Tooltip title="画像を削除">
                   <IconButton
+                    sx={{ position: "absolute" }}
                     className={styles.imgDelBtn}
                     onClick={() => {
                       setImgDelete(true);
