@@ -11,6 +11,7 @@ export default function Home() {
 export async function generateMetadata({
   searchParams,
 }: {
+  // eslint-disable-next-line
   searchParams: any;
 }) {
   const { result = "0" } = await searchParams;
