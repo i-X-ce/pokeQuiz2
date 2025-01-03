@@ -4,7 +4,7 @@ import {
   PanoramaFishEye,
   Twitter,
 } from "@mui/icons-material";
-import { IconButton, Pagination, Tooltip } from "@mui/material";
+import { IconButton, Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
@@ -35,6 +35,7 @@ export default function PastQuestionContainer({
 }) {
   const [page, setPage] = useState(0);
   const [question, setQuestion] = useState<Question>();
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
 
   useEffect(() => {
     setQuestion(questions[0]);
@@ -155,6 +156,7 @@ export default function PastQuestionContainer({
             onChange={handlePageChange}
             page={page + 1}
             color={question?.isCorrect ? "red" : "blue"}
+            size={isSmallScreen ? "small" : "medium"}
           />
         </div>
       </div>

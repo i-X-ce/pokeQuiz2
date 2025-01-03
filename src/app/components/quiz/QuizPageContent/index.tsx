@@ -20,7 +20,6 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LoadingLight } from "@/app/components/common/LoadingLight";
-import Head from "next/head";
 
 interface Question {
   _id: string;
@@ -207,28 +206,6 @@ export default function QuizPageContent() {
   if (questions.length === 0) {
     return (
       <>
-        <Head>
-          <meta property="og:title" content="BugPokeQuiz" />
-          <meta
-            property="og:description"
-            content="最高のバグクイズをお届け！"
-          />
-          <meta
-            property="og:image"
-            content={`${process.env.NEXT_PUBLIC_BASE_URL}/api/og?result=${
-              searchparams.get("result") || ""
-            }`}
-          />
-          <meta
-            property="og:url"
-            content={`${process.env.NEXT_PUBLIC_BASE_URL}/pages/quiz-page}`}
-          />
-          <meta property="og:type" content="website" />
-          <meta property="og:site_name" content="BugPokeQuiz" />
-          <meta name="twitter:card" content="summary_large_image" />
-          <title>テスト</title>
-        </Head>
-
         <Loading />
         <Dialog
           open={openFaild}
@@ -399,13 +376,14 @@ export default function QuizPageContent() {
       ) : null}
       <div className={styles.choicesContainer}>
         {question.current!.choices.map((answer: string, index: number) => (
-          <div
-            className={`${styles.choice} ${choiceColors[index % 4]}`}
-            key={index}
-            onClick={() => handleAnswer(index)}
-          >
-            {answer}
-          </div>
+          <span className={styles.choiceWrapper} key={index}>
+            <div
+              className={`${styles.choice} ${choiceColors[index % 4]}`}
+              onClick={() => handleAnswer(index)}
+            >
+              {answer}
+            </div>
+          </span>
         ))}
       </div>
       <div style={{ display: "flex", justifyContent: "end", margin: "20px" }}>

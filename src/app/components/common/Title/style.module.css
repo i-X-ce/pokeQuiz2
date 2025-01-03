@@ -25,7 +25,7 @@
 
 @media (max-width: 1300px) {
   .wrapper {
-    max-width: none;
+    max-width: 80vw;
   }
 }
 

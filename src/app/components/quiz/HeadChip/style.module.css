@@ -29,15 +29,21 @@
   white-space: nowrap;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1300px) {
   .headChip {
-    margin: 0px 5px;
-    padding: 0px 15px;
-    border-radius: 0 0 15px 15px;
+    padding: 10px 15px;
+    margin: var(--space-sm) var(--space-md);
+    border-radius: var(--space-md);
   }
 
   .headChipContent {
-    border-radius: 0 0 15px 15px;
+    border-radius: var(--space-sm) var(--space-sm);
+  }
+}
+
+@media (max-width: 700px) {
+  .headChip {
+    margin: var(--space-sm);
   }
 
   .role,
