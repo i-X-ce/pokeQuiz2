@@ -4,6 +4,8 @@ import styles from "./style.module.css";
 
 // 消去時と出現時のアニメーションの定数時間
 const APPEARING_TIME = 30;
+// 最大の四角形の数
+const MAX_RECTANGLES = 30;
 
 const occupiedCells = new Set<string>();
 
@@ -74,7 +76,7 @@ export function AnimationBG() {
       });
 
       // 四角形を追加
-      if (rectanglesRef.current.length < 20) {
+      if (rectanglesRef.current.length <= MAX_RECTANGLES) {
         const xMax = Math.floor(canvas.width / RECTANGLE_SIZE);
         const yMax = Math.floor(canvas.height / RECTANGLE_SIZE);
         const width = Math.floor(Math.random() * 5) + 2;

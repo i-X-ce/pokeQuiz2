@@ -139,7 +139,6 @@ export default function Home() {
   };
 
   const handleSelectedQs = (selectedQuestion: Selected) => {
-    console.log("selectedQuestion");
     if (selectedQs?.some((i) => i.id === selectedQuestion.id)) {
       setSelectedQs(selectedQs.filter((i) => i.id !== selectedQuestion.id));
       return false;
@@ -250,7 +249,6 @@ export default function Home() {
                       onClick={() => {
                         let q: string = "";
                         setSearchQuery((s) => (q = s));
-                        console.log(searchQuery);
                         decisionSearchQuery.current = q;
                         reLoadQuestions(sortType);
                       }}

@@ -111,9 +111,9 @@ export default function QuizInfo({
         </span>
         <Divider />
 
-        {question.img && loading && <Skeleton animation="wave" height={300} />}
         {question.img && (
           <div className={styles.imgWrapper}>
+            {loading && <Skeleton animation="wave" height={300} width={500} />}
             <img
               onLoad={() => setLoading(false)}
               className={styles.questionImg}
