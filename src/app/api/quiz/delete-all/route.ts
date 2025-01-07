@@ -10,11 +10,11 @@ export async function DELETE() {
 
   return NextResponse.json({ message: "cancel" }, { status: 300 });
 
-  // try {
-  //   await connectToDatabase();
-  //   await Question.deleteMany({});
-  //   return Response.json({ messaga: "すべてのデータを削除しました" });
-  // } catch (error) {
-  //   return Response.json({ error: (error as Error).message }, { status: 500 });
-  // }
+  try {
+    await connectToDatabase();
+    await Question.deleteMany({});
+    return Response.json({ messaga: "すべてのデータを削除しました" });
+  } catch (error) {
+    return Response.json({ error: (error as Error).message }, { status: 500 });
+  }
 }

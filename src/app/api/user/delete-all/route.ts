@@ -10,11 +10,11 @@ export async function DELETE() {
     return NextResponse.json({ message: "権限がありません" }, { status: 401 });
   return NextResponse.json({ message: "cancel" }, { status: 300 });
 
-  // try {
-  //   await connectToDatabase();
-  //   await User.deleteMany({ email: { $ne: process.env.MY_EMAIL } });
-  //   return Response.json({ messaga: "すべてのデータを削除しました" });
-  // } catch (error) {
-  //   return Response.json({ error: (error as Error).message }, { status: 500 });
-  // }
+  try {
+    await connectToDatabase();
+    await User.deleteMany({ email: { $ne: process.env.MY_EMAIL } });
+    return Response.json({ messaga: "すべてのデータを削除しました" });
+  } catch (error) {
+    return Response.json({ error: (error as Error).message }, { status: 500 });
+  }
 }
