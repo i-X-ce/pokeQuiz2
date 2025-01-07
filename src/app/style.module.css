@@ -76,3 +76,9 @@
     height: 100px;
   }
 }
+
+@media (max-width: 400px) {
+  .rogo {
+    height: 60px;
+  }
+}
