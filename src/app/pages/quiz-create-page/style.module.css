@@ -14,9 +14,15 @@
   justify-content: end;
 }
 
+.topContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
 .nameContainer {
   display: flex;
   position: absolute;
+  align-items: center;
   right: 0;
 }
 
@@ -117,6 +123,12 @@
   gap: 5px;
 }
 
+.checkVersions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--space-sm) / 2);
+}
+
 .checkUser {
   font-size: var(--font-size-sm);
   color: var(--bc-gray);
@@ -166,6 +178,11 @@
 }
 
 @media (max-width: 1000px) {
+  .nameContainer {
+    position: relative;
+    justify-content: center;
+  }
+
   .questionBox {
     flex-direction: column;
     gap: var(--space-md);
@@ -174,13 +191,13 @@
 }
 
 @media (max-width: 700px) {
-  .nameContainer {
-    position: relative;
-    justify-content: center;
-  }
-
   .imgBox {
     max-width: 80%;
+  }
+
+  .topContainer {
+    flex-direction: column-reverse;
+    gap: var(--space-md);
   }
 
   .checkChoices {

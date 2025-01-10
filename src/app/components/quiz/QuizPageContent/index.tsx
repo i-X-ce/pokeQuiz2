@@ -9,6 +9,7 @@ import { Title } from "@/app/components/common/Title";
 import {
   Alert,
   Button,
+  Chip,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -20,6 +21,7 @@ import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LoadingLight } from "@/app/components/common/LoadingLight";
+import { getRomVersionColor, getRomVersionLabel } from "@/app/lib/romVersions";
 
 interface Question {
   _id: string;
@@ -35,6 +37,7 @@ interface Question {
   isCorrect: boolean;
   choiceAnswer: number;
   userId: string;
+  versions?: string[];
 }
 
 const choiceColors = [
@@ -313,6 +316,16 @@ export default function QuizPageContent() {
         }
         score={score}
       />
+      <div className={styles.versionContainer}>
+        {question.current?.versions && question.current?.versions.map((v, i) => (
+          <Chip
+            key={i}
+            label={getRomVersionLabel(v)}
+            color={getRomVersionColor(v)}
+            variant="outlined"
+          />
+        ))}
+      </div>
       <div className={styles.questionContainer}>
         <div className={styles.questionNumber}>
           Q.{currentQuestionIndex + 1}

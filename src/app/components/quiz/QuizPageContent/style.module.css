@@ -136,6 +136,13 @@
   min-width: 20vw;
 }
 
+.versionContainer {
+  display: flex;
+  gap: var(--space-sm);
+  margin: var(--space-sm) var(--space-md);
+  flex-wrap: wrap;
+}
+
 @media (max-width: 1100px) {
   .resultTopContainer {
     flex-direction: column;

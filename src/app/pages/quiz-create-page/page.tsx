@@ -8,6 +8,7 @@ import {
 import {
   Alert,
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -35,6 +36,8 @@ import LoginDialog from "@/app/components/common/LoginDialog";
 import DescriptionWrapper from "@/app/components/common/DescriptionWrapper";
 import { useValidation } from "@/hooks/useValidation";
 import { LoadingLight } from "@/app/components/common/LoadingLight";
+import { VersionSelector } from "@/app/components/create/VersionSelector";
+import { romVersions } from "@/app/lib/romVersions";
 
 interface Question {
   question: string;
@@ -46,6 +49,7 @@ interface Question {
   anonymity: boolean;
   _id: string | null;
   imgDelete: boolean;
+  versions: string[];
 }
 
 interface User {
@@ -72,6 +76,9 @@ export default function Home() {
   const [imgSrc, setImgSrc] = useState("");
   const [imgDelete, setImgDelete] = useState(false);
   const [imgHover, setImgHover] = useState(false);
+  const [versions, setVersions] = useState<string[]>(
+    romVersions.map((v) => v.id)
+  );
 
   const [openCheckLog, setOpenCheckLog] = useState(false);
   const [openCnancelLog, setOpenCancelLog] = useState(false);
@@ -137,6 +144,7 @@ export default function Home() {
       anonymity,
       _id: searchParams.get("id"),
       imgDelete,
+      versions,
     };
     formData.append("image", imgFile as File);
     formData.append("json", JSON.stringify(newquestion));
@@ -228,6 +236,7 @@ export default function Home() {
         }));
         setChoices(newChoices);
         setImgSrc(quiz.img);
+        setVersions(quiz.versions);
       })
       .catch((error) => {
         setOpenLoadingLight(false);
@@ -260,20 +269,24 @@ export default function Home() {
           onSubmit={handleSubmit}
           style={{ position: "relative", padding: "0.1px" }}
         >
-          <span className={styles.nameContainer}>
-            <AvatarChip anonymity={anonymity} userName={user.nickname} />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={anonymity}
-                  onChange={(e) => setAnonymity(e.target.checked)}
-                  color="green"
-                />
-              }
-              label="匿名"
-              labelPlacement="top"
-            />
+          <span className={styles.topContainer}>
+            <VersionSelector versions={versions} setVersions={setVersions} />
+            <span className={styles.nameContainer}>
+              <AvatarChip anonymity={anonymity} userName={user.nickname} />
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={anonymity}
+                    onChange={(e) => setAnonymity(e.target.checked)}
+                    color="green"
+                  />
+                }
+                label="匿名"
+                labelPlacement="top"
+              />
+            </span>
           </span>
+
           <TitleTag title="タイトル">
             <p>投稿するクイズのタイトルを書いてください！</p>
             <p>
@@ -462,6 +475,18 @@ export default function Home() {
         </DialogContentText>
         <Divider />
         <div className={styles.checkContainer}>
+          <div className={styles.checkVersions}>
+            {romVersions
+              .filter((v) => versions.includes(v.id))
+              .map((v, i: number) => (
+                <Chip
+                  key={i}
+                  label={v.label}
+                  color={v.color}
+                  variant="outlined"
+                />
+              ))}
+          </div>
           <div className={styles.checkUser}>
             投稿者:{anonymity ? "けつばん" : user.nickname}
           </div>

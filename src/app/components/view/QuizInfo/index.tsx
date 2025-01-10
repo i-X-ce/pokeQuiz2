@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
+  Chip,
   Collapse,
   Dialog,
   DialogActions,
@@ -17,6 +18,7 @@ import { Delete, Edit, MoreVert } from "@mui/icons-material";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
+import { getRomVersionColor, getRomVersionLabel } from "@/app/lib/romVersions";
 
 export default function QuizInfo({
   question,
@@ -37,6 +39,7 @@ export default function QuizInfo({
     choices: string[];
     correctAnswer: number;
     description: string;
+    versions?: string[];
   };
   handleSelectedQs: (selectedQuestion: {
     id: string;
@@ -89,6 +92,7 @@ export default function QuizInfo({
             </span>
           )}
         </span>
+
         <span className={styles.cardHeader}>
           <span>
             投稿者:
@@ -109,6 +113,18 @@ export default function QuizInfo({
             </span>
           </span>
         </span>
+
+        <div className={styles.versionsContainer}>
+          {question.versions &&
+            question.versions.map((v, i) => (
+              <Chip
+                key={i}
+                label={getRomVersionLabel(v)}
+                color={getRomVersionColor(v)}
+                variant="outlined"
+              />
+            ))}
+        </div>
         <Divider />
 
         {question.img && (

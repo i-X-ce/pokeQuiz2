@@ -163,6 +163,18 @@ declare module "@mui/material/Select" {
   }
 }
 
+declare module "@mui/material/Chip" {
+  interface ChipPropsColorOverrides {
+    white?: true;
+    gray?: true;
+    black?: true;
+    red?: true;
+    green?: true;
+    blue?: true;
+    yellow?: true;
+  }
+}
+
 export function ThemeProviderWrapper({
   children,
 }: {
@@ -225,7 +237,7 @@ export function ThemeProviderWrapper({
             },
             yellow: {
               main: yellowMain,
-              contrastText: blackMain,
+              contrastText: whiteMain,
               light: yellowMain,
               dark: yellowMain,
             },

@@ -12,6 +12,7 @@ export const quizSchema = new Schema(
     userId: { type: Schema.Types.ObjectId, ref: "User" },
     title: String,
     anonymity: Boolean,
+    versions: [String],
   },
   { timestamps: true }
 );
