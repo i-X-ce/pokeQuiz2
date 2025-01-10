@@ -100,28 +100,40 @@ export default function LoginChip() {
               <ValueCell
                 title="正答率"
                 value={
-                  (userData?.createCnt &&
-                    (
-                      (100 * (userData?.correctCnt || 0)) /
-                      (userData?.answerCnt || 1)
-                    ).toFixed(1) + "%") ||
-                  "?"
+                  session.status !== "authenticated"
+                    ? "?"
+                    : (
+                        (100 * (userData?.correctCnt || 0)) /
+                        (userData?.answerCnt || 1)
+                      ).toFixed(1) + "%"
                 }
                 color="red"
               />
               <ValueCell
                 title="正解数"
-                value={userData?.correctCnt || "?"}
+                value={
+                  session.status !== "authenticated"
+                    ? "?"
+                    : userData?.correctCnt || 0
+                }
                 color="green"
               />
               <ValueCell
                 title="作成数"
-                value={userData?.createCnt || "?"}
+                value={
+                  session.status !== "authenticated"
+                    ? "?"
+                    : userData?.createCnt || 0
+                }
                 color="blue"
               />
               <ValueCell
                 title="解かれた数"
-                value={userData?.solvedCnt || "?"}
+                value={
+                  session.status !== "authenticated"
+                    ? "?"
+                    : userData?.solvedCnt || 0
+                }
                 color="yellow"
               />
             </div>
