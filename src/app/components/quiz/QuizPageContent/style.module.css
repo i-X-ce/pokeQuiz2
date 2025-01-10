@@ -12,6 +12,7 @@
   margin: var(--space-md);
   font-size: var(--font-size-xxxl);
   text-align: center;
+  white-space: pre-wrap;
 }
 
 .questionNumber {
@@ -134,6 +135,7 @@
 .descriptionDialogContainer {
   padding: 20px 40px;
   min-width: 20vw;
+  white-space: pre-wrap;
 }
 
 .versionContainer {

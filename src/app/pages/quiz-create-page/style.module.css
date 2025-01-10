@@ -141,6 +141,7 @@
 
 .checkQuestion {
   display: inline;
+  white-space: pre-wrap;
 }
 
 .checkImg {
@@ -175,6 +176,7 @@
 
 .checkDescription {
   margin: 10px;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 1000px) {

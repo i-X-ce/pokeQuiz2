@@ -59,6 +59,7 @@
 .question {
   margin: var(--space-sm);
   font-size: var(--font-size-md);
+  white-space: pre-wrap;
 }
 
 .choice {
