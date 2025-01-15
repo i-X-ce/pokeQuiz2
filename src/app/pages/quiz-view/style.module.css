@@ -36,6 +36,7 @@
 
 .selectedTabButtons {
   display: flex;
+  justify-content: space-between;
 }
 
 .selectedQuestions {

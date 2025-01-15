@@ -1,6 +1,7 @@
 import {
   AutoAwesome,
   Close,
+  InsertLink,
   PanoramaFishEye,
   Twitter,
 } from "@mui/icons-material";
@@ -48,6 +49,19 @@ export default function PastQuestionContainer({
 
   const styleColor = question?.isCorrect ? "var(--bc-red)" : "var(--bc-blue)";
 
+  const shareUrl = () => {
+    const url = new URL("/pages/quiz-page", location.href);
+    url.searchParams.append("difficulty", "specific");
+    url.searchParams.append("ids", questions.map((i) => i._id).join(","));
+    const result =
+      questions.length.toString() +
+      questions.reduce((acc, q, i) => {
+        return acc + ((q.isCorrect ? 1 : 0) << i);
+      }, 0);
+    url.searchParams.append("result", result);
+    return url.toString();
+  };
+
   return (
     <div className={styles.container}>
       <span className={styles.iconHeader}>
@@ -75,32 +89,31 @@ export default function PastQuestionContainer({
             </Tooltip>
           ))}
         </div>
-        <Tooltip title="Twitterで共有" arrow>
-          <IconButton
-            size="large"
-            onClick={() => {
-              const url = new URL("/pages/quiz-page", location.href);
-              url.searchParams.append("difficulty", "specific");
-              url.searchParams.append(
-                "ids",
-                questions.map((i) => i._id).join(",")
-              );
-              const result =
-                questions.length.toString() +
-                questions.reduce((acc, q, i) => {
-                  return acc + ((q.isCorrect ? 1 : 0) << i);
-                }, 0);
-              url.searchParams.append("result", result);
-              const correctCnt = questions.filter((q) => q.isCorrect).length;
-              shareOnTwitter(
-                `結果は${correctCnt}/${questions.length}でした！\r\n${evalutionText}\r\n`,
-                url.toString()
-              );
-            }}
-          >
-            <Twitter />
-          </IconButton>
-        </Tooltip>
+        <span>
+          <Tooltip title="リンクをコピー" arrow>
+            <IconButton
+              onClick={() => {
+                navigator.clipboard.writeText(shareUrl());
+              }}
+            >
+              <InsertLink />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Twitterで共有" arrow>
+            <IconButton
+              size="large"
+              onClick={() => {
+                const correctCnt = questions.filter((q) => q.isCorrect).length;
+                shareOnTwitter(
+                  `結果は${correctCnt}/${questions.length}でした！\r\n${evalutionText}\r\n`,
+                  shareUrl()
+                );
+              }}
+            >
+              <Twitter />
+            </IconButton>
+          </Tooltip>
+        </span>
       </span>
       <div className={styles.questionContainer}>
         <div

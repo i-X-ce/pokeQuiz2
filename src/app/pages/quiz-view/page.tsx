@@ -30,6 +30,7 @@ import {
   Close,
   Face,
   Help,
+  InsertLink,
   PlayArrow,
   Search,
   SupervisorAccount,
@@ -354,15 +355,26 @@ export default function Home() {
                 <PlayArrow />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Twitterで共有" arrow placement="top">
-              <IconButton
-                onClick={() => {
-                  shareOnTwitter("オススメのバグクイズです！！", playURL());
-                }}
-              >
-                <Twitter />
-              </IconButton>
-            </Tooltip>
+            <span>
+              <Tooltip title="リンクをコピー" arrow placement="top">
+                <IconButton
+                  onClick={() => {
+                    navigator.clipboard.writeText(playURL());
+                  }}
+                >
+                  <InsertLink />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Twitterで共有" arrow placement="top">
+                <IconButton
+                  onClick={() => {
+                    shareOnTwitter("オススメのバグクイズです！！", playURL());
+                  }}
+                >
+                  <Twitter />
+                </IconButton>
+              </Tooltip>
+            </span>
           </div>
           <Divider />
           <div className={styles.selectedQuestions}>
