@@ -368,7 +368,13 @@ export default function Home() {
               <Tooltip title="Twitterで共有" arrow placement="top">
                 <IconButton
                   onClick={() => {
-                    shareOnTwitter("オススメのバグクイズです！！", playURL());
+                    const text = `オススメのバグクイズです！！\r\n${selectedQs
+                      .map((q) => `『${q.title}』`)
+                      .join("\r\n")}`;
+                    shareOnTwitter(
+                      text.slice(0, 120) + (text.length >= 120 ? "..." : ""),
+                      playURL()
+                    );
                   }}
                 >
                   <Twitter />
