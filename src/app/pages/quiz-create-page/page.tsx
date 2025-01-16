@@ -134,6 +134,9 @@ export default function Home() {
     if (ok) return;
     const choicesFormat: string[] = choices.map((c) => c.value);
     const formData = new FormData();
+    const sortedVersions = romVersions
+      .filter((v) => versions.includes(v.id))
+      .map((v) => v.id);
     const newquestion: Question = {
       title,
       question,
@@ -144,7 +147,7 @@ export default function Home() {
       anonymity,
       _id: searchParams.get("id"),
       imgDelete,
-      versions,
+      versions: sortedVersions,
     };
     formData.append("image", imgFile as File);
     formData.append("json", JSON.stringify(newquestion));
