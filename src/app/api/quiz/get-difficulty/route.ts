@@ -73,7 +73,7 @@ export async function GET(req: NextRequest) {
       resQuestions = ids.map((id) => qmp[id]);
     } else {
       // 難易度別問題
-      let filteredQuestions = questions.filter((q) => (q.answerCnt || 0) >= 10);
+      let filteredQuestions = questions.filter((q) => (q.answerCnt || 0) >= 5);
       const collectionSize: number = filteredQuestions.length;
       let startIndex;
       switch (difficulty) {
