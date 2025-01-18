@@ -37,6 +37,7 @@
 
 .questionQuestion {
   display: inline;
+  white-space: pre-wrap;
 }
 
 .img {
@@ -84,6 +85,7 @@
 
 .description {
   margin: 10px;
+  white-space: pre-wrap;
 }
 
 .descriptionWrapper {
