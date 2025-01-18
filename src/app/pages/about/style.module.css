@@ -19,6 +19,13 @@
   color: var(--bc-blue);
 }
 
+.videoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+}
+
 @media (max-width: 700px) {
   .body {
     padding: 20px 5vw;

@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  filter: blur(0px) opacity(0.1);
+  filter: blur(3px) opacity(0.1);
 }
 
 .canvas {

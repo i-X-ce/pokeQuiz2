@@ -1,11 +1,28 @@
+"use client";
 import { Title } from "@/app/components/common/Title";
 import styles from "./style.module.css";
+import { useMediaQuery } from "@mui/material";
 
 export default function Home() {
+  const mediaQuery = useMediaQuery("(min-width: 600px)");
+
   return (
     <>
       <Title title={"このサイトについて"} color="green"></Title>
       <div className={styles.body}>
+        <span className={styles.videoContainer}>
+          <iframe
+            className={styles.video}
+            src="https://www.youtube.com/embed/zLR2FbeYJYM?si=0e0iYZzqDOLAqqxw"
+            title="YouTube video player"
+            width={mediaQuery ? 560 : 315}
+            height={mediaQuery ? 315 : 177}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
+        </span>
         <h2 className={styles.h2}>やあ！</h2>
         <p>
           BugPokeQuizへようこそ！このサイトは初代ポケモンのバグ・任意コード実行について

@@ -56,17 +56,17 @@ export default function Home() {
       <Title color="yellow" title="ランキング" />
       <span className={styles.center}>
         <FormControl>
-          <InputLabel color="primary">ランキング</InputLabel>
+          <InputLabel color="warning">ランキング</InputLabel>
           <Select
             defaultValue="correct"
             label="ランキング"
             color="warning"
             onChange={handleSelector}
           >
-            <MenuItem value="correct">正答数ランキング</MenuItem>
-            <MenuItem value="answer">回答数ランキング</MenuItem>
-            <MenuItem value="create">作成数ランキング</MenuItem>
-            <MenuItem value="solved">解かれた数ランキング</MenuItem>
+            <MenuItem value="correct">正答数</MenuItem>
+            <MenuItem value="answer">回答数</MenuItem>
+            <MenuItem value="create">作成数</MenuItem>
+            <MenuItem value="solved">解かれた数</MenuItem>
           </Select>
         </FormControl>
       </span>
