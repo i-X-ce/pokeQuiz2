@@ -1,0 +1,13 @@
+.buttonContainer {
+  display: flex;
+  padding: var(--space-sm);
+  align-items: center;
+}
+
+.iconImg {
+  height: 1rem;
+}
+
+.miskeyIcon {
+  filter: brightness(50%);
+}

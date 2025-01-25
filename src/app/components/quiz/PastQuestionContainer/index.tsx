@@ -1,15 +1,9 @@
-import {
-  AutoAwesome,
-  Close,
-  InsertLink,
-  PanoramaFishEye,
-  Twitter,
-} from "@mui/icons-material";
+import { AutoAwesome, Close, PanoramaFishEye } from "@mui/icons-material";
 import { IconButton, Pagination, Tooltip, useMediaQuery } from "@mui/material";
 import styles from "./style.module.css";
 import { useEffect, useState } from "react";
 import DescriptionWrapper from "../../common/DescriptionWrapper";
-import shareOnTwitter from "@/app/lib/shareOnTwitter";
+import { SharingPopover } from "../../common/SharingPopover";
 
 interface Question {
   _id: string;
@@ -89,7 +83,13 @@ export default function PastQuestionContainer({
             </Tooltip>
           ))}
         </div>
-        <span>
+        <SharingPopover
+          text={`結果は${questions.filter((q) => q.isCorrect).length}/${
+            questions.length
+          }でした！\r\n${evalutionText}\r\n`}
+          url={shareUrl()}
+        />
+        {/* <span>
           <Tooltip title="リンクをコピー" arrow>
             <IconButton
               onClick={() => {
@@ -113,7 +113,7 @@ export default function PastQuestionContainer({
               <Twitter />
             </IconButton>
           </Tooltip>
-        </span>
+        </span> */}
       </span>
       <div className={styles.questionContainer}>
         <div

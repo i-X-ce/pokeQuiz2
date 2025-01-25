@@ -30,14 +30,12 @@ import {
   Close,
   Face,
   Help,
-  InsertLink,
   PlayArrow,
   Search,
   SupervisorAccount,
-  Twitter,
 } from "@mui/icons-material";
-import shareOnTwitter from "@/app/lib/shareOnTwitter";
 import { LoadingLight } from "@/app/components/common/LoadingLight";
+import { SharingPopover } from "@/app/components/common/SharingPopover";
 
 interface Question {
   _id: string;
@@ -356,7 +354,14 @@ export default function Home() {
               </IconButton>
             </Tooltip>
             <span>
-              <Tooltip title="リンクをコピー" arrow placement="top">
+              <SharingPopover
+                text={`オススメのバグクイズです！！\r\n${selectedQs
+                  .map((q) => `『${q.title}』`)
+                  .join("\r\n")
+                  .slice(0, 120)}`}
+                url={playURL()}
+              />
+              {/* <Tooltip title="リンクをコピー" arrow placement="top">
                 <IconButton
                   onClick={() => {
                     navigator.clipboard.writeText(playURL());
@@ -364,8 +369,8 @@ export default function Home() {
                 >
                   <InsertLink />
                 </IconButton>
-              </Tooltip>
-              <Tooltip title="Twitterで共有" arrow placement="top">
+              </Tooltip> */}
+              {/* <Tooltip title="Twitterで共有" arrow placement="top">
                 <IconButton
                   onClick={() => {
                     const text = `オススメのバグクイズです！！\r\n${selectedQs
@@ -379,7 +384,7 @@ export default function Home() {
                 >
                   <Twitter />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
             </span>
           </div>
           <Divider />
