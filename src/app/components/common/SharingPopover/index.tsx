@@ -5,6 +5,8 @@ import { InsertLink, Share, Twitter } from "@mui/icons-material";
 import { IconButton, Popover, Tooltip } from "@mui/material";
 import { useState } from "react";
 
+const HASHTAG = "#BugPokeQuiz";
+
 export function SharingPopover({ text, url }: { text: string; url: string }) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -45,9 +47,9 @@ export function SharingPopover({ text, url }: { text: string; url: string }) {
           <Tooltip title="Mikeyで共有" arrow placement="top">
             <IconButton
               onClick={() => {
-                const mikeyUrl = `https://misskeyshare.link/share.html?text=${encodeURI(
-                  text
-                )}&url=${encodeURI(url)}`;
+                const mikeyUrl = `https://misskeyshare.link/share.html?text=${encodeURIComponent(
+                  text + "\n\n" + HASHTAG
+                )}&url=${encodeURIComponent(url)}`;
                 window.open(mikeyUrl, "_blank");
               }}
             >
@@ -61,10 +63,11 @@ export function SharingPopover({ text, url }: { text: string; url: string }) {
           <Tooltip title="uwuzuで共有" arrow placement="top">
             <IconButton
               onClick={() => {
-                const uwuzuUrl = `https://share.uwuzu.net/?text=${encodeURI(
-                  text + "\n" + url
+                const uwuzuUrl = `https://share.uwuzu.net?text=${encodeURIComponent(
+                  text + "\n\n" + HASHTAG + "\n" + url
                 )}`;
                 window.open(uwuzuUrl, "_blank");
+                console.log(uwuzuUrl);
               }}
               sx={{
                 aspectRatio: 1,
