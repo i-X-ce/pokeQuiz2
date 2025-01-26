@@ -57,6 +57,22 @@ export function SharingPopover({ text, url }: { text: string; url: string }) {
               />
             </IconButton>
           </Tooltip>
+
+          <Tooltip title="uwuzuで共有" arrow placement="top">
+            <IconButton
+              onClick={() => {
+                const uwuzuUrl = `https://share.uwuzu.net/?text=${encodeURI(
+                  text + "\n" + url
+                )}`;
+                window.open(uwuzuUrl, "_blank");
+              }}
+              sx={{
+                aspectRatio: 1,
+              }}
+            >
+              <p className={`${styles.iconImg} ${styles.uwuzuIcon}`}>uw</p>
+            </IconButton>
+          </Tooltip>
         </div>
       </Popover>
     </div>

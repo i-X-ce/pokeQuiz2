@@ -357,8 +357,7 @@ export default function Home() {
               <SharingPopover
                 text={`オススメのバグクイズです！！\r\n${selectedQs
                   .map((q) => `『${q.title}』`)
-                  .join("\r\n")
-                  .slice(0, 120)}`}
+                  .join("\r\n")}`}
                 url={playURL()}
               />
               {/* <Tooltip title="リンクをコピー" arrow placement="top">

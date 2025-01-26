@@ -1,5 +1,6 @@
 const shareOnTwitter = (text: string, url: string) => {
   const tweetUrl = encodeURIComponent(url);
+  text = text.slice(0, 120) + (text.length > 120 ? "..." : "");
   const twitterAppUrl = `twitter://post?message=${encodeURIComponent(
     text
   )}&url=${tweetUrl}`;

@@ -11,3 +11,10 @@
 .miskeyIcon {
   filter: brightness(50%);
 }
+
+.uwuzuIcon {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
