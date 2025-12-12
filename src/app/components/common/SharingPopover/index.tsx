@@ -64,10 +64,9 @@ export function SharingPopover({ text, url }: { text: string; url: string }) {
             <IconButton
               onClick={() => {
                 const uwuzuUrl = `https://share.uwuzu.net?text=${encodeURIComponent(
-                  text + "\n\n" + HASHTAG + "\n" + url
+                  text + "\n" + HASHTAG + "\n" + url
                 )}`;
                 window.open(uwuzuUrl, "_blank");
-                console.log(uwuzuUrl);
               }}
               sx={{
                 aspectRatio: 1,
