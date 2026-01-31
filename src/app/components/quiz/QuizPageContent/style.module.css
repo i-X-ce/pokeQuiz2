@@ -29,8 +29,9 @@
 }
 
 .choicesContainer {
-  position: relative;
+  position: sticky;
   display: grid;
+  bottom: 20px;
   grid-template-columns: 1fr 1fr;
   margin: 0 20px;
 }
