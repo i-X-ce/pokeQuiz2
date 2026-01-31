@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Chip,
@@ -51,7 +51,7 @@ export default function QuizInfo({
 }) {
   const [openAnswer, setOpenAnswer] = useState(false);
   const [moreAnchorEl, setMoreAnchorEl] = useState<HTMLButtonElement | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
   const openMore = Boolean(moreAnchorEl);
@@ -72,8 +72,7 @@ export default function QuizInfo({
             id: question._id,
             title: question.title,
           });
-        }}
-      >
+        }}>
         <span className={styles.titleContainer}>
           <h2 className={styles.cardTitle}>{question.title}</h2>
           {question.isMe && (
@@ -84,8 +83,7 @@ export default function QuizInfo({
                   onClick={(e) => {
                     e.stopPropagation();
                     setMoreAnchorEl(e.currentTarget);
-                  }}
-                >
+                  }}>
                   <MoreVert />
                 </IconButton>
               </Tooltip>
@@ -150,8 +148,7 @@ export default function QuizInfo({
                   ? styles.correctChoice
                   : ""
               }`}
-              key={i}
-            >
+              key={i}>
               <p>{c}</p>
             </div>
           ))}
@@ -171,24 +168,21 @@ export default function QuizInfo({
           anchorEl={moreAnchorEl}
           onClose={() => {
             setMoreAnchorEl(null);
-          }}
-        >
+          }}>
           <Button
             startIcon={<Edit />}
             color="blue"
             fullWidth
             onClick={() => {
               router.push(`/pages/quiz-create-page?id=${question._id}`);
-            }}
-          >
+            }}>
             編集
           </Button>
           <Button
             startIcon={<Delete />}
             color="red"
             fullWidth
-            onClick={() => setOpenDelete(true)}
-          >
+            onClick={() => setOpenDelete(true)}>
             削除
           </Button>
         </Popover>
@@ -198,8 +192,7 @@ export default function QuizInfo({
           onClose={() => {
             setOpenDelete(false);
             setMoreAnchorEl(null);
-          }}
-        >
+          }}>
           <DialogTitle className={styles.deleteTitle}>クイズの削除</DialogTitle>
           <DialogContent>
             <p>
@@ -214,8 +207,7 @@ export default function QuizInfo({
               onClick={() => {
                 setOpenDelete(false);
                 setMoreAnchorEl(null);
-              }}
-            >
+              }}>
               キャンセル
             </Button>
             <Button
@@ -232,8 +224,7 @@ export default function QuizInfo({
                     setOpenDelete(false);
                     setMoreAnchorEl(null);
                   });
-              }}
-            >
+              }}>
               削除
             </Button>
           </DialogActions>
