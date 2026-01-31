@@ -61,9 +61,9 @@ const resultEvaluation = (value: number) => {
     Math.max(
       Math.min(
         Math.floor(value * resultEvaluationText.length),
-        resultEvaluationText.length - 1
+        resultEvaluationText.length - 1,
       ),
-      0
+      0,
     )
   ];
 };
@@ -159,8 +159,8 @@ export default function QuizPageContent() {
                   correctAnswer,
                   description,
                 }
-              : q
-          )
+              : q,
+          ),
         );
         if (isCorrect) {
           setScore(score + 1);
@@ -215,8 +215,7 @@ export default function QuizPageContent() {
           onClose={() => {
             setOpenFaild(false);
             router.push("/");
-          }}
-        >
+          }}>
           <DialogTitle>ごめんね！</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -254,8 +253,7 @@ export default function QuizPageContent() {
             display: "flex",
             justifyContent: "space-between",
             margin: "20px",
-          }}
-        >
+          }}>
           <Button
             startIcon={
               <span style={{ display: "flex", alignItems: "center" }}>
@@ -272,8 +270,7 @@ export default function QuizPageContent() {
               color: "var(--bc-white)",
             }}
             component="a"
-            href={"/pages/quiz-page?" + searchparams.toString()}
-          >
+            href={"/pages/quiz-page?" + searchparams.toString()}>
             もう一度
           </Button>
           <Button
@@ -294,8 +291,7 @@ export default function QuizPageContent() {
               color: "var(--bc-white)",
             }}
             component="a"
-            href="/"
-          >
+            href="/">
             ホームへ
           </Button>
         </span>
@@ -317,18 +313,19 @@ export default function QuizPageContent() {
         score={score}
       />
       <div className={styles.versionContainer}>
-        {question.current?.versions && question.current?.versions.map((v, i) => (
-          <Chip
-            key={i}
-            label={getRomVersionLabel(v)}
-            color={getRomVersionColor(v)}
-            variant="outlined"
-          />
-        ))}
+        {question.current?.versions &&
+          question.current?.versions.map((v, i) => (
+            <Chip
+              key={i}
+              label={getRomVersionLabel(v)}
+              color={getRomVersionColor(v)}
+              variant="outlined"
+            />
+          ))}
       </div>
       <div className={styles.questionContainer}>
         <div className={styles.questionNumber}>
-          Q.{currentQuestionIndex + 1}
+          Q.{currentQuestionIndex + 1} / {questions.length}
         </div>
         {question.current?.img && imgLoading && (
           <Skeleton height={300} width={300} />
@@ -353,14 +350,12 @@ export default function QuizPageContent() {
           open={openDescription}
           onClose={() => {
             setOpenDescription(false);
-          }}
-        >
+          }}>
           <div className={styles.descriptionDialogContainer}>
             <div
               className={`${styles.isCorrect} ${
                 question.current?.isCorrect ? "font-red" : "font-blue"
-              }`}
-            >
+              }`}>
               {question.current?.isCorrect ? "正解" : "不正解"}
             </div>
             <div className={styles.correctAnswer}>
@@ -378,8 +373,7 @@ export default function QuizPageContent() {
           <Button
             color="primary"
             sx={{ fontSize: "1.25rem" }}
-            onClick={handleNext}
-          >
+            onClick={handleNext}>
             {currentQuestionIndex < questions.length - 1
               ? "次のクイズへ"
               : "結果を見る"}
@@ -392,8 +386,7 @@ export default function QuizPageContent() {
           <span className={styles.choiceWrapper} key={index}>
             <div
               className={`${styles.choice} ${choiceColors[index % 4]}`}
-              onClick={() => handleAnswer(index)}
-            >
+              onClick={() => handleAnswer(index)}>
               {answer}
             </div>
           </span>
@@ -405,8 +398,7 @@ export default function QuizPageContent() {
             variant="outlined"
             sx={{ fontSize: "1.25rem" }}
             onClick={handleNext}
-            color="blue"
-          >
+            color="blue">
             {currentQuestionIndex < questions.length - 1
               ? "次のクイズへ"
               : "結果を見る"}
